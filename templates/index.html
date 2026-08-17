@@ -247,17 +247,17 @@
           
           try {
               // 3. Enviar la petición POST al servidor n8n
-              const response = await fetch(n8nWebhookUrl, {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
+                const response = await fetch(n8nWebhookUrl, {
+                    method: 'POST',
+                    headers: {
+                      // Cambiamos a text/plain para saltarnos el bloqueo CORS del navegador
+                      'Content-Type': 'text/plain' 
                   },
                   body: JSON.stringify({
                       message: mensaje,
                       sessionId: window.USUARIO_REAL || 'estudiante-anonimo'
                   })
               });
-
               if (!response.ok) throw new Error('Error en el servidor de n8n');
 
               const data = await response.json();
