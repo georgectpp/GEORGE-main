@@ -188,6 +188,95 @@
 <!-- JAVASCRIPT CONECTADO CON FLASK -->
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
+<!-- ======================================================== -->
+<!-- LÓGICA DE INTEGRACIÓN CON N8N PARA EL CHAT DE GEORGE IA  -->
+<!-- ======================================================== -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const chatFormIA = document.getElementById('chat-form-ia');
+    const chatInputIA = document.getElementById('chat-input-ia');
+    const chatBodyIA = document.getElementById('chat-body-ia');
+
+    // Función para dibujar los mensajes en la ventana de chat
+    function mostrarMensajeEnPantalla(texto, remitente) {
+      const msgDiv = document.createElement('div');
+      
+      // Asignar diseño dependiendo de quién envía el mensaje
+      if (remitente === 'ia' || remitente === 'sistema') {
+          msgDiv.className = 'chat-msg chat-msg-in';
+      } else {
+          msgDiv.className = 'chat-msg chat-msg-out';
+          // Estilos en línea para diferenciar el mensaje del estudiante
+          msgDiv.style.alignSelf = 'flex-end';
+          msgDiv.style.marginLeft = 'auto';
+          msgDiv.style.backgroundColor = '#00113A'; 
+          msgDiv.style.color = '#FFFFFF';
+          msgDiv.style.borderBottomRightRadius = '0';
+          msgDiv.style.borderBottomLeftRadius = '12px';
+      }
+
+      const p = document.createElement('p');
+      p.textContent = texto;
+
+      const span = document.createElement('span');
+      span.className = 'chat-time';
+      const ahora = new Date();
+      span.textContent = ahora.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+      msgDiv.appendChild(p);
+      msgDiv.appendChild(span);
+      chatBodyIA.appendChild(msgDiv);
+
+      // Scroll automático al fondo
+      chatBodyIA.scrollTop = chatBodyIA.scrollHeight;
+    }
+
+    if (chatFormIA) {
+        chatFormIA.addEventListener('submit', async (e) => {
+          e.preventDefault(); // Evitar recarga de página al apretar "Enter" o dar clic en enviar
+          
+          const mensaje = chatInputIA.value.trim();
+          if (!mensaje) return;
+          
+          // 1. Dibuja el mensaje del estudiante en la pantalla
+          mostrarMensajeEnPantalla(mensaje, 'usuario');
+          chatInputIA.value = ''; // Limpiar la barra
+          
+          // 2. URL de tu Webhook en n8n (¡Importante: Reemplázala por tu Production/Test URL!)
+          const n8nWebhookUrl = 'https://TU-N8N-URL.com/webhook-test/xxxx-xxxx-xxxx'; 
+          
+          try {
+              // 3. Enviar la petición POST al servidor n8n
+              const response = await fetch(n8nWebhookUrl, {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                      message: mensaje,
+                      sessionId: window.USUARIO_REAL || 'estudiante-anonimo'
+                  })
+              });
+
+              if (!response.ok) throw new Error('Error en el servidor de n8n');
+
+              const data = await response.json();
+              
+              // 4. Leer la respuesta del JSON y mostrarla en pantalla
+              // Ajusta "respuesta_ia" por el nombre de la variable que usaste en el nodo de n8n
+              const respuestaIA = data.respuesta_ia || data.output || 'Lo siento, no pude procesar una respuesta.'; 
+              
+              mostrarMensajeEnPantalla(respuestaIA, 'ia'); 
+
+          } catch (error) {
+              console.error('Error de conexión:', error);
+              mostrarMensajeEnPantalla('No se pudo establecer conexión con George IA en este momento.', 'sistema');
+          }
+        });
+    }
+  });
+</script>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-analytics.js";
