@@ -27,31 +27,11 @@
   };
 
   const CATEGORY_META = {
-      casual: { 
-          label: 'Casual', 
-          icon: 'fa-umbrella-beach', 
-          tagClass: 'tag-casual' 
-      },
-      problemas: { 
-          label: 'Problemas', 
-          icon: 'fa-heart-circle-exclamation', 
-          tagClass: 'tag-problemas' 
-      },
-      preguntas: { 
-          label: 'Preguntas', 
-          icon: 'fa-circle-question', 
-          tagClass: 'tag-preguntas' 
-      },
-      opiniones: { 
-          label: 'Opiniones', 
-          icon: 'fa-comments', 
-          tagClass: 'tag-opiniones' 
-      },
-      encuestas: { 
-          label: 'Encuestas', 
-          icon: 'fa-chart-simple', 
-          tagClass: 'tag-encuestas' 
-      },
+      casual: { label: 'Casual', icon: 'fa-umbrella-beach', tagClass: 'tag-casual' },
+      problemas: { label: 'Problemas', icon: 'fa-heart-circle-exclamation', tagClass: 'tag-problemas' },
+      preguntas: { label: 'Preguntas', icon: 'fa-circle-question', tagClass: 'tag-preguntas' },
+      opiniones: { label: 'Opiniones', icon: 'fa-comments', tagClass: 'tag-opiniones' },
+      encuestas: { label: 'Encuestas', icon: 'fa-chart-simple', tagClass: 'tag-encuestas' },
   };
 
   const FEED_TITLES = { 
@@ -62,12 +42,6 @@
       opiniones: 'Opiniones', 
       encuestas: 'Encuestas' 
   };
-  
-  const IA_REPLIES = [
-      'Gracias por tu mensaje. Estoy revisando la información académica para ayudarte.', 
-      'Entendido, dame un momento mientras confirmo eso en el sistema.', 
-      '¿Podrías darme un poco más de contexto para orientarte mejor?'
-  ];
 
   // ==================================================================
   // REFERENCIAS AL DOM
@@ -409,54 +383,7 @@
   }
 
   // ==================================================================
-  // 5. CHAT GEORGE IA (FALSO)
-  // ==================================================================
-  const formIA = document.getElementById('chat-form-ia');
-  if (formIA) {
-      formIA.addEventListener('submit', function (event) {
-          event.preventDefault();
-          const input = document.getElementById('chat-input-ia');
-          const body = document.getElementById('chat-body-ia');
-          const text = input.value.trim();
-          
-          if (!text) return;
-
-          body.innerHTML += `
-              <div class="chat-msg chat-msg-out">
-                  <p>${escapeHTML(text)}</p>
-                  <span class="chat-time">Ahora</span>
-              </div>
-          `;
-          input.value = ''; 
-          input.focus(); 
-          body.scrollTop = body.scrollHeight;
-          
-          const typing = document.createElement('div'); 
-          typing.className = 'chat-msg chat-msg-in chat-msg-typing';
-          typing.innerHTML = `
-              <span class="typing-dot"></span>
-              <span class="typing-dot"></span>
-              <span class="typing-dot"></span>
-          `;
-          body.appendChild(typing); 
-          body.scrollTop = body.scrollHeight;
-
-          setTimeout(() => {
-              typing.remove();
-              const randomReply = IA_REPLIES[Math.floor(Math.random() * IA_REPLIES.length)];
-              body.innerHTML += `
-                  <div class="chat-msg chat-msg-in">
-                      <p>${randomReply}</p>
-                      <span class="chat-time">Ahora</span>
-                  </div>
-              `;
-              body.scrollTop = body.scrollHeight;
-          }, 900);
-      });
-  }
-
-  // ==================================================================
-  // 6. TEST VOCACIONAL (EXPANDIDO)
+  // 5. TEST VOCACIONAL (EXPANDIDO)
   // ==================================================================
   const testQuestions = [
       { 
