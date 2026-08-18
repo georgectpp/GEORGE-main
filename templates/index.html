@@ -9,7 +9,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<!-- ESTILOS CONECTADOS CON FLASK -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
@@ -79,6 +78,13 @@
         <i class="fa-solid fa-hands-holding-circle nav-icon" aria-hidden="true"></i>
         <span>Contactar Orientación</span>
       </button>
+
+      <span class="side-label side-label-spaced">Portal Docente</span>
+      <button type="button" class="nav-item nav-trigger" data-view="chat-generador">
+        <i class="fa-solid fa-wand-magic-sparkles nav-icon" aria-hidden="true"></i>
+        <span>Generador de Material</span>
+      </button>
+
     </nav>
 
     <div class="side-footer">
@@ -156,10 +162,30 @@
         <button type="submit" class="btn btn-primary btn-send"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
       </form>
     </section>
+
+    <section id="view-chat-generador" class="view view-chat" data-view="chat-generador">
+      <header class="chat-header">
+        <div class="chat-avatar chat-avatar-ia" style="background-color: #00113A;"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i></div>
+        <div>
+          <h1>GEORGE IA · Generador Didáctico</h1>
+          <p class="chat-status"><span class="status-dot"></span>Listo para crear material</p>
+        </div>
+      </header>
+      <div class="chat-body" id="chat-body-generador">
+        <div class="chat-msg chat-msg-in">
+          <p>¡Hola! Soy tu asistente pedagógico GEORGE 🤖. <br><br>Puedo ayudarte a diseñar: <br>• Planificaciones de clase<br>• Exámenes y cuestionarios<br>• Resúmenes teóricos<br>• Rúbricas de evaluación<br><br>Dime, <strong>¿qué tema, nivel educativo y tipo de material necesitas hoy?</strong></p>
+          <span class="chat-time">Ahora</span>
+        </div>
+      </div>
+      <form class="chat-input-bar" id="chat-form-generador">
+        <input type="text" id="chat-input-generador" placeholder="Ej: Necesito un examen sobre la Revolución Industrial..." autocomplete="off">
+        <button type="submit" class="btn btn-primary btn-send"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
+      </form>
+    </section>
+
   </div>
 </div>
 
-<!-- ============ MODAL · Nueva publicación ============ -->
 <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-header">
@@ -180,33 +206,29 @@
   </div>
 </div>
 
-<!-- PASAR EL USUARIO REAL DE FLASK A JAVASCRIPT -->
 <script>
   window.USUARIO_REAL = "{{ usuario_activo }}";
 </script>
 
-<!-- JAVASCRIPT CONECTADO CON FLASK -->
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
-<!-- ======================================================== -->
-<!-- LÓGICA DE INTEGRACIÓN CON N8N PARA EL CHAT DE GEORGE IA  -->
-<!-- ======================================================== -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    
+    // =================================================================
+    // 1. LÓGICA PARA EL CHAT ESTUDIANTIL ORIGINAL
+    // =================================================================
     const chatFormIA = document.getElementById('chat-form-ia');
     const chatInputIA = document.getElementById('chat-input-ia');
     const chatBodyIA = document.getElementById('chat-body-ia');
 
-    // Función para dibujar los mensajes en la ventana de chat
     function mostrarMensajeEnPantalla(texto, remitente) {
       const msgDiv = document.createElement('div');
       
-      // Asignar diseño dependiendo de quién envía el mensaje
       if (remitente === 'ia' || remitente === 'sistema') {
           msgDiv.className = 'chat-msg chat-msg-in';
       } else {
           msgDiv.className = 'chat-msg chat-msg-out';
-          // Estilos en línea para diferenciar el mensaje del estudiante
           msgDiv.style.alignSelf = 'flex-end';
           msgDiv.style.marginLeft = 'auto';
           msgDiv.style.backgroundColor = '#00113A'; 
@@ -226,31 +248,25 @@
       msgDiv.appendChild(p);
       msgDiv.appendChild(span);
       chatBodyIA.appendChild(msgDiv);
-
-      // Scroll automático al fondo
       chatBodyIA.scrollTop = chatBodyIA.scrollHeight;
     }
 
     if (chatFormIA) {
         chatFormIA.addEventListener('submit', async (e) => {
-          e.preventDefault(); // Evitar recarga de página al apretar "Enter" o dar clic en enviar
+          e.preventDefault(); 
           
           const mensaje = chatInputIA.value.trim();
           if (!mensaje) return;
           
-          // 1. Dibuja el mensaje del estudiante en la pantalla
           mostrarMensajeEnPantalla(mensaje, 'usuario');
-          chatInputIA.value = ''; // Limpiar la barra
+          chatInputIA.value = ''; 
           
-          // 2. URL de tu Webhook en n8n (¡Importante: Reemplázala por tu Production/Test URL!)
-          const n8nWebhookUrl = 'https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b' ; 
+          const n8nWebhookUrl = 'https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b'; 
           
           try {
-              // 3. Enviar la petición POST al servidor n8n
                 const response = await fetch(n8nWebhookUrl, {
                     method: 'POST',
                     headers: {
-                      // Cambiamos a text/plain para saltarnos el bloqueo CORS del navegador
                       'Content-Type': 'text/plain' 
                   },
                   body: JSON.stringify({
@@ -261,11 +277,7 @@
               if (!response.ok) throw new Error('Error en el servidor de n8n');
 
               const data = await response.json();
-              
-              // 4. Leer la respuesta del JSON y mostrarla en pantalla
-              // Ajusta "respuesta_ia" por el nombre de la variable que usaste en el nodo de n8n
               const respuestaIA = data.respuesta_ia || data.output || 'Lo siento, no pude procesar una respuesta.'; 
-              
               mostrarMensajeEnPantalla(respuestaIA, 'ia'); 
 
           } catch (error) {
@@ -274,6 +286,101 @@
           }
         });
     }
+
+    // =================================================================
+    // 2. LÓGICA AÑADIDA PARA EL NUEVO GENERADOR DE MATERIAL
+    // =================================================================
+    const chatFormGen = document.getElementById('chat-form-generador');
+    const chatInputGen = document.getElementById('chat-input-generador');
+    const chatBodyGen = document.getElementById('chat-body-generador');
+
+    function mostrarMensajeGenerador(texto, remitente) {
+      const msgDiv = document.createElement('div');
+      
+      if (remitente === 'ia' || remitente === 'sistema') {
+          msgDiv.className = 'chat-msg chat-msg-in';
+      } else {
+          msgDiv.className = 'chat-msg chat-msg-out';
+          msgDiv.style.alignSelf = 'flex-end';
+          msgDiv.style.marginLeft = 'auto';
+          msgDiv.style.backgroundColor = '#00113A'; 
+          msgDiv.style.color = '#FFFFFF';
+          msgDiv.style.borderBottomRightRadius = '0';
+          msgDiv.style.borderBottomLeftRadius = '12px';
+      }
+
+      const p = document.createElement('p');
+      p.innerHTML = texto.replace(/\n/g, '<br>'); // Respeta saltos de línea para el material
+
+      const span = document.createElement('span');
+      span.className = 'chat-time';
+      const ahora = new Date();
+      span.textContent = ahora.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+      msgDiv.appendChild(p);
+      msgDiv.appendChild(span);
+      chatBodyGen.appendChild(msgDiv);
+      chatBodyGen.scrollTop = chatBodyGen.scrollHeight;
+    }
+
+    function mostrarEscribiendoGen() {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'chat-msg chat-msg-in chat-msg-typing';
+      typingDiv.id = 'typing-indicator-gen';
+      typingDiv.innerHTML = `
+          <div style="display: flex; gap: 4px; padding: 10px;">
+            <i class="fa-solid fa-circle-notch fa-spin" style="color: var(--azulClaro);"></i>
+            <span style="font-size: 13px; color: var(--gris);">Generando material didáctico...</span>
+          </div>`;
+      chatBodyGen.appendChild(typingDiv);
+      chatBodyGen.scrollTop = chatBodyGen.scrollHeight;
+    }
+
+    function quitarEscribiendoGen() {
+      const typingDiv = document.getElementById('typing-indicator-gen');
+      if (typingDiv) typingDiv.remove();
+    }
+
+    if (chatFormGen) {
+        chatFormGen.addEventListener('submit', async (e) => {
+          e.preventDefault(); 
+          const mensaje = chatInputGen.value.trim();
+          if (!mensaje) return;
+          
+          mostrarMensajeGenerador(mensaje, 'usuario');
+          chatInputGen.value = ''; 
+          mostrarEscribiendoGen();
+
+          // 🚨 IMPORTANTE: Si usas un flujo de n8n distinto para el generador, cambia esta URL
+          const n8nWebhookUrlGenerador = 'https://innowgrp09.app.n8n.cloud/webhook-test/6c117b71-c9a3-458e-8e57-7dda41fa8ee7'; 
+          
+          try {
+              const response = await fetch(n8nWebhookUrlGenerador, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'text/plain' },
+                  body: JSON.stringify({
+                      message: mensaje,
+                      sessionId: window.USUARIO_REAL || 'docente-anonimo',
+                      tipo_solicitud: 'generacion_material'
+                  })
+              });
+
+              quitarEscribiendoGen();
+              if (!response.ok) throw new Error('Error en el servidor de n8n');
+
+              const data = await response.json();
+              const respuestaIA = data.respuesta_ia || data.output || data.message || 'No se pudo generar el material. Por favor da más detalles.'; 
+              
+              mostrarMensajeGenerador(respuestaIA, 'ia'); 
+
+          } catch (error) {
+              quitarEscribiendoGen();
+              console.error('Error:', error);
+              mostrarMensajeGenerador('⚠️ No se pudo conectar con el motor de generación. Revisa el Webhook de n8n.', 'sistema');
+          }
+        });
+    }
+
   });
 </script>
 
