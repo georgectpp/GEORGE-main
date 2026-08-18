@@ -50,6 +50,32 @@
 
 {% endif %}
 
+  {% if session.get("usuario") %}
+
+    <div class="register-btn">
+        {{ session["usuario"] }}
+    </div>
+
+{% else %}
+
+    <a href="{{ url_for('registro') }}" class="register-btn">
+
+        <svg width="16" height="16"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="1.6">
+
+            <path d="M12 5v14"/>
+            <path d="M5 12h14"/>
+
+        </svg>
+
+        Registrarse
+
+    </a>
+
+{% endif %}
   <!-- Pestañas de compañeros (lado derecho) -->
 <!-- Navegación principal -->
 <!-- Navegación principal -->
