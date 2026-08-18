@@ -230,8 +230,7 @@ def generador():
 
 @app.route("/crear-material", methods=["POST"])
 def crear_material():
-    if "usuario" not in session or session["tipo"] != "docente":
-        return redirect("/login")
+   
 
     grado = request.form.get("grado")
     materia = request.form.get("materia")
