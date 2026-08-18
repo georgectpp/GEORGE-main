@@ -10,6 +10,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+<style>
+  /* =========================================================
+     Estilos para las Encuestas de Caritas (Termómetro)
+     ========================================================= */
+  .encuesta-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; padding: 25px; margin-bottom: 20px; text-align: center; }
+  .encuesta-card h3 { color: var(--azul); font-family: var(--f-display); margin-top: 0; }
+  .escala-caritas { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
+  .carita-item { position: relative; }
+  .carita-item input[type="radio"] { display: none; }
+  .carita-label { font-size: 40px; cursor: pointer; filter: grayscale(100%) opacity(0.4); transition: all 0.2s; display: inline-block; margin: 0 5px; }
+  .carita-label:hover { filter: grayscale(50%) opacity(0.8); transform: scale(1.1); }
+  .carita-item input[type="radio"]:checked + .carita-label { filter: grayscale(0%) opacity(1); transform: scale(1.2); }
+  .carita-desc { display: block; font-size: 12px; color: var(--gris-claro); margin-top: 5px; font-weight: 600; }
+</style>
 </head>
 <body>
 
@@ -31,6 +46,8 @@
     <i class="fa-solid fa-plus" aria-hidden="true"></i>
     <span>Nueva publicación</span>
   </button>
+  
+  <a href="{{ url_for('logout') }}" class="btn btn-ghost" style="margin-left: 15px; border-color: var(--gris-borde);">Salir</a>
 </header>
 
 <div class="layout">
@@ -58,12 +75,13 @@
         <i class="fa-solid fa-comments nav-icon" aria-hidden="true"></i>
         <span>Opiniones</span>
       </button>
-      <button type="button" class="nav-item nav-trigger" data-view="feed" data-category="encuestas">
-        <i class="fa-solid fa-chart-simple nav-icon" aria-hidden="true"></i>
-        <span>Encuestas</span>
-      </button>
-
+      
+      <!-- Pestaña de Bienestar Integrada (Reemplaza a Encuestas) -->
       <span class="side-label side-label-spaced">Herramientas</span>
+      <button type="button" class="nav-item nav-trigger" data-view="encuestas-bienestar">
+        <i class="fa-solid fa-face-smile-beam nav-icon" aria-hidden="true"></i>
+        <span>Mi Bienestar</span>
+      </button>
       <button type="button" class="nav-item nav-trigger" data-view="test">
         <i class="fa-solid fa-compass nav-icon" aria-hidden="true"></i>
         <span>Test Vocacional</span>
@@ -104,6 +122,58 @@
         <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
         No encontramos publicaciones que coincidan con tu búsqueda.
       </p>
+    </section>
+
+    <!-- NUEVA VISTA: TERMÓMETRO DE BIENESTAR -->
+    <section id="view-encuestas-bienestar" class="view" data-view="encuestas-bienestar">
+      <div class="view-header">
+        <h1>Termómetro de Bienestar</h1>
+        <p>Tu opinión es 100% confidencial. Ayúdanos a entender cómo te sientes para mejorar el ambiente en GEORGE.</p>
+      </div>
+      
+      <form id="form-bienestar">
+          <!-- Pregunta 1: Estrés -->
+          <div class="encuesta-card">
+              <h3>🧠 Nivel de Estrés Académico</h3>
+              <p style="color: var(--gris); font-size: 14px;">En las últimas dos semanas, ¿qué tan estresado(a) te has sentido por el colegio?</p>
+              <div class="escala-caritas">
+                  <div class="carita-item"><input type="radio" name="estres" value="1" id="e1" required><label for="e1" class="carita-label">😄</label><span class="carita-desc">Nada</span></div>
+                  <div class="carita-item"><input type="radio" name="estres" value="2" id="e2"><label for="e2" class="carita-label">🙂</label><span class="carita-desc">Poco</span></div>
+                  <div class="carita-item"><input type="radio" name="estres" value="3" id="e3"><label for="e3" class="carita-label">😐</label><span class="carita-desc">Regular</span></div>
+                  <div class="carita-item"><input type="radio" name="estres" value="4" id="e4"><label for="e4" class="carita-label">😟</label><span class="carita-desc">Mucho</span></div>
+                  <div class="carita-item"><input type="radio" name="estres" value="5" id="e5"><label for="e5" class="carita-label">😫</label><span class="carita-desc">Demasiado</span></div>
+              </div>
+          </div>
+
+          <!-- Pregunta 2: Bullying -->
+          <div class="encuesta-card">
+              <h3>🛑 Ambiente y Respeto</h3>
+              <p style="color: var(--gris); font-size: 14px;">¿Cómo calificarías el trato entre compañeros (bullying, burlas o exclusión)?</p>
+              <div class="escala-caritas">
+                  <div class="carita-item"><input type="radio" name="bullying" value="1" id="b1" required><label for="b1" class="carita-label">😄</label><span class="carita-desc">Excelente</span></div>
+                  <div class="carita-item"><input type="radio" name="bullying" value="2" id="b2"><label for="b2" class="carita-label">🙂</label><span class="carita-desc">Bueno</span></div>
+                  <div class="carita-item"><input type="radio" name="bullying" value="3" id="b3"><label for="b3" class="carita-label">😐</label><span class="carita-desc">Regular</span></div>
+                  <div class="carita-item"><input type="radio" name="bullying" value="4" id="b4"><label for="b4" class="carita-label">😟</label><span class="carita-desc">Malo</span></div>
+                  <div class="carita-item"><input type="radio" name="bullying" value="5" id="b5"><label for="b5" class="carita-label">😢</label><span class="carita-desc">Pésimo</span></div>
+              </div>
+          </div>
+
+          <!-- Pregunta 3: Cansancio -->
+          <div class="encuesta-card">
+              <h3>🔋 Energía y Cansancio</h3>
+              <p style="color: var(--gris); font-size: 14px;">¿Cómo sientes tu nivel de energía y motivación general para estudiar?</p>
+              <div class="escala-caritas">
+                  <div class="carita-item"><input type="radio" name="energia" value="1" id="c1" required><label for="c1" class="carita-label">😄</label><span class="carita-desc">A tope</span></div>
+                  <div class="carita-item"><input type="radio" name="energia" value="2" id="c2"><label for="c2" class="carita-label">🙂</label><span class="carita-desc">Bien</span></div>
+                  <div class="carita-item"><input type="radio" name="energia" value="3" id="c3"><label for="c3" class="carita-label">😐</label><span class="carita-desc">Normal</span></div>
+                  <div class="carita-item"><input type="radio" name="energia" value="4" id="c4"><label for="c4" class="carita-label">😟</label><span class="carita-desc">Cansado(a)</span></div>
+                  <div class="carita-item"><input type="radio" name="energia" value="5" id="c5"><label for="c5" class="carita-label">😫</label><span class="carita-desc">Agotado(a)</span></div>
+              </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 16px; padding: 15px;">Enviar mis respuestas</button>
+          <p id="msg-bienestar-exito" style="color: #2f9e6a; text-align: center; font-weight: bold; margin-top: 15px; display: none;">¡Gracias por compartir cómo te sientes!</p>
+      </form>
     </section>
 
     <section id="view-test" class="view" data-view="test">
@@ -194,9 +264,14 @@
     </div>
     <form class="post-form" id="post-form">
       <div class="field"><label for="post-title">Título</label><input type="text" id="post-title" name="post-title" placeholder="Escribe un título claro y breve" required></div>
+      
+      <!-- Se ha eliminado "Encuestas" del menú desplegable -->
       <div class="field"><label for="post-category">Categoría</label>
         <select id="post-category" name="post-category">
-          <option value="casual">🌴 Casual</option><option value="problemas">❤️ Problemas</option><option value="preguntas">❓ Preguntas</option><option value="opiniones">💭 Opiniones</option><option value="encuestas">📊 Encuestas</option>
+          <option value="casual">🌴 Casual</option>
+          <option value="problemas">🧠 Problemas</option>
+          <option value="preguntas">❓ Preguntas</option>
+          <option value="opiniones">💭 Opiniones</option>
         </select>
       </div>
       <div class="field"><label for="post-content">¿Qué quieres contarnos?</label><textarea id="post-content" name="post-content" rows="5" placeholder="Escribe aquí el contenido de tu publicación…" required></textarea></div>
@@ -287,9 +362,6 @@
         });
     }
 
-    // =================================================================
-    // 2. LÓGICA AÑADIDA PARA EL NUEVO GENERADOR DE MATERIAL
-    // =================================================================
     const chatFormGen = document.getElementById('chat-form-generador');
     const chatInputGen = document.getElementById('chat-input-generador');
     const chatBodyGen = document.getElementById('chat-body-generador');
@@ -351,7 +423,6 @@
           chatInputGen.value = ''; 
           mostrarEscribiendoGen();
 
-          // 🚨 IMPORTANTE: Si usas un flujo de n8n distinto para el generador, cambia esta URL
           const n8nWebhookUrlGenerador = 'https://innowgrp09.app.n8n.cloud/webhook/6c117b71-c9a3-458e-8e57-7dda41fa8ee7'; 
           
           try {
@@ -381,6 +452,39 @@
         });
     }
 
+  });
+
+  // =================================================================
+  // 3. LÓGICA PARA EL TERMÓMETRO DE BIENESTAR (NUEVO)
+  // =================================================================
+  window.addEventListener('firebase-ready', () => {
+      const formBienestar = document.getElementById('form-bienestar');
+      if (formBienestar) {
+          formBienestar.addEventListener('submit', function (event) {
+              event.preventDefault();
+              if (!window.firebaseDatabase) return alert("Conectando con la base de datos...");
+              
+              const valEstres = document.querySelector('input[name="estres"]:checked').value;
+              const valBullying = document.querySelector('input[name="bullying"]:checked').value;
+              const valEnergia = document.querySelector('input[name="energia"]:checked').value;
+              
+              const db = window.firebaseDatabase;
+              const { ref, set } = window.firebaseDbFunctions;
+              
+              const idSeguro = (window.USUARIO_REAL || 'estudiante-anonimo').replace(/\./g, '_');
+              
+              set(ref(db, 'encuestas_bienestar/' + idSeguro), {
+                  estres: parseInt(valEstres),
+                  bullying: parseInt(valBullying),
+                  energia: parseInt(valEnergia),
+                  fecha: Date.now()
+              }).then(() => {
+                  const msjExito = document.getElementById('msg-bienestar-exito');
+                  msjExito.style.display = 'block';
+                  setTimeout(() => { msjExito.style.display = 'none'; }, 4000);
+              }).catch(err => alert("Error al guardar la encuesta."));
+          });
+      }
   });
 </script>
 
