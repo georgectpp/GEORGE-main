@@ -68,14 +68,36 @@
 
 
   <!-- Pestañas de compañeros (lado derecho) -->
-  <div class="tabs-derecha">
-    <label for="panel-n8n" class="tab-lateral">
-      <span>Automatización · n8n</span>
+<!-- Navegación principal -->
+<input type="checkbox" id="menu-navegacion" class="control-oculto">
+
+<div class="navegacion-principal">
+
+    <!-- Botón hamburguesa para móvil -->
+    <label for="menu-navegacion" class="menu-hamburguesa" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
     </label>
-    <label for="panel-claude" class="tab-lateral">
-      <span>Modelo IA · Claude</span>
-    </label>
-  </div>
+
+    <!-- Botones de escritorio -->
+    <nav class="nav-escritorio">
+        <a href="index.html" class="nav-principal-btn">
+            Foro
+        </a>
+
+        <a href="index2.html" class="nav-principal-btn">
+            Generar material
+        </a>
+    </nav>
+
+    <!-- Menú móvil -->
+    <nav class="nav-movil">
+        <a href="index.html">Foro</a>
+        <a href="index2.html">Generar material</a>
+    </nav>
+
+</div>
 
   <!-- Contenido principal -->
   <main class="hero">
