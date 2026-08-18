@@ -1,31 +1,29 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import requests
 import json
-import sqlite3
 import base64
+import pyrebase  # IMPORTANTE: Reemplaza a sqlite3
 
 app = Flask(__name__)
 app.secret_key = "clave_secreta"
-def iniciar_base_datos():
-    with sqlite3.connect("george.db") as conexion:
-        cursor = conexion.cursor()
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS usuarios (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nombre TEXT NOT NULL,
-                apellido1 TEXT NOT NULL,
-                apellido2 TEXT,
-                correo TEXT UNIQUE NOT NULL,
-                password TEXT NOT NULL,
-                tipo TEXT NOT NULL,
-                institucion TEXT,
-                materia TEXT
-            )
-        """)
-        conexion.commit()
 
-# Ejecutamos la función apenas arranca el servidor
-iniciar_base_datos()
+# ==========================================================
+# CONFIGURACIÓN DE FIREBASE (Reemplaza a la base de datos local)
+# ==========================================================
+firebase_config = {
+    "apiKey": "AIzaSyBpwRtDft9k2CTnmBsSPWR-vjD4gPbDH3I",
+    "authDomain": "george-gilberth.firebaseapp.com",
+    "databaseURL": "https://george-gilberth-default-rtdb.firebaseio.com",
+    "projectId": "george-gilberth",
+    "storageBucket": "george-gilberth.firebasestorage.app",
+    "messagingSenderId": "444338536878",
+    "appId": "1:444338536878:web:1844ac822f9a085b10083f",
+    "measurementId": "G-4XFBVVC0R7"
+}
+
+firebase = pyrebase.initialize_app(firebase_config)
+auth = firebase.auth()
+db = firebase.database()
 
 NOMBRE_AGENTE = "GEORGE"
 
@@ -44,14 +42,12 @@ def index():
     """Página de bienvenida pública (index2.html de tu compañero)."""
     return render_template("index2.html", nombre_agente=NOMBRE_AGENTE)
 
-
 @app.route("/foro")
 def foro():
     """Tu Foro Estudiantil (index.html)."""
     if "usuario" not in session or session.get("tipo") != "estudiante":
         return redirect("/login")
     return render_template("index.html", nombre_agente=NOMBRE_AGENTE, usuario_activo=session["usuario"])
-
 
 @app.route("/orientadores")
 def orientadores_panel():
@@ -62,24 +58,19 @@ def orientadores_panel():
 
 
 # ==========================================================
-# REGISTRO Y AUTENTICACIÓN
+# REGISTRO Y AUTENTICACIÓN (CONECTADO A FIREBASE)
 # ==========================================================
 
 @app.route("/registro")
 def registro():
-    """Pantalla de registro de estudiantes."""
     return render_template("registro.html", nombre_agente=NOMBRE_AGENTE)
-
 
 @app.route("/registro-docente")
 def registro_docente():
-    """Pantalla de registro de docentes."""
     return render_template("registro_docente.html", nombre_agente=NOMBRE_AGENTE)
-
 
 @app.route("/registro-orientador")
 def registro_orientador():
-    """Pantalla de registro para orientadores."""
     return render_template("registro_orientador.html", nombre_agente=NOMBRE_AGENTE)
 
 
@@ -92,22 +83,27 @@ def crear_estudiante():
     password = request.form["password"]
 
     try:
-        with sqlite3.connect("george.db") as conexion:
-            cursor = conexion.cursor()
-            cursor.execute("""
-                INSERT INTO usuarios
-                (nombre, apellido1, apellido2, correo, password, tipo)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, (nombre, apellido1, apellido2, correo, password, "estudiante"))
-            conexion.commit()
+        # 1. Creamos la cuenta en Firebase Auth
+        user = auth.create_user_with_email_and_password(correo, password)
+        user_id = user['localId'] # ID único del usuario
+
+        # 2. Guardamos sus datos personales en Firebase Database
+        datos_usuario = {
+            "nombre": nombre,
+            "apellido1": apellido1,
+            "apellido2": apellido2,
+            "correo": correo,
+            "tipo": "estudiante"
+        }
+        db.child("usuarios").child(user_id).set(datos_usuario)
 
         session["usuario"] = correo
         session["tipo"] = "estudiante"
         flash("Cuenta creada correctamente ✅")
         return redirect("/inicio")
 
-    except sqlite3.IntegrityError:
-        return render_template("registro.html", error="Correo ya registrado ❌", nombre_agente=NOMBRE_AGENTE)
+    except Exception as e:
+        return render_template("registro.html", error="El correo ya está registrado o la contraseña es muy débil (mínimo 6 caracteres) ❌", nombre_agente=NOMBRE_AGENTE)
 
 
 @app.route("/crear-docente", methods=["POST"])
@@ -121,21 +117,27 @@ def crear_docente():
     password = request.form["password"]
 
     try:
-        with sqlite3.connect("george.db") as conexion:
-            cursor = conexion.cursor()
-            cursor.execute("""
-                INSERT INTO usuarios (nombre, apellido1, apellido2, correo, institucion, materia, password, tipo)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """, (nombre, apellido1, apellido2, correo, institucion, materia, password, "docente"))
-            conexion.commit()
+        user = auth.create_user_with_email_and_password(correo, password)
+        user_id = user['localId']
+
+        datos_usuario = {
+            "nombre": nombre,
+            "apellido1": apellido1,
+            "apellido2": apellido2,
+            "correo": correo,
+            "institucion": institucion,
+            "materia": materia,
+            "tipo": "docente"
+        }
+        db.child("usuarios").child(user_id).set(datos_usuario)
 
         session["usuario"] = correo
         session["tipo"] = "docente"
-        flash("Cuenta creada correctamente ✅")
+        flash("Cuenta de docente creada correctamente ✅")
         return redirect("/inicio")
 
-    except sqlite3.IntegrityError:
-        return render_template("registro_docente.html", error="Correo ya registrado ❌", nombre_agente=NOMBRE_AGENTE)
+    except Exception as e:
+        return render_template("registro_docente.html", error="Correo ya registrado o contraseña débil ❌", nombre_agente=NOMBRE_AGENTE)
 
 
 @app.route("/crear-orientador", methods=["POST"])
@@ -147,21 +149,24 @@ def crear_orientador():
     password = request.form["password"]
 
     try:
-        with sqlite3.connect("george.db") as conexion:
-            cursor = conexion.cursor()
-            # Aseguramos que la tabla soporte orientadores o usa la misma estructura
-            cursor.execute("""
-                INSERT INTO usuarios (nombre, apellido1, apellido2, correo, password, tipo)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, (nombre, apellido1, apellido2, correo, password, "orientador"))
-            conexion.commit()
+        user = auth.create_user_with_email_and_password(correo, password)
+        user_id = user['localId']
+
+        datos_usuario = {
+            "nombre": nombre,
+            "apellido1": apellido1,
+            "apellido2": apellido2,
+            "correo": correo,
+            "tipo": "orientador"
+        }
+        db.child("usuarios").child(user_id).set(datos_usuario)
 
         session["usuario"] = correo
         session["tipo"] = "orientador"
         flash("Cuenta de orientador creada correctamente ✅")
         return redirect("/inicio")
 
-    except sqlite3.IntegrityError:
+    except Exception as e:
         return render_template("registro_orientador.html", error="Correo ya registrado ❌", nombre_agente=NOMBRE_AGENTE)
 
 
@@ -171,20 +176,25 @@ def login():
         correo = request.form["correo"]
         password = request.form["password"]
 
-        with sqlite3.connect("george.db") as conexion:
-            cursor = conexion.cursor()
-            cursor.execute("SELECT * FROM usuarios WHERE correo = ?", (correo,))
-            usuario = cursor.fetchone()
+        try:
+            # 1. Verificamos credenciales en Firebase Auth
+            user = auth.sign_in_with_email_and_password(correo, password)
+            user_id = user['localId']
 
-        # Verificamos contraseña (índice 5) y extraemos el tipo (índice 6)
-        if usuario and usuario[5] == password:
-            session["usuario"] = usuario[4]
-            session["tipo"] = usuario[6]
+            # 2. Buscamos el rol ("tipo") del usuario en Firebase Database
+            datos_perfil = db.child("usuarios").child(user_id).get().val()
 
-            flash("Credenciales correctas ✅")
-            return redirect("/inicio")
+            if datos_perfil:
+                session["usuario"] = correo
+                session["tipo"] = datos_perfil.get("tipo", "estudiante")
+                flash("Credenciales correctas ✅")
+                return redirect("/inicio")
+            else:
+                return render_template("login.html", error="Error: Perfil incompleto en la base de datos.")
 
-        return render_template("login.html", error="Credenciales incorrectas ❌")
+        except Exception as e:
+            # Firebase rechaza el inicio de sesión si el correo o la clave están mal
+            return render_template("login.html", error="Credenciales incorrectas ❌")
 
     return render_template("login.html")
 
@@ -210,7 +220,6 @@ def inicio():
     else:
         return redirect("/foro")
 
-
 # ==========================================================
 # MÓDULOS DE DOCENTES Y N8N
 # ==========================================================
@@ -220,7 +229,6 @@ def generador():
     if "usuario" not in session or session["tipo"] != "docente":
         return redirect("/login")
     return render_template("generador.html", nombre_agente=NOMBRE_AGENTE)
-
 
 @app.route("/crear-material", methods=["POST"])
 def crear_material():
@@ -256,31 +264,25 @@ def crear_material():
 
     return render_template("generador.html", nombre_agente=NOMBRE_AGENTE, respuesta=respuesta_ia)
 
-
 @app.route("/n8n")
 def panel_n8n():
     return render_template("n8n.html", nombre_agente=NOMBRE_AGENTE)
-
 
 @app.route("/claude")
 def panel_claude():
     return render_template("claude.html", nombre_agente=NOMBRE_AGENTE)
 
-
 @app.route("/historial")
 def historial():
     return render_template("historial.html", nombre_agente=NOMBRE_AGENTE)
-
 
 @app.route("/perfil")
 def perfil():
     return render_template("perfil.html", nombre_agente=NOMBRE_AGENTE)
 
-
 @app.route("/configuracion")
 def configuracion():
     return render_template("configuracion.html", nombre_agente=NOMBRE_AGENTE)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
