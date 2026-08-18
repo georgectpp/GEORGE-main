@@ -55,54 +55,13 @@ html, body{
   color: var(--crema);
 }
 
-/* Foco visible cuando se navega con teclado hasta el checkbox oculto */
-#login-toggle:focus-visible ~ .login-btn,
-#panel-n8n:focus-visible ~ .tabs-derecha .tab-lateral[for="panel-n8n"],
-#panel-claude:focus-visible ~ .tabs-derecha .tab-lateral[for="panel-claude"]{
-  outline: 2px solid var(--rojo);
-  outline-offset: 3px;
-}
 
-/* ---------- Pestañas laterales (derecha) ---------- */
-.tabs-derecha{
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100vh;
-  z-index: 20;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 14px;
-  align-items: flex-end;
-}
 
-.tab-lateral{
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  background: var(--azul);
-  border: 1px solid var(--azul);
-  border-right: none;
-  color: var(--crema);
-  font-family: "Inter", sans-serif;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 22px 10px;
-  border-radius: 10px 0 0 10px;
-  cursor: pointer;
-  transition: background .2s ease, padding-right .2s ease;
-}
 
-.tab-lateral:hover{
-  background: var(--rojo);
-  border-color: var(--rojo);
-  padding-right: 16px;
-}
 
 /* ---------- Hero ---------- */
 .hero{
-  position: relative;
+  position: relative;S
   z-index: 1;
   min-height: 100vh;
   display: flex;
@@ -471,7 +430,7 @@ html, body{
     color: #8B0000;
     text-decoration: none;
 
-
+}
  .quien-soy-details {
     text-align: center;
     margin-top: 25px;
@@ -503,3 +462,6 @@ html, body{
 .quien-soy-details[open] .quien-soy-content {
     animation: georgeEntrada 0.5s ease-out both;
 }
+
+
+  
