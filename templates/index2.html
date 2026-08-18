@@ -18,54 +18,37 @@
   <input type="radio" name="panel" id="panel-claude" class="control-oculto">
 
   <!-- Iniciar sesión -->
-  <label for="login-toggle" class="login-btn">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-      <path d="M10 17l5-5-5-5"/>
-      <path d="M15 12H3"/>
-    </svg>
-    Iniciar sesión
-  </label>
-  <!-- Registrarse -->
-
-
 {% if session.get("usuario") %}
 
-    <details class="usuario-menu">
-
-        <summary class="register-btn">
-            {{ session["usuario"] }}
-        </summary>
-
-        <div class="logout-opcion">
-            <a href="{{ url_for('logout') }}">
-                Cerrar sesión
-            </a>
-        </div>
-
-    </details>
+    <a href="{{ url_for('logout') }}" class="login-btn">
+        <svg width="16" height="16"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="1.6">
+            <path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4"/>
+            <path d="M15 17l5-5-5-5"/>
+            <path d="M20 12H8"/>
+        </svg>
+        Cerrar sesión
+    </a>
 
 {% else %}
 
-    <a href="{{ url_for('registro') }}" class="register-btn">
-
+    <label for="login-toggle" class="login-btn">
         <svg width="16" height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6">
-
-            <path d="M12 5v14"/>
-            <path d="M5 12h14"/>
-
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="1.6">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <path d="M10 17l5-5-5-5"/>
+            <path d="M15 12H3"/>
         </svg>
-
-        Registrarse
-
-    </a>
+        Iniciar sesión
+    </label>
 
 {% endif %}
-
 
   <!-- Pestañas de compañeros (lado derecho) -->
 <!-- Navegación principal -->
