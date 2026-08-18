@@ -98,6 +98,32 @@
     </nav>
 
 </div>
+  <!-- NAVEGACIÓN PRINCIPAL -->
+<input type="checkbox" id="menu-navegacion" class="control-oculto">
+
+<div class="tabs-derecha">
+
+    <!-- Botón hamburguesa: solo aparece en móvil -->
+    <label for="menu-navegacion" class="menu-hamburguesa" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+    </label>
+
+    <!-- Botones de escritorio y menú móvil -->
+    <nav class="nav-enlaces">
+
+        <a href="index.html" class="tab-lateral">
+            Foro
+        </a>
+
+        <a href="index2.html" class="tab-lateral">
+            Generar material
+        </a>
+
+    </nav>
+
+</div>
 
   <!-- Contenido principal -->
   <main class="hero">
@@ -211,24 +237,7 @@
   </div>
 
   <!-- Panel lateral: n8n (se muestra cuando #panel-n8n está marcado) -->
-  <aside class="drawer" id="drawer-n8n">
-    <label for="panel-ninguno" class="cerrar" aria-label="Cerrar">&times;</label>
-    <p class="drawer-eyebrow">Parte del equipo</p>
-    <h2>Automatización · n8n</h2>
-    <p>Aquí va la sección del compañero encargado del flujo en n8n: recepción de los
-    datos del formulario, organización de la solicitud y conexión con el agente de IA.</p>
-    <p class="drawer-placeholder">— Contenido pendiente de agregar —</p>
-  </aside>
-
-  <!-- Panel lateral: Claude (se muestra cuando #panel-claude está marcado) -->
-  <aside class="drawer" id="drawer-claude">
-    <label for="panel-ninguno" class="cerrar" aria-label="Cerrar">&times;</label>
-    <p class="drawer-eyebrow">Parte del equipo</p>
-    <h2>Modelo IA · Claude</h2>
-    <p>Aquí va la sección del compañero encargado del agente de IA: cómo se arma el
-    prompt, cómo Claude genera el documento y qué formato entrega de vuelta.</p>
-    <p class="drawer-placeholder">— Contenido pendiente de agregar —</p>
-  </aside>
+ 
 
 </body>
 </html>
