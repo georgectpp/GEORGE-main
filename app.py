@@ -226,8 +226,6 @@ def inicio():
 
 @app.route("/generador")
 def generador():
-    if "usuario" not in session or session["tipo"] != "docente":
-        return redirect("/login")
     return render_template("generador.html", nombre_agente=NOMBRE_AGENTE)
 
 @app.route("/crear-material", methods=["POST"])
