@@ -488,10 +488,10 @@ html, body{
 }
 
 .quien-soy-content {
-    width: min(700px, 90%);
+    width: 700px;
+    max-width: 90%;
     margin: 30px auto 0;
-    padding: 28px 40px;
-
+    padding: 30px 40px;
     box-sizing: border-box;
 
     background: rgba(255, 255, 255, 0.95);
@@ -503,43 +503,69 @@ html, body{
     text-align: center;
 }
 
-/* Título */
+
+/* TÍTULO */
+
 .quien-soy-content h2 {
     margin: 0 0 18px;
     text-align: center;
 }
 
-/* Texto descriptivo */
+
+/* TEXTO PRINCIPAL */
+
 .quien-soy-content p {
-    max-width: 620px;
+    width: 600px;
+    max-width: 100%;
     margin: 0 auto 20px;
 
     text-align: center;
-
     line-height: 1.7;
 }
 
-/* Subtítulo */
+
+/* SUBTÍTULO */
+
 .quien-soy-content h3 {
     margin: 22px 0 12px;
     text-align: center;
 }
 
-/* Lista */
+
+/* LISTA */
+
 .quien-soy-content ul {
-    width: fit-content;
-    margin: 0 auto;
-    padding-left: 22px;
+    width: fit-content !important;
 
-    text-align: left;
+    margin: 0 auto !important;
 
-    line-height: 1.8;
+    padding-left: 25px !important;
+
+    text-align: left !important;
+
+    line-height: 1.8 !important;
 }
 
-/* Elementos de la lista */
-.quien-soy-content li {
-    padding-left: 3px;
-    margin-bottom: 4px;
 
-    text-align: left;
+.quien-soy-content li {
+    margin-bottom: 4px;
+    padding-left: 3px;
+
+    text-align: left !important;
+}
+
+@keyframes georgeEntrada {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.quien-soy-details[open] .quien-soy-content {
+    animation: georgeEntrada 0.5s ease-out both;
 }
