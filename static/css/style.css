@@ -472,26 +472,25 @@ html, body{
     text-decoration: none;
 
 
-  /* ============================================================
-   QUIÉN SOY - PANEL INFORMATIVO
-   ============================================================ */
-
-/* ============================================================
-   QUIÉN SOY
-   ============================================================ */
-
-#quien-soy-toggle {
-    display: none !important;
+ .quien-soy-details {
+    text-align: center;
+    margin-top: 25px;
 }
 
-/* Oculto por defecto */
-.quien-soy-panel {
-    display: none !important;
+.quien-soy-details summary {
+    display: inline-block;
+    cursor: pointer;
+    list-style: none;
+}
 
+.quien-soy-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.quien-soy-content {
     width: min(850px, 90%);
-    margin: 35px auto 0;
+    margin: 30px auto 0;
     padding: 30px 40px;
-
     box-sizing: border-box;
 
     background: rgba(255, 255, 255, 0.95);
@@ -500,68 +499,32 @@ html, body{
 
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 
-    text-align: left !important;
+    text-align: left;
 }
 
-/* Mostrar únicamente cuando se presiona ¿Quién Soy? */
-#quien-soy-toggle:checked ~ .quien-soy-panel {
-    display: block !important;
+.quien-soy-content h2 {
+    margin: 0 0 18px;
+    text-align: left;
 }
 
-
-/* ------------------------------------------------------------
-   TÍTULO
-   ------------------------------------------------------------ */
-
-.quien-soy-panel h2 {
-    margin: 0 0 18px 0;
-    text-align: left !important;
+.quien-soy-content h3 {
+    margin: 25px 0 10px;
+    text-align: left;
 }
 
-
-/* ------------------------------------------------------------
-   SUBTÍTULO
-   ------------------------------------------------------------ */
-
-.quien-soy-panel h3 {
-    margin: 25px 0 10px 0;
-    text-align: left !important;
-}
-
-
-/* ------------------------------------------------------------
-   PÁRRAFOS
-   ------------------------------------------------------------ */
-
-.quien-soy-panel p {
-    margin: 0 0 16px 0;
-
-    text-align: left !important;
-
+.quien-soy-content p {
+    margin: 0 0 18px;
+    text-align: left;
     line-height: 1.7;
-
-    font-size: 16px;
 }
 
-
-/* ------------------------------------------------------------
-   LISTA
-   ------------------------------------------------------------ */
-
-.quien-soy-panel ul {
-    margin: 10px 0 0 0;
+.quien-soy-content ul {
+    margin: 10px 0 0;
     padding-left: 25px;
-
-    text-align: left !important;
-
+    text-align: left;
     line-height: 1.8;
 }
 
-
-/* Los puntos quedan cerca del texto */
-.quien-soy-panel li {
-    margin: 0 0 5px 0;
-    padding-left: 3px;
-
-    text-align: left !important;
+.quien-soy-content li {
+    margin-bottom: 5px;
 }
