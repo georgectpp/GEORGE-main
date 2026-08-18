@@ -481,50 +481,87 @@ html, body{
    ============================================================ */
 
 #quien-soy-toggle {
-    display: none;
+    display: none !important;
 }
 
+/* Oculto por defecto */
 .quien-soy-panel {
-    display: none;
-    width: min(700px, 90%);
-    margin: 30px auto 0;
-    padding: 30px;
-    box-sizing: border-box;
+    display: none !important;
 
-    text-align: left;
+    width: min(850px, 90%);
+    margin: 35px auto 0;
+    padding: 30px 40px;
+
+    box-sizing: border-box;
 
     background: rgba(255, 255, 255, 0.95);
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 16px;
 
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+    text-align: left !important;
 }
 
+/* Mostrar únicamente cuando se presiona ¿Quién Soy? */
 #quien-soy-toggle:checked ~ .quien-soy-panel {
-    display: block;
+    display: block !important;
 }
+
+
+/* ------------------------------------------------------------
+   TÍTULO
+   ------------------------------------------------------------ */
 
 .quien-soy-panel h2 {
-    margin-top: 0;
-    margin-bottom: 15px;
+    margin: 0 0 18px 0;
+    text-align: left !important;
 }
+
+
+/* ------------------------------------------------------------
+   SUBTÍTULO
+   ------------------------------------------------------------ */
 
 .quien-soy-panel h3 {
-    margin-top: 25px;
-    margin-bottom: 10px;
+    margin: 25px 0 10px 0;
+    text-align: left !important;
 }
+
+
+/* ------------------------------------------------------------
+   PÁRRAFOS
+   ------------------------------------------------------------ */
 
 .quien-soy-panel p {
+    margin: 0 0 16px 0;
+
+    text-align: left !important;
+
     line-height: 1.7;
-    margin-bottom: 15px;
+
+    font-size: 16px;
 }
 
+
+/* ------------------------------------------------------------
+   LISTA
+   ------------------------------------------------------------ */
+
 .quien-soy-panel ul {
-    margin: 10px 0 0;
-    padding-left: 22px;
+    margin: 10px 0 0 0;
+    padding-left: 25px;
+
+    text-align: left !important;
+
     line-height: 1.8;
 }
 
+
+/* Los puntos quedan cerca del texto */
 .quien-soy-panel li {
-    margin-bottom: 5px;
+    margin: 0 0 5px 0;
+    padding-left: 3px;
+
+    text-align: left !important;
 }
