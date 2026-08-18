@@ -83,31 +83,33 @@
     <h1 class="titulo">{{ nombre_agente }}</h1>
     <p class="tagline">Asistente con Inteligencia Artificial.<br>
     
-    <input type="checkbox" id="quien-soy-toggle" class="control-oculto">
+ <details class="quien-soy-details">
 
-<label for="quien-soy-toggle" class="cta">
-  ¿Quién Soy?
-</label>
+    <summary class="cta">¿Quién Soy?</summary>
 
-<div class="quien-soy-panel">
-  <h2>¿Qué es GEORGE?</h2>
+    <div class="quien-soy-content">
 
-  <p>
-    GEORGE es un asistente educativo enfocado a los 
-    estudiantes en aspectos como: Creación de materiales,
-    foros estudiantiles, ayuda psicologica entre otros.
-  </p>
+        <h2>¿Qué es GEORGE?</h2>
 
+        <p>
+            GEORGE es un asistente educativo enfocado en ayudar a
+            estudiantes y docentes mediante Inteligencia Artificial.
+            Puede apoyar en la creación de materiales educativos,
+            actividades y otros recursos para el aprendizaje.
+        </p>
 
-  <h3>¿Qué puedo hacer?</h3>
+        <h3>¿Qué puedo hacer?</h3>
 
-  <ul>
-    <li>Generar guías y materiales educativos.</li>
-    <li>Brindar apoyo a los estudiantes respecto a sus problemas.</li>
-    <li>Adaptar el contenido academico al nivel del estudiante.</li>
-    <li>Entregar el material generado en formato PDF.</li>
-  </ul>
-</div>
+        <ul>
+            <li>Generar guías y materiales educativos.</li>
+            <li>Brindar apoyo a los estudiantes.</li>
+            <li>Adaptar el contenido al nivel académico.</li>
+            <li>Entregar el material generado en formato PDF.</li>
+        </ul>
+
+    </div>
+
+</details>
     {% with mensajes = get_flashed_messages() %}
     {% if mensajes %}
         <div style="
