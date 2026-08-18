@@ -5,36 +5,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GEORGE · Panel Orientador</title>
 
-<!-- Tipografías: Poppins para títulos/logo, Inter para texto de interfaz -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-<!-- ESTILOS CONECTADOS CON FLASK -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
-<!-- Estilos exclusivos de la vista de Moderación -->
 <style>
-  .mod-header-wrap { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px; margin-bottom: 28px; }
+  /* =========================================================
+     Estilos del Panel de Orientación
+     ========================================================= */
+  .mod-header-wrap { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; margin-bottom: 28px; }
   .mod-filters { display: flex; gap: 10px; background: var(--blanco); padding: 6px; border-radius: 999px; border: 1px solid var(--gris-borde); }
-  .filter-btn { background: transparent; border: none; padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--gris-claro); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+  .filter-btn { background: transparent; border: none; padding: 8px 16px; border-radius: 999px; font-weight: 600; cursor: pointer; transition: 0.2s; }
   .filter-btn.active { background: var(--crema); color: var(--azul); }
   .filter-btn.active-rojo { background: rgba(129, 2, 0, 0.1); color: var(--rojo); }
-  .filter-btn.active-azul { background: rgba(0, 17, 58, 0.1); color: var(--azul); }
   
   .post-action-mod { border: 1px solid var(--gris-borde); }
-  .post-action-mod:hover { border-color: var(--azul); background: var(--crema); }
+  .tag-ia-alerta { background: var(--rojo); color: var(--blanco); font-size: 11px; padding: 4px 8px; border-radius: 6px; font-weight: bold; margin-left: 10px; }
   
-  .tag-ia-alerta { background: var(--rojo); color: var(--blanco); font-size: 11px; padding: 4px 8px; border-radius: 6px; font-weight: bold; margin-left: 10px; display: inline-flex; align-items: center; gap: 4px; }
-  
-  /* Modal Expediente */
+  /* Modal Expediente Mejorado */
   .profile-stats { background: var(--crema); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
-  .profile-stats h3 { font-family: var(--f-display); font-size: 18px; color: var(--azul); margin: 0 0 10px 0; }
   .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; border-bottom: 1px dashed var(--gris-borde); padding-bottom: 4px; }
-  .stat-row:last-child { border: none; margin: 0; padding: 0; }
   
-  #panel-alerts-list { display: flex; flex-direction: column; gap: 16px; }
+  /* Estilos Chat Privado */
+  .panel-chats-layout { display: flex; gap: 20px; height: 70vh; margin-top: 15px; }
+  .panel-chat-list { width: 32%; background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; overflow-y: auto; padding: 10px; }
+  .chat-item { padding: 15px; border-bottom: 1px solid var(--gris-borde); cursor: pointer; border-radius: 8px; transition: 0.2s; }
+  .chat-item:hover, .chat-item.active { background: var(--crema); }
+  .chat-header-info { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .student-id { font-weight: bold; color: var(--azul); }
+  .chat-time { font-size: 12px; color: var(--gris-claro); }
+  .chat-preview { font-size: 13px; color: var(--gris); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  
+  .panel-chat-window { flex: 1; background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; }
+  .panel-chat-header { background: var(--azul); color: var(--blanco); padding: 15px; font-weight: 600; font-family: var(--f-display); letter-spacing: 0.5px; }
+  .panel-chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: rgba(239, 227, 213, 0.3); }
+  .message { max-width: 75%; padding: 12px 16px; border-radius: 12px; font-size: 14.5px; line-height: 1.4; }
+  .msg-received { background: var(--blanco); border: 1px solid var(--gris-borde); align-self: flex-start; border-top-left-radius: 2px; }
+  .msg-sent { background: var(--azul); color: var(--blanco); align-self: flex-end; border-top-right-radius: 2px; }
+  
+  .panel-chat-input { display: flex; padding: 15px; background: var(--blanco); border-top: 1px solid var(--gris-borde); gap: 10px; }
+  .panel-chat-input input { flex: 1; padding: 12px 15px; border: 1px solid var(--gris-borde); border-radius: 8px; outline: none; font-family: 'Inter', sans-serif; }
+  .panel-chat-input input:focus { border-color: var(--azul); }
+  .panel-chat-input button { background: var(--rojo); color: var(--blanco); border: none; padding: 0 25px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+  .panel-chat-input button:hover { background: var(--azul); }
+
+  /* Estilos Resultados Encuestas */
+  .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
+  .dash-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; padding: 20px; }
+  .dash-card h3 { margin-top: 0; color: var(--azul); font-family: var(--f-display); }
+  .progreso-bg { width: 100%; height: 25px; background: #eee; border-radius: 999px; overflow: hidden; margin: 10px 0; position: relative; }
+  .progreso-fill { height: 100%; background: var(--rojo); transition: width 0.5s; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; color: white; font-weight: bold; font-size: 12px; }
+  .dash-leyenda { font-size: 13px; color: var(--gris); }
 </style>
 </head>
 <body>
@@ -47,63 +70,75 @@
       <span class="brand-sub" style="color: var(--crema);">Orientador · {{ usuario_activo }}</span>
     </span>
   </div>
-  
   <div style="flex: 1;"></div>
-  
-  <!-- BOTÓN DE CERRAR SESIÓN CON FLASK -->
-  <a href="{{ url_for('logout') }}" class="btn btn-ghost" style="color: var(--crema); border-color: rgba(255,255,255,0.2);">
-    <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Cerrar sesión
-  </a>
+  <a href="{{ url_for('logout') }}" class="btn btn-ghost" style="color: var(--crema); border-color: rgba(255,255,255,0.2);">Salir</a>
 </header>
 
 <div class="layout">
   <aside class="sidebar">
-    <nav class="side-nav" aria-label="Navegación del Panel">
-      <span class="side-label">Herramientas de Control</span>
+    <nav class="side-nav">
+      <span class="side-label">Herramientas</span>
       <button type="button" class="nav-item nav-trigger is-active" data-view="panel-foro">
-        <i class="fa-solid fa-radar-region nav-icon" aria-hidden="true"></i>
-        <span>Monitoreo del Foro</span>
+        <i class="fa-solid fa-radar-region nav-icon"></i><span>Monitoreo Foro</span>
+      </button>
+      <button type="button" class="nav-item nav-trigger" data-view="panel-encuestas">
+        <i class="fa-solid fa-chart-pie nav-icon"></i><span>Termómetro Estudiantil</span>
       </button>
 
       <span class="side-label side-label-spaced">Gestión Privada</span>
       <button type="button" class="nav-item nav-trigger" data-view="panel-chats">
-        <i class="fa-solid fa-comments nav-icon" aria-hidden="true"></i>
-        <span>Bandeja Privada</span>
+        <i class="fa-solid fa-comments nav-icon"></i><span>Bandeja Privada</span>
       </button>
       <button type="button" class="nav-item nav-trigger" data-view="panel-alerts">
-        <i class="fa-solid fa-triangle-exclamation nav-icon" aria-hidden="true"></i>
-        <span>Alertas Críticas</span>
+        <i class="fa-solid fa-triangle-exclamation nav-icon"></i><span>Alertas Críticas</span>
       </button>
     </nav>
-    <div class="side-footer">
-      <i class="fa-solid fa-shield-heart" aria-hidden="true"></i>
-      <p>Panel seguro y confidencial exclusivo para el equipo de orientación.</p>
-    </div>
   </aside>
 
   <div class="views">
-    
-    <!-- VISTA: MONITOREO DEL FORO -->
+    <!-- VISTA 1: FORO -->
     <section id="view-panel-foro" class="view is-active" data-view="panel-foro">
         <div class="mod-header-wrap">
             <div>
                 <h1 style="font-family: var(--f-display); font-size: 26px; color: var(--azul); margin: 0 0 6px;">Monitoreo de Comunidad</h1>
-                <p style="color: var(--gris); font-size: 14.5px; margin: 0;">Vista de administrador conectada a la base de datos en tiempo real.</p>
             </div>
             <div class="mod-filters">
                 <button class="filter-btn active" data-filter="all">Todas</button>
                 <button class="filter-btn" data-filter="alerta"><i class="fa-solid fa-brain"></i> Alertas IA</button>
             </div>
         </div>
-
-        <!-- Contenedor donde Firebase inyectará las publicaciones -->
-        <div class="feed-list" id="mod-feed-list">
-            <p style="text-align: center; color: var(--gris-claro); padding: 40px;">Cargando publicaciones desde Firebase...</p>
-        </div>
+        <div class="feed-list" id="mod-feed-list"></div>
     </section>
 
-    <!-- VISTA: BANDEJA PRIVADA -->
-    <section id="view-panel-chats" class="view panel-view" data-view="panel-chats">
+    <!-- VISTA 2: DASHBOARD DE ENCUESTAS -->
+    <section id="view-panel-encuestas" class="view" data-view="panel-encuestas">
+      <div class="view-header">
+        <h1>Termómetro de Bienestar</h1>
+        <p>Resultados agregados en tiempo real basados en las respuestas de las caritas de los estudiantes.</p>
+        <div style="margin-top: 10px; font-weight: bold; color: var(--azul);">Total de encuestas respondidas: <span id="total-respuestas">0</span></div>
+      </div>
+      
+      <div class="dashboard-grid">
+          <div class="dash-card">
+              <h3>🧠 Estrés Académico Alto</h3>
+              <p class="dash-leyenda">Porcentaje de estudiantes que marcaron caritas tristes/angustiadas (niveles 4 y 5).</p>
+              <div class="progreso-bg"><div class="progreso-fill" id="bar-estres" style="width: 0%; background: #e74c3c;">0%</div></div>
+          </div>
+          <div class="dash-card">
+              <h3>🛑 Percepción de Bullying</h3>
+              <p class="dash-leyenda">Porcentaje de estudiantes que califican el ambiente como malo o pésimo.</p>
+              <div class="progreso-bg"><div class="progreso-fill" id="bar-bullying" style="width: 0%; background: #e67e22;">0%</div></div>
+          </div>
+          <div class="dash-card">
+              <h3>🔋 Agotamiento Crítico</h3>
+              <p class="dash-leyenda">Porcentaje de estudiantes que reportan estar "Cansados" o "Agotados".</p>
+              <div class="progreso-bg"><div class="progreso-fill" id="bar-energia" style="width: 0%; background: #8e44ad;">0%</div></div>
+          </div>
+      </div>
+    </section>
+
+    <!-- VISTA 3: CHAT RESTAURADO -->
+    <section id="view-panel-chats" class="view" data-view="panel-chats">
       <div class="panel-chats-layout">
         <div class="panel-chat-list" id="panel-chat-list"></div>
         <div class="panel-chat-window">
@@ -117,22 +152,19 @@
       </div>
     </section>
 
-    <!-- VISTA: ALERTAS CRÍTICAS DINÁMICAS -->
+    <!-- VISTA 4: ALERTAS -->
     <section id="view-panel-alerts" class="view" data-view="panel-alerts">
       <div class="view-header">
         <h1>Panel de Alertas Críticas</h1>
-        <p>Monitoreo de incidencias detectadas automáticamente por el análisis de texto.</p>
       </div>
-      
-      <!-- Contenedor donde aparecerán las alertas generadas por Firebase -->
       <div id="panel-alerts-list">
-          <p id="no-alerts-msg" style="text-align: center; color: var(--gris-claro); padding: 40px;">No hay alertas críticas en este momento. La comunidad está segura.</p>
+        <p style="color: var(--gris-claro);">No hay alertas críticas en este momento.</p>
       </div>
     </section>
   </div>
 </div>
 
-<!-- Modal: Expediente del Estudiante -->
+<!-- MODAL EXPEDIENTE ACTUALIZADO (CON FETCH A SQLITE) -->
 <div class="modal-overlay" id="modal-expediente" aria-hidden="true">
     <div class="modal" role="dialog" style="max-width: 450px;">
         <div class="modal-header">
@@ -142,21 +174,21 @@
         
         <div id="expediente-content">
             <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                <div class="avatar" style="background: var(--azul); width: 60px; height: 60px; font-size: 22px;" id="exp-avatar">ES</div>
+                <div class="avatar" style="background: var(--azul); width: 60px; height: 60px; font-size: 22px; color: white; display: flex; align-items: center; justify-content: center; border-radius: 50%;" id="exp-avatar">??</div>
                 <div>
-                    <h3 style="margin: 0; color: var(--azul); font-size: 18px;" id="exp-nombre">Estudiante</h3>
-                    <span style="color: var(--gris-claro); font-size: 13px;" id="exp-id">Usuario de la comunidad</span>
+                    <h3 style="margin: 0; color: var(--azul); font-size: 18px;" id="exp-nombre">Cargando datos...</h3>
+                    <span style="color: var(--gris-claro); font-size: 13px;" id="exp-correo">Cargando...</span><br>
+                    <span style="color: var(--gris-claro); font-size: 12px; font-weight: bold;">Usuario: <span id="exp-usuario">...</span></span>
                 </div>
             </div>
 
             <div class="profile-stats">
-                <h3><i class="fa-solid fa-compass" style="color: var(--rojo);"></i> Perfil Vocacional</h3>
-                <div class="stat-row"><span>Resultado:</span> <strong style="color: var(--azul);" id="exp-vocacion">Pendiente de realizar</strong></div>
-                <div class="stat-row"><span>Último test:</span> <span>No registrado</span></div>
+                <h3 style="margin-top: 0; color: var(--azul);"><i class="fa-solid fa-compass" style="color: var(--rojo);"></i> Perfil Vocacional</h3>
+                <div class="stat-row"><span>Resultado del Test:</span> <strong style="color: var(--azul);">Pendiente</strong></div>
             </div>
 
             <div class="profile-stats" style="background: rgba(129, 2, 0, 0.05); border: 1px dashed var(--rojo-suave);">
-                <h3 style="color: var(--rojo);"><i class="fa-solid fa-triangle-exclamation"></i> Historial de Riesgo</h3>
+                <h3 style="margin-top: 0; color: var(--rojo);"><i class="fa-solid fa-triangle-exclamation"></i> Historial de Riesgo</h3>
                 <div class="stat-row"><span>Alertas emitidas:</span> <strong id="exp-alertas">0</strong></div>
                 <div class="stat-row"><span>Estado actual:</span> <strong id="exp-estado" style="color: #2f9e6a;">Estable</strong></div>
             </div>
@@ -169,10 +201,6 @@
 <script>
   (function() {
       'use strict';
-
-      // ==========================================
-      // 1. NAVEGACIÓN GLOBAL
-      // ==========================================
       const views = document.querySelectorAll('.view');
       const navTriggers = document.querySelectorAll('.nav-trigger');
 
@@ -180,65 +208,79 @@
           views.forEach(section => section.classList.toggle('is-active', section.dataset.view === viewName));
           navTriggers.forEach(btn => btn.classList.toggle('is-active', btn.dataset.view === viewName));
       }
+      navTriggers.forEach(t => t.addEventListener('click', () => goToView(t.dataset.view)));
 
-      navTriggers.forEach(trigger => {
-          trigger.addEventListener('click', () => goToView(trigger.dataset.view));
-      });
-
-      // ==========================================
-      // 2. CONEXIÓN A FIREBASE Y ALGORITMO IA
-      // ==========================================
       let chatsData = {};
       let activeStudentId = null;
-      
-      // Palabras que dispararán las alertas automáticamente
-      const palabrasSensibles = ['estrés', 'ansiedad', 'rendirme', 'depresión', 'triste', 'problema', 'difícil', 'llorar', 'malo', 'ayuda', 'desesperado', 'injusto', 'odio'];
-
-      const CATEGORY_META = {
-        casual:     { label: 'Casual',     icon: 'fa-umbrella-beach',            tagClass: 'tag-casual' },
-        problemas:  { label: 'Problemas',  icon: 'fa-heart-circle-exclamation',  tagClass: 'tag-problemas' },
-        preguntas:  { label: 'Preguntas',  icon: 'fa-circle-question',           tagClass: 'tag-preguntas' },
-        opiniones:  { label: 'Opiniones',  icon: 'fa-comments',                  tagClass: 'tag-opiniones' },
-        encuestas:  { label: 'Encuestas',  icon: 'fa-chart-simple',              tagClass: 'tag-encuestas' },
-      };
+      const palabrasSensibles = ['estrés', 'ansiedad', 'rendirme', 'depresión', 'triste', 'problema', 'llorar', 'ayuda', 'desesperado'];
 
       window.addEventListener('firebase-ready', function () {
           const db = window.firebaseDatabase;
           const { ref, onChildAdded, onValue, push, set } = window.firebaseDbFunctions;
           
-          // --- FORO Y ALERTAS ---
-          document.getElementById('mod-feed-list').innerHTML = ''; 
+          // 1. Cargar Publicaciones del Foro
           onChildAdded(ref(db, 'publicaciones'), (snapshot) => {
               procesarPostParaOrientador(snapshot.key, snapshot.val());
           });
 
-          // --- CHATS DE ORIENTACIÓN REALES ---
-          const chatsRef = ref(db, 'chats_orientacion');
-          
-          onValue(chatsRef, (snapshot) => {
+          // 2. Cargar Dashboard de Encuestas
+          onValue(ref(db, 'encuestas_bienestar'), (snapshot) => {
+              const data = snapshot.val() || {};
+              const keys = Object.keys(data);
+              document.getElementById('total-respuestas').textContent = keys.length;
+              
+              if(keys.length > 0) {
+                  let estresAlto = 0, bullyingAlto = 0, cansancioAlto = 0;
+                  
+                  keys.forEach(k => {
+                      if(data[k].estres >= 4) estresAlto++;
+                      if(data[k].bullying >= 4) bullyingAlto++;
+                      if(data[k].energia >= 4) cansancioAlto++;
+                  });
+
+                  const percEstres = Math.round((estresAlto / keys.length) * 100);
+                  const percBullying = Math.round((bullyingAlto / keys.length) * 100);
+                  const percEnergia = Math.round((cansancioAlto / keys.length) * 100);
+
+                  document.getElementById('bar-estres').style.width = percEstres + '%';
+                  document.getElementById('bar-estres').textContent = percEstres + '%';
+                  
+                  document.getElementById('bar-bullying').style.width = percBullying + '%';
+                  document.getElementById('bar-bullying').textContent = percBullying + '%';
+                  
+                  document.getElementById('bar-energia').style.width = percEnergia + '%';
+                  document.getElementById('bar-energia').textContent = percEnergia + '%';
+              }
+          });
+
+          // 3. Cargar Chats Reales
+          onValue(ref(db, 'chats_orientacion'), (snapshot) => {
               chatsData = snapshot.val() || {};
-              renderPanelChatsList();
+              renderPanelChatsList(); 
               renderPanelChatMessages();
           });
 
-          // Enviar respuesta al estudiante
-          document.getElementById('btn-panel-send').addEventListener('click', () => {
-              const input = document.getElementById('panel-input');
-              const texto = input.value.trim();
-              if (!texto || !activeStudentId) return;
-              
-              set(push(ref(db, 'chats_orientacion/' + activeStudentId)), {
-                  sender: 'counselor',
-                  text: texto,
-                  timestamp: Date.now()
+          // 4. Enviar mensajes desde el Orientador
+          const btnSend = document.getElementById('btn-panel-send');
+          if (btnSend) {
+              btnSend.addEventListener('click', () => {
+                  const input = document.getElementById('panel-input');
+                  const texto = input.value.trim();
+                  if (!texto || !activeStudentId) return;
+                  
+                  set(push(ref(db, 'chats_orientacion/' + activeStudentId)), {
+                      sender: 'counselor',
+                      text: texto,
+                      timestamp: Date.now()
+                  });
+                  input.value = '';
               });
-              input.value = '';
-          });
+          }
       });
 
-      // ==========================================
-      // 3. RENDERIZADO DEL CHAT DE BANDEJA
-      // ==========================================
+      // =========================================================
+      // Lógica de Renderizado del Chat Privado
+      // =========================================================
       function renderPanelChatsList() {
           const list = document.getElementById('panel-chat-list');
           if (!list) return;
@@ -259,7 +301,13 @@
               
               const div = document.createElement('div');
               div.className = `chat-item ${estId === activeStudentId ? 'active' : ''}`;
-              div.innerHTML = `<div class="chat-header-info"><span class="student-id">${estId}</span><span class="chat-time">${timeStr}</span></div><div class="chat-preview">${escapeHTML(ultimoMsj.text)}</div>`;
+              div.innerHTML = `
+                <div class="chat-header-info">
+                  <span class="student-id">${estId}</span>
+                  <span class="chat-time">${timeStr}</span>
+                </div>
+                <div class="chat-preview">${escapeHTML(ultimoMsj.text)}</div>
+              `;
               div.onclick = () => { 
                   activeStudentId = estId; 
                   renderPanelChatsList(); 
@@ -270,8 +318,12 @@
       }
 
       function renderPanelChatMessages() {
-          document.getElementById('panel-active-header').textContent = activeStudentId ? `Conversación: ${activeStudentId}` : 'Seleccione un chat';
+          const header = document.getElementById('panel-active-header');
           const msgBox = document.getElementById('panel-chat-messages');
+          
+          if(header) header.textContent = activeStudentId ? `Conversación: ${activeStudentId}` : 'Seleccione un chat de la lista';
+          if(!msgBox) return;
+          
           msgBox.innerHTML = '';
           
           if (!activeStudentId || !chatsData[activeStudentId]) return;
@@ -283,88 +335,80 @@
           msgBox.scrollTop = msgBox.scrollHeight;
       }
 
-      // ==========================================
-      // 4. LÓGICA DE MODERACIÓN DE PUBLICACIONES
-      // ==========================================
+      // =========================================================
+      // Lógica de Renderizado del Foro (Modo Orientador)
+      // =========================================================
       function procesarPostParaOrientador(idPost, datosPost) {
           const contenidoLower = (datosPost.titulo + " " + datosPost.contenido).toLowerCase();
-          let esAlerta = false; let palabraDetectada = "";
-          for (let palabra of palabrasSensibles) {
-              if (contenidoLower.includes(palabra)) { esAlerta = true; palabraDetectada = palabra; break; }
-          }
-          renderTarjetaForo(idPost, datosPost, esAlerta);
-          if (esAlerta) generarAlertaCritica(datosPost, palabraDetectada);
-      }
-
-      function renderTarjetaForo(idPost, datosPost, esAlerta) {
-          const list = document.getElementById('mod-feed-list');
-          const meta = CATEGORY_META[datosPost.categoria] || CATEGORY_META.casual;
-          const article = document.createElement('article');
+          let esAlerta = false;
+          for (let p of palabrasSensibles) { if (contenidoLower.includes(p)) esAlerta = true; }
           
-          article.className = 'post-card'; article.dataset.flag = esAlerta ? 'alerta' : 'normal'; article.dataset.id = idPost;
-          const flagHTML = esAlerta ? `<span class="tag-ia-alerta"><i class="fa-solid fa-brain"></i> Riesgo Detectado</span>` : '';
-          const fechaObj = new Date(datosPost.fecha);
-          const fechaTexto = fechaObj.toLocaleDateString('es-CR', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' });
-          const idEstSeguro = (datosPost.idEstudiante || "EST-DESCONOCIDO").replace(/'/g, "\\'");
+          const article = document.createElement('article');
+          article.className = 'post-card'; article.dataset.flag = esAlerta ? 'alerta' : 'normal';
+          const flagHTML = esAlerta ? `<span class="tag-ia-alerta">Riesgo</span>` : '';
+          const idEstSeguro = (datosPost.idEstudiante || "").replace(/'/g, "\\'");
 
           article.innerHTML = `
               <div class="post-head">
-                  <div class="avatar" style="background:var(--gris);">${datosPost.autor.substring(0, 2).toUpperCase()}</div>
-                  <div class="post-meta">
-                      <span class="post-author">${escapeHTML(datosPost.autor)} <span style="font-weight:normal; color:var(--gris-claro); font-size:12px;">(${idEstSeguro})</span></span>
-                      <span class="post-dot">·</span><span class="post-time">${fechaTexto}</span>${flagHTML}
+                  <div class="avatar" style="background:var(--gris); display:flex; justify-content:center; align-items:center; color:white; font-weight:bold;">
+                    ${datosPost.autor.substring(0, 2).toUpperCase()}
                   </div>
-                  <span class="tag ${meta.tagClass}"><i class="fa-solid ${meta.icon}"></i> ${meta.label}</span>
+                  <div class="post-meta">
+                      <span class="post-author">${datosPost.autor} <span style="font-size:12px; color:gray;">(${idEstSeguro})</span></span>
+                      ${flagHTML}
+                  </div>
               </div>
-              <h2 class="post-title">${escapeHTML(datosPost.titulo)}</h2><p class="post-content">${escapeHTML(datosPost.contenido)}</p>
-              <div class="post-actions" style="margin-top: 20px;">
-                  <button class="post-action post-action-mod" onclick="abrirExpediente('${idEstSeguro}', ${esAlerta})"><i class="fa-solid fa-id-card-clip"></i> Ver Perfil</button>
+              <h2 class="post-title">${datosPost.titulo}</h2>
+              <p class="post-content">${datosPost.contenido}</p>
+              <div class="post-actions" style="margin-top: 15px;">
                   <button class="post-action post-action-mod" onclick="intervenirPrivado('${idEstSeguro}')"><i class="fa-solid fa-comment-medical" style="color: var(--azul);"></i> Intervenir</button>
-                  <button class="post-action post-action-mod post-action-delete" style="margin-left: auto;" onclick="eliminarPost(this, '${idPost}')"><i class="fa-solid fa-trash"></i> Eliminar de la red</button>
+                  <button class="post-action post-action-mod" onclick="abrirExpediente('${idEstSeguro}', ${esAlerta})"><i class="fa-solid fa-id-card-clip"></i> Ver Perfil Completo</button>
               </div>`;
-          list.prepend(article);
+          document.getElementById('mod-feed-list').prepend(article);
       }
 
-      function generarAlertaCritica(datosPost, palabraDetectada) {
-          const list = document.getElementById('panel-alerts-list');
-          if (document.getElementById('no-alerts-msg')) document.getElementById('no-alerts-msg').style.display = 'none';
-          
-          const alertCard = document.createElement('div'); alertCard.className = 'alert-card alert-ia';
-          alertCard.innerHTML = `<div class="alert-icon">🚨</div><div class="alert-content"><h4>Riesgo Emocional Detectado por IA</h4>
-                  <p>El sistema detectó lenguaje de riesgo (palabra clave: <strong>"${palabraDetectada}"</strong>) de <strong>${escapeHTML(datosPost.idEstudiante || datosPost.autor)}</strong>.</p>
-                  <span class="alert-source bg-rojo">IA Estudiantil Activa</span><button class="btn btn-ghost btn-small" style="margin-top: 10px;" onclick="document.querySelector('[data-view=\\'panel-foro\\']').click()">Revisar en el foro</button></div>`;
-          list.prepend(alertCard);
-      }
-
-      const filterBtns = document.querySelectorAll('.filter-btn');
-      filterBtns.forEach(btn => {
-          btn.addEventListener('click', () => {
-              filterBtns.forEach(b => b.classList.remove('active', 'active-rojo', 'active-azul'));
-              const filter = btn.dataset.filter;
-              if (filter === 'alerta') btn.classList.add('active-rojo'); else btn.classList.add('active');
-              
-              document.querySelectorAll('#mod-feed-list .post-card').forEach(card => {
-                  card.style.display = (filter === 'all' || card.dataset.flag === filter) ? 'block' : 'none';
-              });
-          });
-      });
-
-      // ==========================================
-      // 5. FUNCIONES GLOBALES EN VENTANA
-      // ==========================================
+      // =========================================================
+      // Modal Expediente: Conexión con SQLite (Flask)
+      // =========================================================
       const modalExpediente = document.getElementById('modal-expediente');
-      window.abrirExpediente = function(idEst, tieneAlerta) {
-          document.getElementById('exp-nombre').textContent = "Estudiante";
-          document.getElementById('exp-id').textContent = idEst;
-          document.getElementById('exp-avatar').textContent = idEst.replace('EST-', '').substring(0, 2).toUpperCase();
+      
+      window.abrirExpediente = async function(idEst, tieneAlerta) {
+          modalExpediente.classList.add('is-open');
+          document.getElementById('exp-nombre').textContent = "Buscando en base de datos...";
+          
           document.getElementById('exp-alertas').textContent = tieneAlerta ? "1" : "0";
           const estadoObj = document.getElementById('exp-estado');
-          if (tieneAlerta) { estadoObj.textContent = "Requiere atención"; estadoObj.style.color = "var(--rojo)"; } 
-          else { estadoObj.textContent = "Estable"; estadoObj.style.color = "#2f9e6a"; }
-          modalExpediente.classList.add('is-open');
-      };
+          if (tieneAlerta) { 
+            estadoObj.textContent = "Requiere atención"; 
+            estadoObj.style.color = "var(--rojo)"; 
+          } else { 
+            estadoObj.textContent = "Estable"; 
+            estadoObj.style.color = "#2f9e6a"; 
+          }
 
-      window.cerrarExpediente = function() { modalExpediente.classList.remove('is-open'); };
+          try {
+              // Llamada a la API creada en app.py
+              const res = await fetch('/api/estudiante/' + idEst);
+              const data = await res.json();
+              if(data.encontrado) {
+                  document.getElementById('exp-nombre').textContent = data.nombre;
+                  document.getElementById('exp-correo').textContent = data.correo;
+                  document.getElementById('exp-usuario').textContent = data.usuario;
+                  document.getElementById('exp-avatar').textContent = data.nombre.substring(0, 2).toUpperCase();
+              } else {
+                  document.getElementById('exp-nombre').textContent = "Usuario Oculto";
+                  document.getElementById('exp-correo').textContent = "No disponible";
+                  document.getElementById('exp-usuario').textContent = idEst;
+                  document.getElementById('exp-avatar').textContent = "??";
+              }
+          } catch(e) {
+              document.getElementById('exp-nombre').textContent = "Error de conexión";
+          }
+      };
+      
+      window.cerrarExpediente = function() { 
+          modalExpediente.classList.remove('is-open'); 
+      };
 
       window.intervenirPrivado = function(idEst) {
           activeStudentId = idEst;
@@ -373,20 +417,11 @@
           renderPanelChatMessages();
       };
 
-      window.eliminarPost = function(btn, idPost) {
-          if(!confirm("¿Seguro que deseas eliminar esta publicación permanentemente de la base de datos de todos los estudiantes?")) return;
-          
-          if (!window.firebaseDatabase) return alert("Error de conexión.");
-          
-          const db = window.firebaseDatabase;
-          const { ref } = window.firebaseDbFunctions;
-          
-          import("https://www.gstatic.com/firebasejs/12.17.0/firebase-database.js").then(({ remove }) => {
-              remove(ref(db, 'publicaciones/' + idPost)).then(() => btn.closest('.post-card').remove());
-          }).catch(() => alert("No se pudo eliminar de Firebase."));
-      };
-
-      function escapeHTML(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
+      function escapeHTML(str) { 
+          const div = document.createElement('div'); 
+          div.textContent = str; 
+          return div.innerHTML; 
+      }
   })();
 </script>
 
@@ -394,25 +429,21 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
   import { getDatabase, ref, push, set, onChildAdded, onValue } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBpwRtDft9k2CTnmBsSPWR-vjD4gPbDH3I",
-    authDomain: "george-gilberth.firebaseapp.com",
-    databaseURL: "https://george-gilberth-default-rtdb.firebaseio.com",
-    projectId: "george-gilberth",
-    storageBucket: "george-gilberth.firebasestorage.app",
-    messagingSenderId: "444338536878",
-    appId: "1:444338536878:web:1844ac822f9a085b10083f"
+  const firebaseConfig = { 
+    apiKey: "AIzaSyBpwRtDft9k2CTnmBsSPWR-vjD4gPbDH3I", 
+    authDomain: "george-gilberth.firebaseapp.com", 
+    databaseURL: "https://george-gilberth-default-rtdb.firebaseio.com", 
+    projectId: "george-gilberth", 
+    storageBucket: "george-gilberth.firebasestorage.app", 
+    messagingSenderId: "444338536878", 
+    appId: "1:444338536878:web:1844ac822f9a085b10083f" 
   };
-
   try {
     const app = initializeApp(firebaseConfig);
     window.firebaseDatabase = getDatabase(app);
     window.firebaseDbFunctions = { ref, push, set, onChildAdded, onValue };
     window.dispatchEvent(new CustomEvent("firebase-ready"));
-  } catch (initError) {
-    console.error("Error al inicializar Firebase en orientadores:", initError);
-  }
+  } catch (e) {}
 </script>
-
 </body>
 </html>
