@@ -476,16 +476,32 @@ html, body{
    QUIÉN SOY - PANEL INFORMATIVO
    ============================================================ */
 
+/* ============================================================
+   QUIÉN SOY
+   ============================================================ */
+
+#quien-soy-toggle {
+    display: none;
+}
+
 .quien-soy-panel {
     display: none;
     width: min(700px, 90%);
     margin: 30px auto 0;
     padding: 30px;
+    box-sizing: border-box;
+
     text-align: left;
+
     background: rgba(255, 255, 255, 0.95);
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 16px;
+
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+#quien-soy-toggle:checked ~ .quien-soy-panel {
+    display: block;
 }
 
 .quien-soy-panel h2 {
@@ -504,12 +520,11 @@ html, body{
 }
 
 .quien-soy-panel ul {
+    margin: 10px 0 0;
     padding-left: 22px;
     line-height: 1.8;
 }
 
-#quien-soy-toggle:checked + .cta + .quien-soy-panel {
-    display: block;
-}
-    font-weight: 600;
+.quien-soy-panel li {
+    margin-bottom: 5px;
 }
