@@ -467,177 +467,151 @@ html, body{
 /* ============================================================
    NAVEGACIÓN PRINCIPAL
    ============================================================ */
+/* =========================================================
+   NAVEGACIÓN GEORGE
+   ========================================================= */
 
-.navegacion-principal {
+.tabs-derecha {
     position: fixed;
-    top: 50%;
     right: 0;
+    top: 50%;
     transform: translateY(-50%);
-    z-index: 50;
+    z-index: 9999;
 }
 
-/* ---------------- DESKTOP ---------------- */
-
-.nav-escritorio {
+.nav-enlaces {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    align-items: flex-end;
 }
 
-.nav-principal-btn {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
+.nav-enlaces .tab-lateral {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 160px;
+
+    box-sizing: border-box;
 
     background: var(--azul);
     color: var(--crema);
 
     text-decoration: none;
-    text-transform: uppercase;
+
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+
+    border-radius: 10px 0 0 10px;
 
     font-family: "Inter", sans-serif;
     font-size: 0.78rem;
     letter-spacing: 0.08em;
+    text-transform: uppercase;
 
-    padding: 22px 10px;
-
-    border: 1px solid var(--azul);
-    border-right: none;
-
-    border-radius: 10px 0 0 10px;
-
-    transition:
-        background .2s ease,
-        padding-right .2s ease;
+    transition: 0.2s ease;
 }
 
-.nav-principal-btn:hover {
+.nav-enlaces .tab-lateral:hover {
     background: var(--rojo);
-    border-color: var(--rojo);
-    padding-right: 16px;
+    width: 50px;
 }
 
 
-/* ---------------- HAMBURGUESA ---------------- */
+/* HAMBURGUESA */
 
 .menu-hamburguesa {
     display: none;
-
-    width: 48px;
-    height: 48px;
-
-    background: var(--azul);
-    border-radius: 10px 0 0 10px;
-
-    cursor: pointer;
-
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.menu-hamburguesa span {
-    display: block;
-    width: 22px;
-    height: 2px;
-
-    background: var(--crema);
-
-    transition: transform .25s ease, opacity .25s ease;
 }
 
 
-/* ---------------- MENÚ MÓVIL ---------------- */
-
-.nav-movil {
-    display: none;
-
-    position: absolute;
-
-    top: 58px;
-    right: 0;
-
-    width: 210px;
-
-    background: var(--blanco);
-
-    border: 1px solid rgba(0, 17, 58, 0.12);
-    border-radius: 12px 0 0 12px;
-
-    box-shadow: -10px 10px 30px rgba(0, 17, 58, 0.15);
-
-    overflow: hidden;
-}
-
-.nav-movil a {
-    display: block;
-
-    padding: 15px 20px;
-
-    color: var(--azul);
-
-    text-decoration: none;
-
-    font-family: "Inter", sans-serif;
-    font-weight: 600;
-
-    border-bottom: 1px solid rgba(0, 17, 58, 0.08);
-
-    transition:
-        background .2s ease,
-        color .2s ease;
-}
-
-.nav-movil a:last-child {
-    border-bottom: none;
-}
-
-.nav-movil a:hover {
-    background: var(--crema);
-    color: var(--rojo);
-}
-
-
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
+/* =========================================================
+   MÓVIL
+   ========================================================= */
 
 @media (max-width: 640px) {
 
-    .navegacion-principal {
+    .tabs-derecha {
         top: 24px;
         right: 0;
         transform: none;
     }
 
-    .nav-escritorio {
-        display: none;
-    }
-
     .menu-hamburguesa {
         display: flex;
+
+        width: 48px;
+        height: 48px;
+
+        background: var(--azul);
+
+        border-radius: 10px 0 0 10px;
+
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+
+        cursor: pointer;
     }
 
-    #menu-navegacion:checked ~ .navegacion-principal .nav-movil {
+    .menu-hamburguesa span {
         display: block;
+
+        width: 22px;
+        height: 2px;
+
+        background: var(--crema);
     }
 
-    /* Animación de las tres líneas */
+    .nav-enlaces {
+        display: none;
 
-    #menu-navegacion:checked ~ .navegacion-principal
-    .menu-hamburguesa span:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
+        position: absolute;
+        top: 58px;
+        right: 0;
+
+        width: 210px;
+
+        background: var(--blanco);
+
+        border-radius: 10px 0 0 10px;
+
+        box-shadow: -5px 8px 25px rgba(0,0,0,.15);
+
+        overflow: hidden;
     }
 
-    #menu-navegacion:checked ~ .navegacion-principal
-    .menu-hamburguesa span:nth-child(2) {
-        opacity: 0;
+    #menu-navegacion:checked ~ .tabs-derecha .nav-enlaces {
+        display: flex;
+        flex-direction: column;
     }
 
-    #menu-navegacion:checked ~ .navegacion-principal
-    .menu-hamburguesa span:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
+    .nav-enlaces .tab-lateral {
+        width: 100%;
+        height: auto;
+
+        padding: 15px 20px;
+
+        writing-mode: horizontal-tb;
+        transform: none;
+
+        justify-content: flex-start;
+
+        background: var(--blanco);
+        color: var(--azul);
+
+        border-radius: 0;
+
+        font-size: 0.9rem;
+        letter-spacing: normal;
+        text-transform: none;
+    }
+
+    .nav-enlaces .tab-lateral:hover {
+        width: 100%;
+        background: var(--crema);
+        color: var(--rojo);
     }
 }
-  
