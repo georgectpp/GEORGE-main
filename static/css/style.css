@@ -464,4 +464,180 @@ html, body{
 }
 
 
+/* ============================================================
+   NAVEGACIÓN PRINCIPAL
+   ============================================================ */
+
+.navegacion-principal {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: 50;
+}
+
+/* ---------------- DESKTOP ---------------- */
+
+.nav-escritorio {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-end;
+}
+
+.nav-principal-btn {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+
+    background: var(--azul);
+    color: var(--crema);
+
+    text-decoration: none;
+    text-transform: uppercase;
+
+    font-family: "Inter", sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+
+    padding: 22px 10px;
+
+    border: 1px solid var(--azul);
+    border-right: none;
+
+    border-radius: 10px 0 0 10px;
+
+    transition:
+        background .2s ease,
+        padding-right .2s ease;
+}
+
+.nav-principal-btn:hover {
+    background: var(--rojo);
+    border-color: var(--rojo);
+    padding-right: 16px;
+}
+
+
+/* ---------------- HAMBURGUESA ---------------- */
+
+.menu-hamburguesa {
+    display: none;
+
+    width: 48px;
+    height: 48px;
+
+    background: var(--azul);
+    border-radius: 10px 0 0 10px;
+
+    cursor: pointer;
+
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.menu-hamburguesa span {
+    display: block;
+    width: 22px;
+    height: 2px;
+
+    background: var(--crema);
+
+    transition: transform .25s ease, opacity .25s ease;
+}
+
+
+/* ---------------- MENÚ MÓVIL ---------------- */
+
+.nav-movil {
+    display: none;
+
+    position: absolute;
+
+    top: 58px;
+    right: 0;
+
+    width: 210px;
+
+    background: var(--blanco);
+
+    border: 1px solid rgba(0, 17, 58, 0.12);
+    border-radius: 12px 0 0 12px;
+
+    box-shadow: -10px 10px 30px rgba(0, 17, 58, 0.15);
+
+    overflow: hidden;
+}
+
+.nav-movil a {
+    display: block;
+
+    padding: 15px 20px;
+
+    color: var(--azul);
+
+    text-decoration: none;
+
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+
+    border-bottom: 1px solid rgba(0, 17, 58, 0.08);
+
+    transition:
+        background .2s ease,
+        color .2s ease;
+}
+
+.nav-movil a:last-child {
+    border-bottom: none;
+}
+
+.nav-movil a:hover {
+    background: var(--crema);
+    color: var(--rojo);
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 640px) {
+
+    .navegacion-principal {
+        top: 24px;
+        right: 0;
+        transform: none;
+    }
+
+    .nav-escritorio {
+        display: none;
+    }
+
+    .menu-hamburguesa {
+        display: flex;
+    }
+
+    #menu-navegacion:checked ~ .navegacion-principal .nav-movil {
+        display: block;
+    }
+
+    /* Animación de las tres líneas */
+
+    #menu-navegacion:checked ~ .navegacion-principal
+    .menu-hamburguesa span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    #menu-navegacion:checked ~ .navegacion-principal
+    .menu-hamburguesa span:nth-child(2) {
+        opacity: 0;
+    }
+
+    #menu-navegacion:checked ~ .navegacion-principal
+    .menu-hamburguesa span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+}
   
