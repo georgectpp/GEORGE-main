@@ -488,9 +488,10 @@ html, body{
 }
 
 .quien-soy-content {
-    width: min(850px, 90%);
+    width: min(700px, 90%);
     margin: 30px auto 0;
-    padding: 30px 40px;
+    padding: 28px 40px;
+
     box-sizing: border-box;
 
     background: rgba(255, 255, 255, 0.95);
@@ -499,32 +500,46 @@ html, body{
 
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 
-    text-align: left;
+    text-align: center;
 }
 
+/* Título */
 .quien-soy-content h2 {
     margin: 0 0 18px;
-    text-align: left;
+    text-align: center;
 }
 
-.quien-soy-content h3 {
-    margin: 25px 0 10px;
-    text-align: left;
-}
-
+/* Texto descriptivo */
 .quien-soy-content p {
-    margin: 0 0 18px;
-    text-align: left;
+    max-width: 620px;
+    margin: 0 auto 20px;
+
+    text-align: center;
+
     line-height: 1.7;
 }
 
+/* Subtítulo */
+.quien-soy-content h3 {
+    margin: 22px 0 12px;
+    text-align: center;
+}
+
+/* Lista */
 .quien-soy-content ul {
-    margin: 10px 0 0;
-    padding-left: 25px;
+    width: fit-content;
+    margin: 0 auto;
+    padding-left: 22px;
+
     text-align: left;
+
     line-height: 1.8;
 }
 
+/* Elementos de la lista */
 .quien-soy-content li {
-    margin-bottom: 5px;
+    padding-left: 3px;
+    margin-bottom: 4px;
+
+    text-align: left;
 }
