@@ -425,7 +425,7 @@
 
           const n8nWebhookUrlGenerador = 'https://innowgrp09.app.n8n.cloud/webhook/6c117b71-c9a3-458e-8e57-7dda41fa8ee7'; 
           
-  try {
+    try {
               const response = await fetch(n8nWebhookUrlGenerador, {
                   method: 'POST',
                   headers: { 'Content-Type': 'text/plain' },
@@ -439,29 +439,15 @@
               quitarEscribiendoGen();
               if (!response.ok) throw new Error('Error en el servidor de n8n');
 
-              // 1. Averiguamos qué tipo de respuesta nos mandó n8n
-              const contentType = response.headers.get("content-type");
-
-              // 2. Si es un archivo (PDF, TXT o Binario), creamos el botón de descarga
-              if (contentType && (contentType.includes("application/pdf") || contentType.includes("text/plain") || contentType.includes("application/octet-stream"))) {
-                  const blob = await response.blob();
-                  const urlArchivo = window.URL.createObjectURL(blob);
-                  
-                  // Aparece el botón
-                  mostrarBotonPDF(urlArchivo, 'Material_George.txt');
-                  
-              } 
-              // 3. Si es un mensaje normal de chat, lo leemos como JSON
-              else {
-                  const data = await response.json();
-                  const respuestaIA = data.respuesta_ia || data.output || data.message || 'Material generado.'; 
-                  mostrarMensajeGenerador(respuestaIA, 'ia'); 
-              }
+              const data = await response.json();
+              const respuestaIA = data.respuesta_ia || data.output || data.message || 'No pude generar el material. Intenta darme más detalles.'; 
+              
+              mostrarMensajeGenerador(respuestaIA, 'ia'); 
 
           } catch (error) {
               quitarEscribiendoGen();
-              console.error('Error:', error);
-              mostrarMensajeGenerador('⚠️ No se pudo generar el documento. Revisa la conexión.', 'sistema');
+              console.error('Error de conexión:', error);
+              mostrarMensajeGenerador('⚠️ No se pudo conectar con el motor de generación. Revisa el Webhook de n8n.', 'sistema');
           }
         });
     }
