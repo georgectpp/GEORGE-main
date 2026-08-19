@@ -58,6 +58,15 @@
   .progreso-bg { width: 100%; height: 25px; background: #eee; border-radius: 999px; overflow: hidden; margin: 10px 0; position: relative; }
   .progreso-fill { height: 100%; background: var(--rojo); transition: width 0.5s; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; color: white; font-weight: bold; font-size: 12px; }
   .dash-leyenda { font-size: 13px; color: var(--gris); }
+
+  /* =========================================================
+     Estilos Panel de Alertas Críticas (IA)
+     ========================================================= */
+  .alerta-card { background: #fff1f0; border-left: 5px solid #ff4d4f; padding: 15px; margin-bottom: 15px; border-radius: 6px; animation: parpadeoUrgencia 2s infinite alternate; }
+  .alerta-header { display: flex; justify-content: space-between; font-size: 12px; color: #5c5c5c; margin-bottom: 8px; font-weight: bold; }
+  .alerta-tema { background: #ff4d4f; color: white; padding: 3px 8px; border-radius: 12px; text-transform: uppercase; font-size: 11px; }
+  .alerta-mensaje { font-style: italic; color: #262626; margin: 10px 0; padding: 10px; background: white; border-radius: 4px; }
+  @keyframes parpadeoUrgencia { from { box-shadow: 0 0 0px rgba(255, 77, 79, 0); } to { box-shadow: 0 0 8px rgba(255, 77, 79, 0.4); } }
 </style>
 </head>
 <body>
@@ -159,28 +168,26 @@
     <section id="view-panel-alerts" class="view" data-view="panel-alerts">
       <div class="view-header">
         <h1>Panel de Alertas Críticas</h1>
+        <p>Detectadas automáticamente por GEORGE IA</p>
       </div>
       <div id="panel-alerts-list">
         <p style="color: var(--gris-claro);">No hay alertas críticas en este momento.</p>
       </div>
     </section>
+
+    <!-- VISTA 5: ALERTAS DE VOCABULARIO -->
+    <section id="view-panel-vocabulario" class="view" data-view="panel-vocabulario">
+        <div class="view-header">
+            <h1>Panel de Alertas De Vocabulario</h1>
+        </div>
+        <div id="panel-vocabulario-list">
+            <p style="color: var(--gris-claro);">
+                No hay alertas de vocabulario en este momento.
+            </p>
+        </div>
+    </section>
   </div>
 </div>
-
-  <!-- VISTA 5: ALERTAS DE VOCABULARIO -->
-<section id="view-panel-vocabulario" class="view" data-view="panel-vocabulario">
-
-    <div class="view-header">
-        <h1>Panel de Alertas De Vocabulario</h1>
-    </div>
-
-    <div id="panel-vocabulario-list">
-        <p style="color: var(--gris-claro);">
-            No hay alertas de vocabulario en este momento.
-        </p>
-    </div>
-
-</section>
 
 <!-- MODAL EXPEDIENTE ACTUALIZADO (CON FETCH A SQLITE) -->
 <div class="modal-overlay" id="modal-expediente" aria-hidden="true">
@@ -294,6 +301,45 @@
                   input.value = '';
               });
           }
+
+          // 5. Cargar Alertas Críticas de IA (Monitor de Seguridad)
+          const panelAlertas = document.getElementById('panel-alerts-list');
+          onChildAdded(ref(db, 'alertas_orientacion'), (snapshot) => {
+              const alerta = snapshot.val();
+              
+              // Ocultar el mensaje de "No hay alertas"
+              const txtNoAlertas = panelAlertas.querySelector('p');
+              if (txtNoAlertas && txtNoAlertas.textContent.includes('No hay alertas')) {
+                  txtNoAlertas.remove();
+              }
+
+              // Extraer datos del JSON que envió n8n
+              let analisis = {};
+              try {
+                  analisis = typeof alerta.analisis === 'string' ? JSON.parse(alerta.analisis) : alerta.analisis;
+              } catch (e) {
+                  analisis = { tema: 'Riesgo detectado', nivel: 'alto' };
+              }
+
+              // Crear la tarjeta de la alerta
+              const alertaDiv = document.createElement('div');
+              alertaDiv.className = 'alerta-card';
+              
+              const fechaFormateada = new Date(alerta.fecha).toLocaleString('es-CR');
+
+              alertaDiv.innerHTML = `
+                  <div class="alerta-header">
+                      <span><i class="fa-solid fa-user"></i> ${alerta.usuario || 'Estudiante'}</span>
+                      <span class="alerta-tema">${analisis.tema || 'Alerta'} (Nivel: ${analisis.nivel || 'Desconocido'})</span>
+                  </div>
+                  <div><strong>Origen:</strong> ${alerta.origen === 'chatbot_ia' ? '💬 Chat con GEORGE' : '📝 Foro Público'}</div>
+                  <div class="alerta-mensaje">"${alerta.mensaje_original}"</div>
+                  <div style="font-size: 11px; color: #888; text-align: right;">${fechaFormateada}</div>
+              `;
+
+              // Insertar la alerta al principio de la lista
+              panelAlertas.prepend(alertaDiv);
+          });
       });
 
       // =========================================================
