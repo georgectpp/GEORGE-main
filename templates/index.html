@@ -297,6 +297,25 @@
     const chatInputIA = document.getElementById('chat-input-ia');
     const chatBodyIA = document.getElementById('chat-body-ia');
 
+    // --- NUEVA FUNCIÓN: EL GUARDIÁN SILENCIOSO ---
+    async function monitorearSeguridad(mensajeTexto, correoUsuario, lugarOrigen) {
+        const webhookMonitor = 'https://innowgrp09.app.n8n.cloud/webhook/monitor-seguridad'; 
+        try {
+            fetch(webhookMonitor, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    mensaje: mensajeTexto,
+                    usuario: correoUsuario,
+                    origen: lugarOrigen
+                })
+            });
+        } catch (error) {
+            console.log("Error en el monitor de seguridad en segundo plano.");
+        }
+    }
+    // ---------------------------------------------
+
     function mostrarMensajeEnPantalla(texto, remitente) {
       const msgDiv = document.createElement('div');
       
@@ -332,6 +351,10 @@
           
           const mensaje = chatInputIA.value.trim();
           if (!mensaje) return;
+
+          // --- NUEVO: ACTIVAR EL RADAR ANTES DE RESPONDER ---
+          monitorearSeguridad(mensaje, window.USUARIO_REAL, 'chatbot_ia');
+          // --------------------------------------------------
           
           mostrarMensajeEnPantalla(mensaje, 'usuario');
           chatInputIA.value = ''; 
