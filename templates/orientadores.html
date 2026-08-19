@@ -304,7 +304,11 @@
 
           // 5. Cargar Alertas Críticas de IA (Monitor de Seguridad)
           const panelAlertas = document.getElementById('panel-alerts-list');
-          onChildAdded(ref(db, 'alertas_orientacion'), (snapshot) => {
+          
+          // ¡AQUÍ USAMOS TU NUEVA BASE DE DATOS PARA LAS ALERTAS!
+          const dbAlertas = window.firebaseAlertasDB; 
+          
+          onChildAdded(ref(dbAlertas, 'alertas_orientacion'), (snapshot) => {
               const alerta = snapshot.val();
               
               // Ocultar el mensaje de "No hay alertas"
@@ -493,6 +497,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
   import { getDatabase, ref, push, set, onChildAdded, onValue } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-database.js";
 
+  // 1. CONEXIÓN A LA CUENTA DE TU COMPAÑERO (Foro y Chats)
   const firebaseConfig = { 
     apiKey: "AIzaSyBpwRtDft9k2CTnmBsSPWR-vjD4gPbDH3I", 
     authDomain: "george-gilberth.firebaseapp.com", 
@@ -502,9 +507,21 @@
     messagingSenderId: "444338536878", 
     appId: "1:444338536878:web:1844ac822f9a085b10083f" 
   };
+
+  // 2. CONEXIÓN A TU NUEVA CUENTA (Solo Alertas)
+  const firebaseAlertasConfig = {
+    databaseURL: "https://alertas-ea115-default-rtdb.firebaseio.com" 
+  };
+
   try {
+    // Inicializar app principal
     const app = initializeApp(firebaseConfig);
     window.firebaseDatabase = getDatabase(app);
+    
+    // Inicializar app secundaria (Alertas)
+    const appAlertas = initializeApp(firebaseAlertasConfig, "AlertasApp");
+    window.firebaseAlertasDB = getDatabase(appAlertas);
+
     window.firebaseDbFunctions = { ref, push, set, onChildAdded, onValue };
     window.dispatchEvent(new CustomEvent("firebase-ready"));
   } catch (e) {}
