@@ -302,10 +302,8 @@
               });
           }
 
-          // 5. Cargar Alertas Críticas de IA (Monitor de Seguridad)
+          // 5. Cargar Alertas Críticas de IA desde la NUEVA base de datos
           const panelAlertas = document.getElementById('panel-alerts-list');
-          
-          // ¡AQUÍ USAMOS TU NUEVA BASE DE DATOS PARA LAS ALERTAS!
           const dbAlertas = window.firebaseAlertasDB; 
           
           onChildAdded(ref(dbAlertas, 'alertas_orientacion'), (snapshot) => {
@@ -455,7 +453,6 @@
           }
 
           try {
-              // Llamada a la API creada en app.py
               const res = await fetch('/api/estudiante/' + idEst);
               const data = await res.json();
               if(data.encontrado) {
@@ -497,7 +494,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
   import { getDatabase, ref, push, set, onChildAdded, onValue } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-database.js";
 
-  // 1. CONEXIÓN A LA CUENTA DE TU COMPAÑERO (Foro y Chats)
+  // 1. CONEXIÓN A LA CUENTA PRINCIPAL (Foro y Chats)
   const firebaseConfig = { 
     apiKey: "AIzaSyBpwRtDft9k2CTnmBsSPWR-vjD4gPbDH3I", 
     authDomain: "george-gilberth.firebaseapp.com", 
