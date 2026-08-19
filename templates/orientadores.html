@@ -302,12 +302,13 @@
               });
           }
 
-          // 5. Cargar Alertas Críticas de IA desde la NUEVA base de datos
+          // 5. Cargar Alertas Críticas de IA desde la NUEVA base de datos (Blindado)
           const panelAlertas = document.getElementById('panel-alerts-list');
           const dbAlertas = window.firebaseAlertasDB; 
           
           onChildAdded(ref(dbAlertas, 'alertas_orientacion'), (snapshot) => {
               const alerta = snapshot.val();
+              if (!alerta) return;
               
               // Ocultar el mensaje de "No hay alertas"
               const txtNoAlertas = panelAlertas.querySelector('p');
@@ -315,27 +316,37 @@
                   txtNoAlertas.remove();
               }
 
-              // Extraer datos del JSON que envió n8n
-              let analisis = {};
+              // Extraer datos del JSON de forma blindada
+              let analisis = { tema: 'Alerta de Seguridad', nivel: 'Alto' };
               try {
-                  analisis = typeof alerta.analisis === 'string' ? JSON.parse(alerta.analisis) : alerta.analisis;
+                  if (alerta.analisis) {
+                      if (typeof alerta.analisis === 'string') {
+                          analisis = JSON.parse(alerta.analisis);
+                      } else {
+                          analisis = alerta.analisis;
+                      }
+                  }
               } catch (e) {
                   analisis = { tema: 'Riesgo detectado', nivel: 'alto' };
               }
+              
+              if (!analisis) analisis = {};
+              if (!analisis.tema) analisis.tema = 'Alerta detectada';
+              if (!analisis.nivel) analisis.nivel = 'Alto';
 
               // Crear la tarjeta de la alerta
               const alertaDiv = document.createElement('div');
               alertaDiv.className = 'alerta-card';
               
-              const fechaFormateada = new Date(alerta.fecha).toLocaleString('es-CR');
+              const fechaFormateada = alerta.fecha ? new Date(alerta.fecha).toLocaleString('es-CR') : 'Reciente';
 
               alertaDiv.innerHTML = `
                   <div class="alerta-header">
                       <span><i class="fa-solid fa-user"></i> ${alerta.usuario || 'Estudiante'}</span>
-                      <span class="alerta-tema">${analisis.tema || 'Alerta'} (Nivel: ${analisis.nivel || 'Desconocido'})</span>
+                      <span class="alerta-tema">${analisis.tema} (Nivel: ${analisis.nivel})</span>
                   </div>
                   <div><strong>Origen:</strong> ${alerta.origen === 'chatbot_ia' ? '💬 Chat con GEORGE' : '📝 Foro Público'}</div>
-                  <div class="alerta-mensaje">"${alerta.mensaje_original}"</div>
+                  <div class="alerta-mensaje">"${alerta.mensaje_original || alerta.mensaje || 'Sin contenido'}"</div>
                   <div style="font-size: 11px; color: #888; text-align: right;">${fechaFormateada}</div>
               `;
 
