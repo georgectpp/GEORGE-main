@@ -135,6 +135,10 @@
       const isAnon = document.getElementById('post-anon').checked;
 
       if (!title || !content) return;
+
+      // --- NUEVO: MONITOR DE SEGURIDAD (Analiza título y contenido) ---
+      monitorearSeguridad(title + " - " + content, myStudentId, 'foro_publico');
+      // ----------------------------------------------------------------
       
       if (!window.firebaseDatabase) {
           return alert("Conectando con la base de datos...");
@@ -185,6 +189,10 @@
           e.preventDefault();
           const texto = chatInputOr.value.trim();
           if (!texto) return;
+
+          // --- NUEVO: MONITOR DE SEGURIDAD (Analiza mensaje de chat) ---
+          monitorearSeguridad(texto, myStudentId, 'chat_orientacion');
+          // -------------------------------------------------------------
           
           set(push(miChatRef), { 
               sender: 'student', 
@@ -332,6 +340,10 @@
       } else if (action === 'reply-send') {
           const text = card.querySelector('textarea').value.trim();
           if (!text) return;
+
+          // --- NUEVO: MONITOR DE SEGURIDAD (Analiza las respuestas en el foro) ---
+          monitorearSeguridad(text, myStudentId, 'respuesta_foro');
+          // -----------------------------------------------------------------------
           
           const item = document.createElement('div'); 
           item.className = 'reply-item';
@@ -567,7 +579,27 @@
           renderTest();
       });
   }
-  
-  renderTest();
+
+  // ==================================================================
+  // 6. MONITOR DE SEGURIDAD (Conexión silenciosa a n8n)
+  // ==================================================================
+  async function monitorearSeguridad(mensajeTexto, correoUsuario, lugarOrigen) {
+      // Reemplaza con la Production URL de tu nuevo Webhook "Monitor de Seguridad"
+      const webhookMonitor = 'https://innowgrp09.app.n8n.cloud/webhook/monitor-seguridad'; 
+
+      try {
+          fetch(webhookMonitor, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                  mensaje: mensajeTexto,
+                  usuario: correoUsuario,
+                  origen: lugarOrigen
+              })
+          });
+      } catch (error) {
+          console.log("Error en el monitor de seguridad en segundo plano.");
+      }
+  }
 
 })();
