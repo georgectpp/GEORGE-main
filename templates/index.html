@@ -299,7 +299,7 @@
 
     // --- NUEVA FUNCIÓN: EL GUARDIÁN SILENCIOSO ---
     async function monitorearSeguridad(mensajeTexto, correoUsuario, lugarOrigen) {
-        const webhookMonitor = 'https://innowgrp09.app.n8n.cloud/webhook-test/monitor-seguridad'; 
+        const webhookMonitor = 'https://innowgrp09.app.n8n.cloud/webhook/monitor-seguridad'; 
         try {
             fetch(webhookMonitor, {
                 method: 'POST',
