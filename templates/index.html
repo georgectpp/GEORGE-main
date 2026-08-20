@@ -250,7 +250,9 @@
         </div>
       </header>
       <p class="privacy-banner"><i class="fa-solid fa-lock" aria-hidden="true"></i>Esta conversación es privada y confidencial.</p>
+      
       <div class="chat-body" id="chat-body-orientacion">
+        <!-- El saludo inicial se limpiará automáticamente si hay mensajes previos en Firebase -->
         <div class="chat-msg chat-msg-in">
           <p>Hola, gracias por escribirnos. Estamos aquí para acompañarte. ¿Cómo te sientes hoy?</p>
           <span class="chat-time">Ahora</span>
@@ -346,7 +348,6 @@
     function mostrarMensajeEnPantalla(texto, remitente) {
       const msgDiv = document.createElement('div');
       
-      // Estilos dependiendo de quién manda el mensaje
       if (remitente === 'ia' || remitente === 'sistema') {
           msgDiv.className = 'chat-msg chat-msg-in';
       } else {
@@ -359,14 +360,12 @@
           msgDiv.style.borderBottomLeftRadius = '12px';
       }
       
-      // Creamos el texto y la hora
       const p = document.createElement('p'); 
       p.textContent = texto;
       const span = document.createElement('span'); 
       span.className = 'chat-time'; 
       span.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
       
-      // Lo inyectamos en el chat
       msgDiv.appendChild(p); 
       msgDiv.appendChild(span);
       chatBodyIA.appendChild(msgDiv); 
@@ -384,7 +383,6 @@
           chatInputIA.value = ''; 
           
           try {
-              // Conexión con n8n (Flujo IA)
               const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b', {
                   method: 'POST', 
                   headers: { 'Content-Type': 'text/plain' },
@@ -439,7 +437,6 @@
           chatInputGen.value = ''; 
           
           try {
-              // Conexión con n8n (Flujo Generador Docente)
               const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/6c117b71-c9a3-458e-8e57-7dda41fa8ee7', {
                   method: 'POST', 
                   headers: { 'Content-Type': 'text/plain' },
@@ -465,7 +462,6 @@
         { id: 6, texto: "¿Sientes curiosidad por investigar el porqué de las cosas en la naturaleza o la tecnología?", tipo: "Ciencias" }
     ];
 
-    // Mapeo de perfiles y carreras
     const perfiles = {
         "Ingenieria": { nombre: "Perfil Práctico / Ingenieril 🛠️", desc: "Te encanta resolver problemas tangibles y crear cosas nuevas.", carreras: ["Ingeniería en Sistemas", "Arquitectura", "Electrónica"] },
         "Social": { nombre: "Perfil Social / Humanista 🤝", desc: "Tienes gran empatía y vocación de servicio.", carreras: ["Psicología", "Docencia", "Trabajo Social"] },
@@ -478,7 +474,6 @@
     let preguntaActual = 0;
     let respuestasTest = { Ingenieria: 0, Social: 0, Negocios: 0, Arte: 0, Administracion: 0, Ciencias: 0 };
 
-    // Función principal para mostrar el cuestionario paso a paso
     window.renderizarPregunta = function() {
         const contenedor = document.getElementById('quiz-content');
         const progressBar = document.getElementById('progress');
@@ -486,7 +481,6 @@
 
         if (!contenedor) return;
         
-        // Si terminamos, calculamos el resultado
         if (preguntaActual >= preguntasVocacionales.length) {
             contenedor.style.display = 'none'; 
             progressBar.style.width = '100%'; 
@@ -511,14 +505,12 @@
             </div>`;
     };
 
-    // Función que registra los puntos y avanza
     window.responderTest = function(tipo, puntos) {
         respuestasTest[tipo] += puntos; 
         preguntaActual++; 
         renderizarPregunta();
     };
 
-    // Al finalizar, evalúa y pinta el perfil ganador
     function mostrarResultado() {
         const resultBox = document.getElementById('result-box');
         let maxPuntos = -1; 
@@ -548,7 +540,6 @@
         resultBox.style.border = "1px solid var(--gris-borde)";
     }
 
-    // Botón para volver a intentar el test
     const btnRestart = document.getElementById('btn-restart-test');
     if (btnRestart) {
         btnRestart.addEventListener('click', () => {
@@ -558,28 +549,26 @@
         });
     }
     
-    // Inicia el test la primera vez
     setTimeout(renderizarPregunta, 300);
   });
 
   // =================================================================
-  // 3. LÓGICA DE FIREBASE Y TERMÓMETRO DE BIENESTAR
+  // 3. LÓGICA DE FIREBASE (Termómetro y Chat de Orientación)
   // =================================================================
   window.addEventListener('firebase-ready', () => {
+      
+      // A) TERMÓMETRO DE BIENESTAR
       const formBienestar = document.getElementById('form-bienestar');
       if (formBienestar) {
           formBienestar.addEventListener('submit', function (event) {
               event.preventDefault();
-              
               if (!window.firebaseDatabase) return alert("Conectando con la base de datos...");
               
-              // Recopilar respuestas del formulario
               const valEstres = document.querySelector('input[name="estres"]:checked').value;
               const valBullying = document.querySelector('input[name="bullying"]:checked').value;
               const valEnergia = document.querySelector('input[name="energia"]:checked').value;
               const idSeguro = (window.USUARIO_REAL || 'estudiante-anonimo').replace(/\./g, '_');
               
-              // Guardar la encuesta en Firebase
               window.firebaseDbFunctions.set(window.firebaseDbFunctions.ref(window.firebaseDatabase, 'encuestas_bienestar/' + idSeguro), {
                   estres: parseInt(valEstres), 
                   bullying: parseInt(valBullying), 
@@ -590,6 +579,87 @@
                   msjExito.style.display = 'block'; 
                   setTimeout(() => { msjExito.style.display = 'none'; }, 4000);
               }).catch(err => alert("Hubo un error al intentar guardar tus respuestas."));
+          });
+      }
+
+      // B) CHAT PRIVADO CON ORIENTACIÓN
+      const chatFormOri = document.getElementById('chat-form-orientacion');
+      const chatInputOri = document.getElementById('chat-input-orientacion');
+      const chatBodyOri = document.getElementById('chat-body-orientacion');
+      const idSeguroEstudiante = (window.USUARIO_REAL || 'estudiante-anonimo').replace(/\./g, '_');
+
+      // Función para pintar mensajes de Orientación
+      function mostrarMensajeOrientacion(texto, remitente, timestamp) {
+          const msgDiv = document.createElement('div');
+          
+          if (remitente === 'student') {
+              msgDiv.className = 'chat-msg chat-msg-out';
+              msgDiv.style.alignSelf = 'flex-end';
+              msgDiv.style.marginLeft = 'auto';
+              msgDiv.style.backgroundColor = '#00113A';
+              msgDiv.style.color = '#FFFFFF';
+              msgDiv.style.borderBottomRightRadius = '0';
+              msgDiv.style.borderBottomLeftRadius = '12px';
+          } else {
+              msgDiv.className = 'chat-msg chat-msg-in';
+          }
+          
+          const p = document.createElement('p');
+          p.textContent = texto;
+          
+          const span = document.createElement('span');
+          span.className = 'chat-time';
+          const fecha = timestamp ? new Date(timestamp) : new Date();
+          span.textContent = fecha.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+          
+          msgDiv.appendChild(p);
+          msgDiv.appendChild(span);
+          chatBodyOri.appendChild(msgDiv);
+          chatBodyOri.scrollTop = chatBodyOri.scrollHeight;
+      }
+
+      // 1. Escuchar mensajes desde Firebase en tiempo real
+      let historialCargado = false;
+      const refChat = window.firebaseDbFunctions.ref(window.firebaseDatabase, 'chats_orientacion/' + idSeguroEstudiante);
+      
+      window.firebaseDbFunctions.onChildAdded(refChat, (snapshot) => {
+          // Si es el primer mensaje que cargamos, borramos el saludo estático inicial
+          if (!historialCargado) {
+              chatBodyOri.innerHTML = ''; 
+              historialCargado = true;
+          }
+          const data = snapshot.val();
+          mostrarMensajeOrientacion(data.text, data.sender, data.timestamp);
+      });
+
+      // 2. Interceptar el envío del formulario del estudiante
+      if (chatFormOri) {
+          chatFormOri.addEventListener('submit', (e) => {
+              e.preventDefault(); // ¡Esto evita que la página se recargue!
+              
+              const texto = chatInputOri.value.trim();
+              if (!texto) return;
+              
+              chatInputOri.value = ''; // Limpiar el input
+              
+              if (!window.firebaseDatabase) {
+                  alert("Conectando con Orientación, intenta de nuevo en un segundo...");
+                  return;
+              }
+
+              // Si es el primer mensaje de toda la vida y no había historial
+              if (!historialCargado) {
+                  chatBodyOri.innerHTML = '';
+                  historialCargado = true;
+              }
+
+              // Guardar el mensaje en la base de datos de Firebase
+              const nuevoMensajeRef = window.firebaseDbFunctions.push(refChat);
+              window.firebaseDbFunctions.set(nuevoMensajeRef, {
+                  sender: 'student', // El orientador verá que lo mandó el estudiante
+                  text: texto,
+                  timestamp: Date.now()
+              });
           });
       }
   });
