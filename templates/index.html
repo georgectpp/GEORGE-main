@@ -52,12 +52,12 @@
     <span>Nueva publicación</span>
   </button>
   
-  <!-- NUEVO: Botón de Inicio (Regresa al foro sin cerrar sesión) -->
-  <button type="button" class="btn btn-ghost nav-trigger" data-view="feed" style="margin-left: 15px; border-color: var(--gris-borde);">
+  <!-- BOTÓN DE INICIO: Enlace a la pantalla principal sin cerrar sesión -->
+  <a href="/" class="btn btn-ghost" style="margin-left: 15px; border-color: var(--gris-borde); color: var(--azul);">
     <i class="fa-solid fa-house" aria-hidden="true"></i> Inicio
-  </button>
+  </a>
 
-  <!-- Botón de Salir -->
+  <!-- Botón de Salir: Destruye la sesión -->
   <a href="{{ url_for('logout') }}" class="btn btn-ghost" style="margin-left: 10px; border-color: var(--gris-borde); color: var(--rojo);">
     Salir
   </a>
