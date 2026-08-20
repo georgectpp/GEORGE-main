@@ -52,14 +52,14 @@
     <span>Nueva publicación</span>
   </button>
   
-  <!-- BOTÓN DE INICIO CORREGIDO: Siempre visible con fondo azul y texto blanco -->
-  <a href="/" style="margin-left: 15px; background-color: var(--azul, #00113A); color: white; border: none; padding: 10px 20px; border-radius: 999px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
+  <!-- BOTÓN DE INICIO -->
+  <a href="/" style="margin-left: 15px; background-color: #ffffff; color: #00113A !important; border: none; padding: 10px 20px; border-radius: 999px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     <i class="fa-solid fa-house" aria-hidden="true"></i> Inicio
   </a>
 
-  <!-- Botón de Salir: Destruye la sesión -->
-  <a href="{{ url_for('logout') }}" class="btn btn-ghost" style="margin-left: 10px; border-color: var(--gris-borde); color: var(--rojo);">
-    Salir
+  <!-- BOTÓN DE SALIR -->
+  <a href="{{ url_for('logout') }}" style="margin-left: 10px; background-color: #ffffff; color: #00113A !important; border: none; padding: 10px 20px; border-radius: 999px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Salir
   </a>
 </header>
 
