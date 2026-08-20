@@ -136,7 +136,7 @@
 
       if (!title || !content) return;
 
-      // --- NUEVO: MONITOR DE SEGURIDAD (Analiza título y contenido) ---
+      // --- MONITOR DE SEGURIDAD (Analiza título y contenido) ---
       monitorearSeguridad(title + " - " + content, myStudentId, 'foro_publico');
       // ----------------------------------------------------------------
       
@@ -190,7 +190,7 @@
           const texto = chatInputOr.value.trim();
           if (!texto) return;
 
-          // --- NUEVO: MONITOR DE SEGURIDAD (Analiza mensaje de chat) ---
+          // --- MONITOR DE SEGURIDAD (Analiza mensaje de chat) ---
           monitorearSeguridad(texto, myStudentId, 'chat_orientacion');
           // -------------------------------------------------------------
           
@@ -341,7 +341,7 @@
           const text = card.querySelector('textarea').value.trim();
           if (!text) return;
 
-          // --- NUEVO: MONITOR DE SEGURIDAD (Analiza las respuestas en el foro) ---
+          // --- MONITOR DE SEGURIDAD (Analiza las respuestas en el foro) ---
           monitorearSeguridad(text, myStudentId, 'respuesta_foro');
           // -----------------------------------------------------------------------
           
@@ -395,7 +395,7 @@
   }
 
   // ==================================================================
-  // 5. TEST VOCACIONAL (EXPANDIDO)
+  // 5. TEST VOCACIONAL
   // ==================================================================
   const testQuestions = [
       { 
@@ -584,10 +584,12 @@
   // 6. MONITOR DE SEGURIDAD (Conexión silenciosa a n8n)
   // ==================================================================
   async function monitorearSeguridad(mensajeTexto, correoUsuario, lugarOrigen) {
-      // Reemplaza con la Production URL de tu nuevo Webhook "Monitor de Seguridad"
+      // AQUÍ SE ENCUENTRA LA RUTA REAL QUE CREASTE EN N8N
       const webhookMonitor = 'https://innowgrp09.app.n8n.cloud/webhook/monitor-seguridad'; 
 
       try {
+          console.log(`📡 Enviando mensaje al monitor de seguridad [Origen: ${lugarOrigen}]...`);
+          
           fetch(webhookMonitor, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -596,9 +598,16 @@
                   usuario: correoUsuario,
                   origen: lugarOrigen
               })
+          })
+          .then(response => {
+              console.log("✅ Respuesta recibida del Webhook n8n (Status):", response.status);
+          })
+          .catch(err => {
+              console.error("❌ Error de red al intentar contactar n8n:", err);
           });
+
       } catch (error) {
-          console.log("Error en el monitor de seguridad en segundo plano.");
+          console.error("❌ Error interno en la función de monitoreo:", error);
       }
   }
 
