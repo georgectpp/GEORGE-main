@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GEORGE · Comunidad Estudiantil</title>
 
+<!-- Fuentes e Íconos -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -28,7 +29,9 @@
 </head>
 <body>
 
+<!-- BARRA DE NAVEGACIÓN SUPERIOR -->
 <header class="topbar">
+  <!-- Logo y Nombre de la marca -->
   <button type="button" class="brand nav-trigger" data-view="feed" aria-label="GEORGE, ir al inicio">
     <span class="brand-seal">G</span>
     <span class="brand-text">
@@ -37,23 +40,36 @@
     </span>
   </button>
 
+  <!-- Barra de Búsqueda -->
   <div class="search-form" role="search">
     <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
     <input type="search" id="search-input" class="search-input" placeholder="Buscar publicaciones por título o contenido…" aria-label="Buscar en el foro">
   </div>
 
+  <!-- Botones de Acción -->
   <button type="button" id="btn-new-post" class="btn btn-primary btn-new-post">
     <i class="fa-solid fa-plus" aria-hidden="true"></i>
     <span>Nueva publicación</span>
   </button>
   
-  <a href="{{ url_for('logout') }}" class="btn btn-ghost" style="margin-left: 15px; border-color: var(--gris-borde);">Salir</a>
+  <!-- NUEVO: Botón de Inicio (Regresa al foro sin cerrar sesión) -->
+  <button type="button" class="btn btn-ghost nav-trigger" data-view="feed" style="margin-left: 15px; border-color: var(--gris-borde);">
+    <i class="fa-solid fa-house" aria-hidden="true"></i> Inicio
+  </button>
+
+  <!-- Botón de Salir -->
+  <a href="{{ url_for('logout') }}" class="btn btn-ghost" style="margin-left: 10px; border-color: var(--gris-borde); color: var(--rojo);">
+    Salir
+  </a>
 </header>
 
 <div class="layout">
 
+  <!-- MENÚ LATERAL IZQUIERDO -->
   <aside class="sidebar">
     <nav class="side-nav" aria-label="Categorías de la plataforma">
+      
+      <!-- Sección del Foro -->
       <span class="side-label">Foro Estudiantil</span>
       <button type="button" class="nav-item nav-trigger is-active" data-view="feed" data-category="all">
         <i class="fa-solid fa-house nav-icon" aria-hidden="true"></i>
@@ -76,6 +92,7 @@
         <span>Opiniones</span>
       </button>
       
+      <!-- Sección de Herramientas Estudiantiles -->
       <span class="side-label side-label-spaced">Herramientas</span>
       <button type="button" class="nav-item nav-trigger" data-view="encuestas-bienestar">
         <i class="fa-solid fa-face-smile-beam nav-icon" aria-hidden="true"></i>
@@ -86,6 +103,7 @@
         <span>Test Vocacional</span>
       </button>
 
+      <!-- Sección de Asistencia y Chats -->
       <span class="side-label side-label-spaced">Asistencia</span>
       <button type="button" class="nav-item nav-trigger" data-view="chat-ia">
         <i class="fa-solid fa-robot nav-icon" aria-hidden="true"></i>
@@ -96,6 +114,7 @@
         <span>Contactar Orientación</span>
       </button>
 
+      <!-- Sección del Docente -->
       <span class="side-label side-label-spaced">Portal Docente</span>
       <button type="button" class="nav-item nav-trigger" data-view="chat-generador">
         <i class="fa-solid fa-wand-magic-sparkles nav-icon" aria-hidden="true"></i>
@@ -110,7 +129,10 @@
     </div>
   </aside>
 
+  <!-- CONTENIDO PRINCIPAL (VISTAS) -->
   <div class="views">
+    
+    <!-- Vista 1: Foro Principal -->
     <section id="view-feed" class="view view-feed is-active" data-view="feed">
       <div class="view-header">
         <h1 id="feed-title">Todas las publicaciones</h1>
@@ -123,7 +145,7 @@
       </p>
     </section>
 
-    <!-- VISTA: TERMÓMETRO DE BIENESTAR -->
+    <!-- Vista 2: Termómetro de Bienestar -->
     <section id="view-encuestas-bienestar" class="view" data-view="encuestas-bienestar">
       <div class="view-header">
         <h1>Termómetro de Bienestar</h1>
@@ -131,6 +153,7 @@
       </div>
       
       <form id="form-bienestar">
+          <!-- Pregunta 1 -->
           <div class="encuesta-card">
               <h3>🧠 Nivel de Estrés Académico</h3>
               <p style="color: var(--gris); font-size: 14px;">En las últimas dos semanas, ¿qué tan estresado(a) te has sentido por el colegio?</p>
@@ -143,6 +166,7 @@
               </div>
           </div>
 
+          <!-- Pregunta 2 -->
           <div class="encuesta-card">
               <h3>🛑 Ambiente y Respeto</h3>
               <p style="color: var(--gris); font-size: 14px;">¿Cómo calificarías el trato entre compañeros (bullying, burlas o exclusión)?</p>
@@ -155,6 +179,7 @@
               </div>
           </div>
 
+          <!-- Pregunta 3 -->
           <div class="encuesta-card">
               <h3>🔋 Energía y Cansancio</h3>
               <p style="color: var(--gris); font-size: 14px;">¿Cómo sientes tu nivel de energía y motivación general para estudiar?</p>
@@ -172,7 +197,7 @@
       </form>
     </section>
 
-    <!-- VISTA: TEST VOCACIONAL -->
+    <!-- Vista 3: Test Vocacional -->
     <section id="view-test" class="view" data-view="test">
       <div class="test-container">
         <h1>Descubre tu camino ideal</h1>
@@ -189,7 +214,7 @@
       </div>
     </section>
 
-    <!-- VISTA CHAT IA -->
+    <!-- Vista 4: Chat con IA Estudiantil -->
     <section id="view-chat-ia" class="view view-chat" data-view="chat-ia">
       <header class="chat-header">
         <div class="chat-avatar chat-avatar-ia"><i class="fa-solid fa-robot" aria-hidden="true"></i></div>
@@ -215,7 +240,7 @@
       </form>
     </section>
 
-    <!-- VISTA CHAT ORIENTACION -->
+    <!-- Vista 5: Chat Privado con Orientación -->
     <section id="view-chat-orientacion" class="view view-chat" data-view="chat-orientacion">
       <header class="chat-header">
         <div class="chat-avatar chat-avatar-orientacion"><i class="fa-solid fa-hands-holding-circle" aria-hidden="true"></i></div>
@@ -237,7 +262,7 @@
       </form>
     </section>
 
-    <!-- VISTA CHAT GENERADOR -->
+    <!-- Vista 6: Generador de Material (Para docentes) -->
     <section id="view-chat-generador" class="view view-chat" data-view="chat-generador">
       <header class="chat-header">
         <div class="chat-avatar chat-avatar-ia" style="background-color: #00113A;"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i></div>
@@ -261,7 +286,7 @@
   </div>
 </div>
 
-<!-- MODAL NUEVA PUBLICACIÓN -->
+<!-- MODAL: NUEVA PUBLICACIÓN EN EL FORO -->
 <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-header">
@@ -269,8 +294,12 @@
       <button type="button" class="modal-close" id="modal-close" aria-label="Cerrar formulario"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
     </div>
     <form class="post-form" id="post-form">
-      <div class="field"><label for="post-title">Título</label><input type="text" id="post-title" name="post-title" placeholder="Escribe un título claro y breve" required></div>
-      <div class="field"><label for="post-category">Categoría</label>
+      <div class="field">
+        <label for="post-title">Título</label>
+        <input type="text" id="post-title" name="post-title" placeholder="Escribe un título claro y breve" required>
+      </div>
+      <div class="field">
+        <label for="post-category">Categoría</label>
         <select id="post-category" name="post-category">
           <option value="casual">🌴 Casual</option>
           <option value="problemas">❤️ Problemas</option>
@@ -278,31 +307,46 @@
           <option value="opiniones">💭 Opiniones</option>
         </select>
       </div>
-      <div class="field"><label for="post-content">¿Qué quieres contarnos?</label><textarea id="post-content" name="post-content" rows="5" placeholder="Escribe aquí el contenido de tu publicación…" required></textarea></div>
-      <label class="checkbox-field"><input type="checkbox" id="post-anon" name="post-anon"><span class="checkbox-box" aria-hidden="true"></span><span>Publicar de forma anónima</span></label>
-      <div class="form-actions"><button type="button" class="btn btn-ghost" id="modal-cancel">Cancelar</button><button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i>Publicar</button></div>
+      <div class="field">
+        <label for="post-content">¿Qué quieres contarnos?</label>
+        <textarea id="post-content" name="post-content" rows="5" placeholder="Escribe aquí el contenido de tu publicación…" required></textarea>
+      </div>
+      <label class="checkbox-field">
+        <input type="checkbox" id="post-anon" name="post-anon">
+        <span class="checkbox-box" aria-hidden="true"></span>
+        <span>Publicar de forma anónima</span>
+      </label>
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" id="modal-cancel">Cancelar</button>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i>Publicar</button>
+      </div>
     </form>
   </div>
 </div>
 
+<!-- Scripts de Identificación y Lógica Principal -->
 <script>
   window.USUARIO_REAL = "{{ usuario_activo }}";
 </script>
-
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     
     // =================================================================
-    // 1. LÓGICA DE LOS CHATS (IA y Generador)
+    // 1. GESTIÓN DE LOS CHATS IA (Estudiante y Generador)
     // =================================================================
+    
+    // Variables para el Chat de IA Estudiantil
     const chatFormIA = document.getElementById('chat-form-ia');
     const chatInputIA = document.getElementById('chat-input-ia');
     const chatBodyIA = document.getElementById('chat-body-ia');
 
+    // Función para pintar los mensajes en la pantalla
     function mostrarMensajeEnPantalla(texto, remitente) {
       const msgDiv = document.createElement('div');
+      
+      // Estilos dependiendo de quién manda el mensaje
       if (remitente === 'ia' || remitente === 'sistema') {
           msgDiv.className = 'chat-msg chat-msg-in';
       } else {
@@ -314,23 +358,37 @@
           msgDiv.style.borderBottomRightRadius = '0';
           msgDiv.style.borderBottomLeftRadius = '12px';
       }
-      const p = document.createElement('p'); p.textContent = texto;
-      const span = document.createElement('span'); span.className = 'chat-time'; span.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-      msgDiv.appendChild(p); msgDiv.appendChild(span);
-      chatBodyIA.appendChild(msgDiv); chatBodyIA.scrollTop = chatBodyIA.scrollHeight;
+      
+      // Creamos el texto y la hora
+      const p = document.createElement('p'); 
+      p.textContent = texto;
+      const span = document.createElement('span'); 
+      span.className = 'chat-time'; 
+      span.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      
+      // Lo inyectamos en el chat
+      msgDiv.appendChild(p); 
+      msgDiv.appendChild(span);
+      chatBodyIA.appendChild(msgDiv); 
+      chatBodyIA.scrollTop = chatBodyIA.scrollHeight;
     }
 
+    // Escuchador del formulario del Chat IA
     if (chatFormIA) {
         chatFormIA.addEventListener('submit', async (e) => {
           e.preventDefault(); 
-          const mensaje = chatInputIA.value.trim();
+          const mensaje = chatInputIA.value.trim(); 
           if (!mensaje) return;
-          mostrarMensajeEnPantalla(mensaje, 'usuario');
+          
+          mostrarMensajeEnPantalla(mensaje, 'usuario'); 
           chatInputIA.value = ''; 
+          
           try {
-                const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b', {
-                    method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ message: mensaje, sessionId: window.USUARIO_REAL || 'estudiante-anonimo' })
+              // Conexión con n8n (Flujo IA)
+              const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b', {
+                  method: 'POST', 
+                  headers: { 'Content-Type': 'text/plain' },
+                  body: JSON.stringify({ message: mensaje, sessionId: window.USUARIO_REAL || 'estudiante-anonimo' })
               });
               const data = await response.json();
               mostrarMensajeEnPantalla(data.respuesta_ia || data.output || 'Lo siento, no pude procesar una respuesta.', 'ia'); 
@@ -340,6 +398,7 @@
         });
     }
 
+    // Chat Generador de Material (Docentes)
     const chatFormGen = document.getElementById('chat-form-generador');
     const chatInputGen = document.getElementById('chat-input-generador');
     const chatBodyGen = document.getElementById('chat-body-generador');
@@ -350,21 +409,40 @@
           msgDiv.className = 'chat-msg chat-msg-in';
       } else {
           msgDiv.className = 'chat-msg chat-msg-out';
-          msgDiv.style.alignSelf = 'flex-end'; msgDiv.style.marginLeft = 'auto'; msgDiv.style.backgroundColor = '#00113A'; msgDiv.style.color = '#FFFFFF'; msgDiv.style.borderBottomRightRadius = '0'; msgDiv.style.borderBottomLeftRadius = '12px';
+          msgDiv.style.alignSelf = 'flex-end'; 
+          msgDiv.style.marginLeft = 'auto'; 
+          msgDiv.style.backgroundColor = '#00113A'; 
+          msgDiv.style.color = '#FFFFFF'; 
+          msgDiv.style.borderBottomRightRadius = '0'; 
+          msgDiv.style.borderBottomLeftRadius = '12px';
       }
-      const p = document.createElement('p'); p.innerHTML = texto.replace(/\n/g, '<br>');
-      const span = document.createElement('span'); span.className = 'chat-time'; span.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-      msgDiv.appendChild(p); msgDiv.appendChild(span);
-      chatBodyGen.appendChild(msgDiv); chatBodyGen.scrollTop = chatBodyGen.scrollHeight;
+      
+      const p = document.createElement('p'); 
+      p.innerHTML = texto.replace(/\n/g, '<br>'); // Respeta saltos de línea
+      const span = document.createElement('span'); 
+      span.className = 'chat-time'; 
+      span.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      
+      msgDiv.appendChild(p); 
+      msgDiv.appendChild(span);
+      chatBodyGen.appendChild(msgDiv); 
+      chatBodyGen.scrollTop = chatBodyGen.scrollHeight;
     }
 
     if (chatFormGen) {
         chatFormGen.addEventListener('submit', async (e) => {
-          e.preventDefault(); const mensaje = chatInputGen.value.trim(); if (!mensaje) return;
-          mostrarMensajeGenerador(mensaje, 'usuario'); chatInputGen.value = ''; 
+          e.preventDefault(); 
+          const mensaje = chatInputGen.value.trim(); 
+          if (!mensaje) return;
+          
+          mostrarMensajeGenerador(mensaje, 'usuario'); 
+          chatInputGen.value = ''; 
+          
           try {
+              // Conexión con n8n (Flujo Generador Docente)
               const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/6c117b71-c9a3-458e-8e57-7dda41fa8ee7', {
-                  method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                  method: 'POST', 
+                  headers: { 'Content-Type': 'text/plain' },
                   body: JSON.stringify({ message: mensaje, sessionId: window.USUARIO_REAL || 'docente-anonimo', tipo_solicitud: 'generacion_material' })
               });
               const data = await response.json();
@@ -387,6 +465,7 @@
         { id: 6, texto: "¿Sientes curiosidad por investigar el porqué de las cosas en la naturaleza o la tecnología?", tipo: "Ciencias" }
     ];
 
+    // Mapeo de perfiles y carreras
     const perfiles = {
         "Ingenieria": { nombre: "Perfil Práctico / Ingenieril 🛠️", desc: "Te encanta resolver problemas tangibles y crear cosas nuevas.", carreras: ["Ingeniería en Sistemas", "Arquitectura", "Electrónica"] },
         "Social": { nombre: "Perfil Social / Humanista 🤝", desc: "Tienes gran empatía y vocación de servicio.", carreras: ["Psicología", "Docencia", "Trabajo Social"] },
@@ -399,19 +478,26 @@
     let preguntaActual = 0;
     let respuestasTest = { Ingenieria: 0, Social: 0, Negocios: 0, Arte: 0, Administracion: 0, Ciencias: 0 };
 
+    // Función principal para mostrar el cuestionario paso a paso
     window.renderizarPregunta = function() {
         const contenedor = document.getElementById('quiz-content');
         const progressBar = document.getElementById('progress');
         const resultBox = document.getElementById('result-box');
 
         if (!contenedor) return;
+        
+        // Si terminamos, calculamos el resultado
         if (preguntaActual >= preguntasVocacionales.length) {
-            contenedor.style.display = 'none'; progressBar.style.width = '100%'; mostrarResultado(); return;
+            contenedor.style.display = 'none'; 
+            progressBar.style.width = '100%'; 
+            mostrarResultado(); 
+            return;
         }
 
         const p = preguntasVocacionales[preguntaActual];
         progressBar.style.width = ((preguntaActual / preguntasVocacionales.length) * 100) + '%';
-        resultBox.style.display = 'none'; contenedor.style.display = 'block';
+        resultBox.style.display = 'none'; 
+        contenedor.style.display = 'block';
 
         contenedor.innerHTML = `
             <div style="padding: 25px; background: white; border-radius: 12px; border: 1px solid var(--gris-borde); text-align: center; margin-top: 20px;">
@@ -425,32 +511,54 @@
             </div>`;
     };
 
+    // Función que registra los puntos y avanza
     window.responderTest = function(tipo, puntos) {
-        respuestasTest[tipo] += puntos; preguntaActual++; renderizarPregunta();
+        respuestasTest[tipo] += puntos; 
+        preguntaActual++; 
+        renderizarPregunta();
     };
 
+    // Al finalizar, evalúa y pinta el perfil ganador
     function mostrarResultado() {
         const resultBox = document.getElementById('result-box');
-        let maxPuntos = -1; let perfilGanador = "Ingenieria";
+        let maxPuntos = -1; 
+        let perfilGanador = "Ingenieria";
+        
         for (const [tipo, puntos] of Object.entries(respuestasTest)) {
             if (puntos > maxPuntos) { maxPuntos = puntos; perfilGanador = tipo; }
         }
+        
         const perfil = perfiles[perfilGanador];
         document.getElementById('profile-name').textContent = perfil.nombre;
         document.getElementById('profile-desc').textContent = perfil.desc;
-        const lista = document.getElementById('careers-list'); lista.innerHTML = '';
+        
+        const lista = document.getElementById('careers-list'); 
+        lista.innerHTML = '';
         perfil.carreras.forEach(c => {
-            const li = document.createElement('li'); li.innerHTML = `<i class="fa-solid fa-check" style="color: #2f9e6a;"></i> ${c}`; lista.appendChild(li);
+            const li = document.createElement('li'); 
+            li.innerHTML = `<i class="fa-solid fa-check" style="color: #2f9e6a;"></i> ${c}`; 
+            lista.appendChild(li);
         });
-        resultBox.style.display = 'block'; resultBox.style.background = "var(--crema)"; resultBox.style.padding = "25px"; resultBox.style.borderRadius = "12px"; resultBox.style.marginTop = "25px"; resultBox.style.border = "1px solid var(--gris-borde)";
+        
+        resultBox.style.display = 'block'; 
+        resultBox.style.background = "var(--crema)"; 
+        resultBox.style.padding = "25px"; 
+        resultBox.style.borderRadius = "12px"; 
+        resultBox.style.marginTop = "25px"; 
+        resultBox.style.border = "1px solid var(--gris-borde)";
     }
 
+    // Botón para volver a intentar el test
     const btnRestart = document.getElementById('btn-restart-test');
     if (btnRestart) {
         btnRestart.addEventListener('click', () => {
-            preguntaActual = 0; respuestasTest = { Ingenieria: 0, Social: 0, Negocios: 0, Arte: 0, Administracion: 0, Ciencias: 0 }; renderizarPregunta();
+            preguntaActual = 0; 
+            respuestasTest = { Ingenieria: 0, Social: 0, Negocios: 0, Arte: 0, Administracion: 0, Ciencias: 0 }; 
+            renderizarPregunta();
         });
     }
+    
+    // Inicia el test la primera vez
     setTimeout(renderizarPregunta, 300);
   });
 
@@ -462,23 +570,32 @@
       if (formBienestar) {
           formBienestar.addEventListener('submit', function (event) {
               event.preventDefault();
+              
               if (!window.firebaseDatabase) return alert("Conectando con la base de datos...");
+              
+              // Recopilar respuestas del formulario
               const valEstres = document.querySelector('input[name="estres"]:checked').value;
               const valBullying = document.querySelector('input[name="bullying"]:checked').value;
               const valEnergia = document.querySelector('input[name="energia"]:checked').value;
               const idSeguro = (window.USUARIO_REAL || 'estudiante-anonimo').replace(/\./g, '_');
               
+              // Guardar la encuesta en Firebase
               window.firebaseDbFunctions.set(window.firebaseDbFunctions.ref(window.firebaseDatabase, 'encuestas_bienestar/' + idSeguro), {
-                  estres: parseInt(valEstres), bullying: parseInt(valBullying), energia: parseInt(valEnergia), fecha: Date.now()
+                  estres: parseInt(valEstres), 
+                  bullying: parseInt(valBullying), 
+                  energia: parseInt(valEnergia), 
+                  fecha: Date.now()
               }).then(() => {
                   const msjExito = document.getElementById('msg-bienestar-exito');
-                  msjExito.style.display = 'block'; setTimeout(() => { msjExito.style.display = 'none'; }, 4000);
-              }).catch(err => alert("Error al guardar."));
+                  msjExito.style.display = 'block'; 
+                  setTimeout(() => { msjExito.style.display = 'none'; }, 4000);
+              }).catch(err => alert("Hubo un error al intentar guardar tus respuestas."));
           });
       }
   });
 </script>
 
+<!-- Carga del SDK de Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
   import { getDatabase, ref, push, set, onChildAdded } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-database.js";
@@ -498,8 +615,12 @@
     window.firebaseApp = app;
     window.firebaseDatabase = getDatabase(app);
     window.firebaseDbFunctions = { ref, push, set, onChildAdded };
+    
+    // Dispara un evento global avisando que Firebase ya está conectado
     window.dispatchEvent(new CustomEvent("firebase-ready"));
-  } catch (initError) { }
+  } catch (initError) { 
+      console.log("Error inicializando Firebase:", initError);
+  }
 </script>
 </body>
 </html>
