@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GEORGE · Comunidad Estudiantil</title>
 
-<!-- Fuentes e Íconos -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -13,9 +12,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
 <style>
-  /* =========================================================
-     Estilos para las Encuestas de Caritas (Termómetro)
-     ========================================================= */
+  /* Estilos para las Encuestas de Caritas (Termómetro) */
   .encuesta-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; padding: 25px; margin-bottom: 20px; text-align: center; }
   .encuesta-card h3 { color: var(--azul); font-family: var(--f-display); margin-top: 0; }
   .escala-caritas { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
@@ -29,9 +26,7 @@
 </head>
 <body>
 
-<!-- BARRA DE NAVEGACIÓN SUPERIOR -->
 <header class="topbar">
-  <!-- Logo y Nombre de la marca -->
   <button type="button" class="brand nav-trigger" data-view="feed" aria-label="GEORGE, ir al inicio">
     <span class="brand-seal">G</span>
     <span class="brand-text">
@@ -40,36 +35,24 @@
     </span>
   </button>
 
-  <!-- Barra de Búsqueda -->
   <div class="search-form" role="search">
     <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
     <input type="search" id="search-input" class="search-input" placeholder="Buscar publicaciones por título o contenido…" aria-label="Buscar en el foro">
   </div>
 
-  <!-- Botones de Acción -->
   <button type="button" id="btn-new-post" class="btn btn-primary btn-new-post">
     <i class="fa-solid fa-plus" aria-hidden="true"></i>
     <span>Nueva publicación</span>
   </button>
   
-  <!-- BOTÓN DE INICIO -->
-  <a href="/" style="margin-left: 15px; background-color: #ffffff; color: #00113A !important; border: none; padding: 10px 20px; border-radius: 999px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-    <i class="fa-solid fa-house" aria-hidden="true"></i> Inicio
-  </a>
-
-  <!-- BOTÓN DE SALIR -->
-  <a href="{{ url_for('logout') }}" style="margin-left: 10px; background-color: #ffffff; color: #00113A !important; border: none; padding: 10px 20px; border-radius: 999px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-    <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Salir
-  </a>
+  <!-- Botón de Salir Original -->
+  <a href="{{ url_for('logout') }}" class="btn btn-ghost" style="margin-left: 15px; border-color: var(--gris-borde);">Salir</a>
 </header>
 
 <div class="layout">
 
-  <!-- MENÚ LATERAL IZQUIERDO -->
   <aside class="sidebar">
     <nav class="side-nav" aria-label="Categorías de la plataforma">
-      
-      <!-- Sección del Foro -->
       <span class="side-label">Foro Estudiantil</span>
       <button type="button" class="nav-item nav-trigger is-active" data-view="feed" data-category="all">
         <i class="fa-solid fa-house nav-icon" aria-hidden="true"></i>
@@ -91,9 +74,9 @@
         <i class="fa-solid fa-comments nav-icon" aria-hidden="true"></i>
         <span>Opiniones</span>
       </button>
-      
-      <!-- Sección de Herramientas Estudiantiles -->
+
       <span class="side-label side-label-spaced">Herramientas</span>
+      <!-- NUEVA PESTAÑA: Bienestar en lugar de Encuestas en el Foro -->
       <button type="button" class="nav-item nav-trigger" data-view="encuestas-bienestar">
         <i class="fa-solid fa-face-smile-beam nav-icon" aria-hidden="true"></i>
         <span>Mi Bienestar</span>
@@ -103,7 +86,6 @@
         <span>Test Vocacional</span>
       </button>
 
-      <!-- Sección de Asistencia y Chats -->
       <span class="side-label side-label-spaced">Asistencia</span>
       <button type="button" class="nav-item nav-trigger" data-view="chat-ia">
         <i class="fa-solid fa-robot nav-icon" aria-hidden="true"></i>
@@ -114,7 +96,6 @@
         <span>Contactar Orientación</span>
       </button>
 
-      <!-- Sección del Docente -->
       <span class="side-label side-label-spaced">Portal Docente</span>
       <button type="button" class="nav-item nav-trigger" data-view="chat-generador">
         <i class="fa-solid fa-wand-magic-sparkles nav-icon" aria-hidden="true"></i>
@@ -129,10 +110,7 @@
     </div>
   </aside>
 
-  <!-- CONTENIDO PRINCIPAL (VISTAS) -->
   <div class="views">
-    
-    <!-- Vista 1: Foro Principal -->
     <section id="view-feed" class="view view-feed is-active" data-view="feed">
       <div class="view-header">
         <h1 id="feed-title">Todas las publicaciones</h1>
@@ -145,7 +123,7 @@
       </p>
     </section>
 
-    <!-- Vista 2: Termómetro de Bienestar -->
+    <!-- NUEVA VISTA: TERMÓMETRO DE BIENESTAR -->
     <section id="view-encuestas-bienestar" class="view" data-view="encuestas-bienestar">
       <div class="view-header">
         <h1>Termómetro de Bienestar</h1>
@@ -153,7 +131,6 @@
       </div>
       
       <form id="form-bienestar">
-          <!-- Pregunta 1 -->
           <div class="encuesta-card">
               <h3>🧠 Nivel de Estrés Académico</h3>
               <p style="color: var(--gris); font-size: 14px;">En las últimas dos semanas, ¿qué tan estresado(a) te has sentido por el colegio?</p>
@@ -166,7 +143,6 @@
               </div>
           </div>
 
-          <!-- Pregunta 2 -->
           <div class="encuesta-card">
               <h3>🛑 Ambiente y Respeto</h3>
               <p style="color: var(--gris); font-size: 14px;">¿Cómo calificarías el trato entre compañeros (bullying, burlas o exclusión)?</p>
@@ -179,7 +155,6 @@
               </div>
           </div>
 
-          <!-- Pregunta 3 -->
           <div class="encuesta-card">
               <h3>🔋 Energía y Cansancio</h3>
               <p style="color: var(--gris); font-size: 14px;">¿Cómo sientes tu nivel de energía y motivación general para estudiar?</p>
@@ -197,24 +172,29 @@
       </form>
     </section>
 
-    <!-- Vista 3: Test Vocacional -->
+    <!-- VISTA: TEST VOCACIONAL (UI NUEVA Y BLINDADA) -->
     <section id="view-test" class="view" data-view="test">
-      <div class="test-container">
-        <h1>Descubre tu camino ideal</h1>
-        <p class="subtitle">Responde estas preguntas y GEORGE te sugerirá carreras afines a ti.</p>
-        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-        <div id="quiz-content"></div>
-        <div class="result-box" id="result-box" style="display:none;">
-            <h2 class="result-title">¡Perfil Encontrado!</h2>
-            <h3 id="profile-name"></h3>
-            <p class="result-desc" id="profile-desc"></p>
-            <ul class="careers-list" id="careers-list"></ul>
-            <button class="btn-restart" id="btn-restart-test" style="background:var(--azul); color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; width:100%; font-weight:bold; margin-top:15px;">Hacer el test de nuevo</button>
+      <div class="test-container" style="background: white; padding: 30px; border-radius: 12px; border: 1px solid var(--gris-borde); max-width: 800px; margin: 0 auto;">
+        <h1 style="color: var(--azul); margin-top: 0;">Descubre tu camino ideal</h1>
+        <p class="subtitle" style="color: var(--gris); margin-bottom: 20px;">Responde estas preguntas y GEORGE te sugerirá carreras.</p>
+        
+        <div class="progress-bar" style="width: 100%; height: 10px; background: #eee; border-radius: 10px; margin-bottom: 20px;">
+            <div id="progress" style="width: 0%; background: #810200; height: 100%; transition: 0.3s; border-radius: 10px;"></div>
         </div>
+        
+        <div id="quiz-content">
+            <div style="text-align: center; margin-top: 40px;">
+                <button type="button" class="btn btn-primary" onclick="window.iniciarTestMagico()" style="padding: 15px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; background: #00113A; color: white; border: none;">
+                    ▶️ Comenzar Test Vocacional
+                </button>
+            </div>
+        </div>
+
+        <div class="result-box" id="result-box" style="display:none;"></div>
       </div>
     </section>
 
-    <!-- Vista 4: Chat con IA Estudiantil -->
+    <!-- VISTA CHAT IA -->
     <section id="view-chat-ia" class="view view-chat" data-view="chat-ia">
       <header class="chat-header">
         <div class="chat-avatar chat-avatar-ia"><i class="fa-solid fa-robot" aria-hidden="true"></i></div>
@@ -225,13 +205,8 @@
       </header>
       <div class="chat-body" id="chat-body-ia">
         <div class="chat-msg chat-msg-in">
-          <p>¡Hola! Soy George IA 🤖 Puedo ayudarte con dudas académicas, trámites o dudas sobre el foro. ¿En qué te ayudo hoy?
-          <br><br>
-              ⚠️ Aviso importante:
-              La inteligencia artificial es una herramienta de apoyo y no reemplaza la atención, orientación ni el criterio de un profesional. Las respuestas proporcionadas por GEORGE tienen fines informativos y de acompañamiento, y pueden contener errores.
-              Si estás atravesando una situación que requiere atención especializada, te recomendamos acudir a un docente, orientador, psicólogo u otro profesional capacitado. Tu bienestar y seguridad son siempre la prioridad.
-          </p>
-          <span class="chat-time">Ahora</span>
+          <p>¡Hola! Soy George IA 🤖 Puedo ayudarte con dudas académicas, trámites o dudas sobre el foro. ¿En qué te ayudo hoy?</p>
+          <span class="chat-time">9:02 a. m.</span>
         </div>
       </div>
       <form class="chat-input-bar" id="chat-form-ia">
@@ -240,7 +215,7 @@
       </form>
     </section>
 
-    <!-- Vista 5: Chat Privado con Orientación -->
+    <!-- VISTA CHAT ORIENTACION -->
     <section id="view-chat-orientacion" class="view view-chat" data-view="chat-orientacion">
       <header class="chat-header">
         <div class="chat-avatar chat-avatar-orientacion"><i class="fa-solid fa-hands-holding-circle" aria-hidden="true"></i></div>
@@ -250,12 +225,10 @@
         </div>
       </header>
       <p class="privacy-banner"><i class="fa-solid fa-lock" aria-hidden="true"></i>Esta conversación es privada y confidencial.</p>
-      
       <div class="chat-body" id="chat-body-orientacion">
-        <!-- El saludo inicial se limpiará automáticamente si hay mensajes previos en Firebase -->
         <div class="chat-msg chat-msg-in">
           <p>Hola, gracias por escribirnos. Estamos aquí para acompañarte. ¿Cómo te sientes hoy?</p>
-          <span class="chat-time">Ahora</span>
+          <span class="chat-time">Ayer, 4:12 p. m.</span>
         </div>
       </div>
       <form class="chat-input-bar" id="chat-form-orientacion">
@@ -264,7 +237,7 @@
       </form>
     </section>
 
-    <!-- Vista 6: Generador de Material (Para docentes) -->
+    <!-- VISTA CHAT GENERADOR -->
     <section id="view-chat-generador" class="view view-chat" data-view="chat-generador">
       <header class="chat-header">
         <div class="chat-avatar chat-avatar-ia" style="background-color: #00113A;"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i></div>
@@ -288,7 +261,6 @@
   </div>
 </div>
 
-<!-- MODAL: NUEVA PUBLICACIÓN EN EL FORO -->
 <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-header">
@@ -296,55 +268,138 @@
       <button type="button" class="modal-close" id="modal-close" aria-label="Cerrar formulario"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
     </div>
     <form class="post-form" id="post-form">
-      <div class="field">
-        <label for="post-title">Título</label>
-        <input type="text" id="post-title" name="post-title" placeholder="Escribe un título claro y breve" required>
-      </div>
-      <div class="field">
-        <label for="post-category">Categoría</label>
+      <div class="field"><label for="post-title">Título</label><input type="text" id="post-title" name="post-title" placeholder="Escribe un título claro y breve" required></div>
+      <div class="field"><label for="post-category">Categoría</label>
         <select id="post-category" name="post-category">
-          <option value="casual">🌴 Casual</option>
-          <option value="problemas">❤️ Problemas</option>
-          <option value="preguntas">❓ Preguntas</option>
-          <option value="opiniones">💭 Opiniones</option>
+          <option value="casual">🌴 Casual</option><option value="problemas">❤️ Problemas</option><option value="preguntas">❓ Preguntas</option><option value="opiniones">💭 Opiniones</option>
         </select>
       </div>
-      <div class="field">
-        <label for="post-content">¿Qué quieres contarnos?</label>
-        <textarea id="post-content" name="post-content" rows="5" placeholder="Escribe aquí el contenido de tu publicación…" required></textarea>
-      </div>
-      <label class="checkbox-field">
-        <input type="checkbox" id="post-anon" name="post-anon">
-        <span class="checkbox-box" aria-hidden="true"></span>
-        <span>Publicar de forma anónima</span>
-      </label>
-      <div class="form-actions">
-        <button type="button" class="btn btn-ghost" id="modal-cancel">Cancelar</button>
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i>Publicar</button>
-      </div>
+      <div class="field"><label for="post-content">¿Qué quieres contarnos?</label><textarea id="post-content" name="post-content" rows="5" placeholder="Escribe aquí el contenido de tu publicación…" required></textarea></div>
+      <label class="checkbox-field"><input type="checkbox" id="post-anon" name="post-anon"><span class="checkbox-box" aria-hidden="true"></span><span>Publicar de forma anónima</span></label>
+      <div class="form-actions"><button type="button" class="btn btn-ghost" id="modal-cancel">Cancelar</button><button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i>Publicar</button></div>
     </form>
   </div>
 </div>
 
-<!-- Scripts de Identificación y Lógica Principal -->
+<!-- VARIABLES -->
 <script>
   window.USUARIO_REAL = "{{ usuario_activo }}";
 </script>
+
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
+<!-- CÁPSULA DEL TEST VOCACIONAL (TOTALMENTE AISLADA DE TODO LO DEMÁS) -->
+<script>
+  (function() {
+      var misPreguntas = [
+          { tipo: "Tech", texto: "¿Te emociona la idea de crear aplicaciones, videojuegos o páginas web?" },
+          { tipo: "Tech", texto: "¿Sientes curiosidad por entender la Inteligencia Artificial o ciberseguridad?" },
+          { tipo: "Tech", texto: "Ante un problema con un dispositivo, ¿prefieres buscar la solución técnica tú mismo(a)?" },
+          { tipo: "Ingenieria", texto: "¿Disfrutas entender mecanismos físicos, desarmar aparatos o diseñar estructuras?" },
+          { tipo: "Ingenieria", texto: "¿Te motiva optimizar procesos industriales o fabricar maquinaria?" },
+          { tipo: "Ingenieria", texto: "¿Prefieres proyectos donde construyas resultados físicos en el mundo real?" },
+          { tipo: "Salud", texto: "¿Sientes fascinación por la anatomía humana o el tratamiento de enfermedades?" },
+          { tipo: "Salud", texto: "¿Mantendrías la calma para atender emergencias médicas o cuidar a pacientes?" },
+          { tipo: "Salud", texto: "¿Te interesan los descubrimientos sobre genética, medicamentos o biotecnología?" },
+          { tipo: "Ciencias", texto: "¿Te apasiona formular hipótesis, analizar datos y resolver enigmas?" },
+          { tipo: "Ciencias", texto: "¿Te llama la atención el estudio del universo, el medio ambiente o la geología?" },
+          { tipo: "Ciencias", texto: "¿Disfrutas leer ciencia y cuestionar explicaciones mediante el método científico?" },
+          { tipo: "Social", texto: "¿Sueles ser la persona empática a la que tus amigos acuden para pedir consejo?" },
+          { tipo: "Social", texto: "¿Te interesa comprender la mente humana o defender a personas vulnerables?" },
+          { tipo: "Social", texto: "¿Tienes paciencia para enseñar temas difíciles a otros o guiar a comunidades?" },
+          { tipo: "Negocios", texto: "¿Te atrae crear tu propio negocio, liderar equipos y tomar decisiones?" },
+          { tipo: "Negocios", texto: "¿Disfrutas analizar mercados, entender las ventas o la economía?" },
+          { tipo: "Negocios", texto: "¿Te consideras persuasivo(a) y orientado(a) a conseguir metas?" },
+          { tipo: "Arte", texto: "¿Te expresas a través de ilustración, música, video o escritura?" },
+          { tipo: "Arte", texto: "¿Te fijas constantemente en la estética visual de productos o escenografías?" },
+          { tipo: "Arte", texto: "¿Te aburre la rutina estricta y prefieres espacios con libertad creativa?" },
+          { tipo: "Humanidades", texto: "¿Disfrutas debatir con argumentos sólidos y analizar leyes o historia?" },
+          { tipo: "Humanidades", texto: "¿Sientes indignación ante la injusticia y te gustaría regular políticas públicas?" },
+          { tipo: "Humanidades", texto: "¿Tienes facilidad para oratoria, idiomas y resolución de conflictos?" }
+      ];
+
+      var misPerfiles = {
+          "Tech": { nombre: "Arquitecto(a) Tecnológico 💻", desc: "Ves la tecnología como el lienzo para resolver los retos del siglo XXI.", superpoder: "Lógica computacional", carreras: ["Ingeniería de Software", "Ciencia de Datos", "Ciberseguridad"] },
+          "Ingenieria": { nombre: "Ingeniero(a) Constructor ⚙️", desc: "Tu mente conecta la teoría con el mundo tangible.", superpoder: "Visión espacial y cálculo", carreras: ["Ingeniería Mecatrónica", "Ingeniería Civil", "Ingeniería Industrial"] },
+          "Salud": { nombre: "Especialista en Salud 🩺", desc: "Posees una profunda vocación de servicio e investigación médica.", superpoder: "Empatía y diagnóstico clínico", carreras: ["Medicina", "Microbiología", "Nutrición", "Fisioterapia"] },
+          "Ciencias": { nombre: "Científico(a) Investigador 🔬", desc: "Te mueve una curiosidad insaciable por la verdad natural.", superpoder: "Diseño experimental", carreras: ["Física Pura", "Matemáticas", "Química", "Biología"] },
+          "Social": { nombre: "Mentor(a) & Psicólogo(a) 🤝", desc: "Comprendes el mundo interno de las personas y grupos.", superpoder: "Inteligencia Emocional", carreras: ["Psicología", "Trabajo Social", "Educación Especial"] },
+          "Negocios": { nombre: "Estratega & Ejecutivo 💼", desc: "Posees visión comercial y liderazgo para movilizar equipos.", superpoder: "Negociación y Liderazgo", carreras: ["Administración", "Finanzas", "Marketing", "Negocios"] },
+          "Arte": { nombre: "Creador(a) Visual 🎨", desc: "Tienes un sentido estético agudo para plasmar conceptos.", superpoder: "Pensamiento Divergente", carreras: ["Diseño Gráfico", "Animación", "Producción Audiovisual"] },
+          "Humanidades": { nombre: "Jurista & Analista ⚖️", desc: "Te apasiona la justicia y el marco normativo de la sociedad.", superpoder: "Argumentación y Oratoria", carreras: ["Derecho", "Relaciones Internacionales", "Ciencias Políticas"] }
+      };
+
+      var pregAc = 0;
+      var misPts = { Tech: 0, Ingenieria: 0, Salud: 0, Ciencias: 0, Social: 0, Negocios: 0, Arte: 0, Humanidades: 0 };
+
+      window.iniciarTestMagico = function() {
+          pregAc = 0;
+          misPts = { Tech: 0, Ingenieria: 0, Salud: 0, Ciencias: 0, Social: 0, Negocios: 0, Arte: 0, Humanidades: 0 };
+          window.renderPreguntaMagica();
+      };
+
+      window.renderPreguntaMagica = function() {
+          var contenedor = document.getElementById('quiz-content');
+          var progressBar = document.getElementById('progress');
+          var resultBox = document.getElementById('result-box');
+
+          if (!contenedor) return;
+          if (pregAc >= misPreguntas.length) {
+              contenedor.style.display = 'none'; progressBar.style.width = '100%'; mostrarRes(); return;
+          }
+
+          var p = misPreguntas[pregAc];
+          progressBar.style.width = Math.round((pregAc / misPreguntas.length) * 100) + '%';
+          resultBox.style.display = 'none'; contenedor.style.display = 'block';
+
+          contenedor.innerHTML = `
+              <div style="padding: 20px; background: white; border-radius: 14px; text-align: center; margin-top: 15px;">
+                  <span style="color: #00113A; font-weight: bold; font-size: 13px;">PREGUNTA ${pregAc + 1} DE ${misPreguntas.length}</span>
+                  <h3 style="color: #00113A; font-size: 19px; margin: 15px 0 25px;">${p.texto}</h3>
+                  <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                      <button onclick="window.responderMagico('${p.tipo}', 2)" style="flex:1; padding:12px; background:#00113A; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Me describe total</button>
+                      <button onclick="window.responderMagico('${p.tipo}', 1)" style="flex:1; padding:12px; background:white; color:#00113A; border:1px solid #ccc; border-radius:6px; cursor:pointer; font-weight:bold;">Solo un poco</button>
+                      <button onclick="window.responderMagico('${p.tipo}', 0)" style="flex:1; padding:12px; background:#ffe5e5; color:#810200; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Nada que ver</button>
+                  </div>
+              </div>`;
+      };
+
+      window.responderMagico = function(tipo, puntos) {
+          misPts[tipo] += puntos; pregAc++; window.renderPreguntaMagica();
+      };
+
+      function mostrarRes() {
+          var ranking = Object.entries(misPts).sort((a, b) => b[1] - a[1]);
+          var perfil = misPerfiles[ranking[0][0]];
+          var matchPct = Math.min(100, Math.round((ranking[0][1] / 6) * 100));
+
+          var listaCarreras = perfil.carreras.map(c => `<li style="font-weight: bold; color: #00113A; margin-bottom: 5px;">✔️ ${c}</li>`).join('');
+
+          document.getElementById('result-box').innerHTML = `
+              <div style="background: white; border: 2px solid #00113A; border-radius: 12px; padding: 25px; text-align: center;">
+                  <span style="background: #2f9e6a; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold;">🎯 ${matchPct}% Match</span>
+                  <h2 style="color: #00113A; font-size: 24px; margin: 15px 0;">${perfil.nombre}</h2>
+                  <p style="color: #555; margin-bottom: 20px;">${perfil.desc}</p>
+                  <div style="background: #EFE3D5; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                      <strong>⚡ Superpoder:</strong> ${perfil.superpoder}
+                  </div>
+                  <h3 style="color: #00113A; font-size: 16px;">Carreras Sugeridas:</h3>
+                  <ul style="list-style: none; padding: 0;">${listaCarreras}</ul>
+                  <button onclick="window.iniciarTestMagico()" style="margin-top: 20px; padding: 12px 25px; background: #00113A; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;">Repetir Test</button>
+              </div>
+          `;
+          document.getElementById('result-box').style.display = 'block';
+      }
+  })();
+</script>
+
+<!-- CÓDIGO ORIGINAL DE CHATS N8N (INTACTO) -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    
-    // =================================================================
-    // 1. GESTIÓN DE LOS CHATS IA (Estudiante y Generador)
-    // =================================================================
-    
-    // Variables para el Chat de IA Estudiantil
     const chatFormIA = document.getElementById('chat-form-ia');
     const chatInputIA = document.getElementById('chat-input-ia');
     const chatBodyIA = document.getElementById('chat-body-ia');
 
-    // Función para pintar los mensajes en la pantalla
     function mostrarMensajeEnPantalla(texto, remitente) {
       const msgDiv = document.createElement('div');
       
@@ -359,375 +414,152 @@
           msgDiv.style.borderBottomRightRadius = '0';
           msgDiv.style.borderBottomLeftRadius = '12px';
       }
-      
-      const p = document.createElement('p'); 
+
+      const p = document.createElement('p');
       p.textContent = texto;
-      const span = document.createElement('span'); 
-      span.className = 'chat-time'; 
-      span.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-      
-      msgDiv.appendChild(p); 
+
+      const span = document.createElement('span');
+      span.className = 'chat-time';
+      const ahora = new Date();
+      span.textContent = ahora.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+      msgDiv.appendChild(p);
       msgDiv.appendChild(span);
-      chatBodyIA.appendChild(msgDiv); 
+      chatBodyIA.appendChild(msgDiv);
       chatBodyIA.scrollTop = chatBodyIA.scrollHeight;
     }
 
-    // Escuchador del formulario del Chat IA
     if (chatFormIA) {
         chatFormIA.addEventListener('submit', async (e) => {
           e.preventDefault(); 
-          const mensaje = chatInputIA.value.trim(); 
+          
+          const mensaje = chatInputIA.value.trim();
           if (!mensaje) return;
           
-          mostrarMensajeEnPantalla(mensaje, 'usuario'); 
+          mostrarMensajeEnPantalla(mensaje, 'usuario');
           chatInputIA.value = ''; 
           
+          const n8nWebhookUrl = 'https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b'; 
+          
           try {
-              const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b', {
-                  method: 'POST', 
-                  headers: { 'Content-Type': 'text/plain' },
-                  body: JSON.stringify({ message: mensaje, sessionId: window.USUARIO_REAL || 'estudiante-anonimo' })
+                const response = await fetch(n8nWebhookUrl, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'text/plain' 
+                  },
+                  body: JSON.stringify({
+                      message: mensaje,
+                      sessionId: window.USUARIO_REAL || 'estudiante-anonimo'
+                  })
               });
+              if (!response.ok) throw new Error('Error en el servidor de n8n');
+
               const data = await response.json();
-              mostrarMensajeEnPantalla(data.respuesta_ia || data.output || 'Lo siento, no pude procesar una respuesta.', 'ia'); 
+              const respuestaIA = data.respuesta_ia || data.output || 'Lo siento, no pude procesar una respuesta.'; 
+              mostrarMensajeEnPantalla(respuestaIA, 'ia'); 
+
           } catch (error) {
+              console.error('Error de conexión:', error);
               mostrarMensajeEnPantalla('No se pudo establecer conexión con George IA en este momento.', 'sistema');
           }
         });
     }
 
-    // Chat Generador de Material (Docentes)
     const chatFormGen = document.getElementById('chat-form-generador');
     const chatInputGen = document.getElementById('chat-input-generador');
     const chatBodyGen = document.getElementById('chat-body-generador');
 
     function mostrarMensajeGenerador(texto, remitente) {
       const msgDiv = document.createElement('div');
+      
       if (remitente === 'ia' || remitente === 'sistema') {
           msgDiv.className = 'chat-msg chat-msg-in';
       } else {
           msgDiv.className = 'chat-msg chat-msg-out';
-          msgDiv.style.alignSelf = 'flex-end'; 
-          msgDiv.style.marginLeft = 'auto'; 
+          msgDiv.style.alignSelf = 'flex-end';
+          msgDiv.style.marginLeft = 'auto';
           msgDiv.style.backgroundColor = '#00113A'; 
-          msgDiv.style.color = '#FFFFFF'; 
-          msgDiv.style.borderBottomRightRadius = '0'; 
+          msgDiv.style.color = '#FFFFFF';
+          msgDiv.style.borderBottomRightRadius = '0';
           msgDiv.style.borderBottomLeftRadius = '12px';
       }
-      
-      const p = document.createElement('p'); 
-      p.innerHTML = texto.replace(/\n/g, '<br>'); // Respeta saltos de línea
-      const span = document.createElement('span'); 
-      span.className = 'chat-time'; 
-      span.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-      
-      msgDiv.appendChild(p); 
+
+      const p = document.createElement('p');
+      p.innerHTML = texto.replace(/\n/g, '<br>');
+
+      const span = document.createElement('span');
+      span.className = 'chat-time';
+      const ahora = new Date();
+      span.textContent = ahora.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+      msgDiv.appendChild(p);
       msgDiv.appendChild(span);
-      chatBodyGen.appendChild(msgDiv); 
+      chatBodyGen.appendChild(msgDiv);
       chatBodyGen.scrollTop = chatBodyGen.scrollHeight;
+    }
+
+    function mostrarEscribiendoGen() {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'chat-msg chat-msg-in chat-msg-typing';
+      typingDiv.id = 'typing-indicator-gen';
+      typingDiv.innerHTML = `
+          <div style="display: flex; gap: 4px; padding: 10px;">
+            <i class="fa-solid fa-circle-notch fa-spin" style="color: var(--azulClaro);"></i>
+            <span style="font-size: 13px; color: var(--gris);">Generando material didáctico...</span>
+          </div>`;
+      chatBodyGen.appendChild(typingDiv);
+      chatBodyGen.scrollTop = chatBodyGen.scrollHeight;
+    }
+
+    function quitarEscribiendoGen() {
+      const typingDiv = document.getElementById('typing-indicator-gen');
+      if (typingDiv) typingDiv.remove();
     }
 
     if (chatFormGen) {
         chatFormGen.addEventListener('submit', async (e) => {
           e.preventDefault(); 
-          const mensaje = chatInputGen.value.trim(); 
+          const mensaje = chatInputGen.value.trim();
           if (!mensaje) return;
           
-          mostrarMensajeGenerador(mensaje, 'usuario'); 
+          mostrarMensajeGenerador(mensaje, 'usuario');
           chatInputGen.value = ''; 
+          mostrarEscribiendoGen();
+
+          const n8nWebhookUrlGenerador = 'https://innowgrp09.app.n8n.cloud/webhook/6c117b71-c9a3-458e-8e57-7dda41fa8ee7'; 
           
           try {
-              const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/6c117b71-c9a3-458e-8e57-7dda41fa8ee7', {
-                  method: 'POST', 
+              const response = await fetch(n8nWebhookUrlGenerador, {
+                  method: 'POST',
                   headers: { 'Content-Type': 'text/plain' },
-                  body: JSON.stringify({ message: mensaje, sessionId: window.USUARIO_REAL || 'docente-anonimo', tipo_solicitud: 'generacion_material' })
+                  body: JSON.stringify({
+                      message: mensaje,
+                      sessionId: window.USUARIO_REAL || 'docente-anonimo',
+                      tipo_solicitud: 'generacion_material'
+                  })
               });
+
+              quitarEscribiendoGen();
+              if (!response.ok) throw new Error('Error en el servidor de n8n');
+
               const data = await response.json();
-              mostrarMensajeGenerador(data.respuesta_ia || data.output || data.message || 'No se pudo generar el material.', 'ia'); 
+              const respuestaIA = data.respuesta_ia || data.output || data.message || 'No se pudo generar el material. Por favor da más detalles.'; 
+              
+              mostrarMensajeGenerador(respuestaIA, 'ia'); 
+
           } catch (error) {
-              mostrarMensajeGenerador('⚠️ Error de conexión.', 'sistema');
+              quitarEscribiendoGen();
+              console.error('Error:', error);
+              mostrarMensajeGenerador('⚠️ No se pudo conectar con el motor de generación. Revisa el Webhook de n8n.', 'sistema');
           }
         });
     }
+  });
 
-    // =================================================================
-    // 2. LÓGICA MEJORADA DEL TEST VOCACIONAL (SISTEMA RIASEC + STEM)
-    // =================================================================
-    const preguntasVocacionales = [
-        // --- 1. TECNOLOGÍA & CIENCIAS DE LA COMPUTACIÓN (Tech) ---
-        { id: 1, texto: "¿Te emociona la idea de crear aplicaciones, videojuegos, páginas web o automatizar tareas mediante código?", tipo: "Tech" },
-        { id: 2, texto: "¿Sientes curiosidad por entender cómo funciona la Inteligencia Artificial, la ciberseguridad o la robótica?", tipo: "Tech" },
-        { id: 3, texto: "Cuando hay un problema con un dispositivo o programa, ¿prefieres buscar la solución técnica tú mismo(a) antes de pedir ayuda?", tipo: "Tech" },
-
-        // --- 2. INGENIERÍA & CONSTRUCCIÓN (Ingenieria) ---
-        { id: 4, texto: "¿Disfrutas entender los mecanismos físicos de las cosas, desarmar aparatos o diseñar estructuras y circuitos?", tipo: "Ingenieria" },
-        { id: 5, texto: "¿Te motiva la idea de optimizar procesos industriales, energías renovables o fabricar piezas y maquinaria?", tipo: "Ingenieria" },
-        { id: 6, texto: "¿Prefieres proyectos donde puedas ver y construir resultados físicos y tangibles en el mundo real?", tipo: "Ingenieria" },
-
-        // --- 3. SALUD & BIOMEDICINA (Salud) ---
-        { id: 7, texto: "¿Sientes fascinación por la anatomía, cómo funciona el cuerpo humano o el tratamiento de enfermedades?", tipo: "Salud" },
-        { id: 8, texto: "¿Mantendrías la calma y tendrías vocación para atender emergencias médicas o cuidar directamente a pacientes?", tipo: "Salud" },
-        { id: 9, texto: "¿Te interesan los descubrimientos de laboratorio sobre genética, medicamentos, nutrición o biotecnología?", tipo: "Salud" },
-
-        // --- 4. CIENCIAS EXACTAS & NATURALES (Ciencias) ---
-        { id: 10, texto: "¿Te apasiona formular hipótesis, analizar datos abstractos y resolver enigmas matemáticos complejos?", tipo: "Ciencias" },
-        { id: 11, texto: "¿Te llama la atención el estudio del universo (astrofísica), el medio ambiente, la flora/fauna o la geología?", tipo: "Ciencias" },
-        { id: 12, texto: "¿Disfrutas leer artículos científicos y cuestionar las explicaciones tradicionales mediante el método científico?", tipo: "Ciencias" },
-
-        // --- 5. SOCIAL, PSICOLOGÍA & EDUCACIÓN (Social) ---
-        { id: 13, texto: "¿Sueles ser la persona empática a la que tus amigos acuden para desahogarse, pedir consejo o resolver conflictos?", tipo: "Social" },
-        { id: 14, texto: "¿Te interesa comprender la mente humana, las conductas sociales o defender los derechos de personas vulnerables?", tipo: "Social" },
-        { id: 15, texto: "¿Tienes paciencia y vocación para enseñar temas difíciles a otros o guiar a comunidades hacia un cambio positivo?", tipo: "Social" },
-
-        // --- 6. NEGOCIOS, FINANZAS & LIDERAZGO (Negocios) ---
-        { id: 16, texto: "¿Te atrae la idea de crear tu propio negocio, liderar equipos, negociar y tomar decisiones estratégicas?", tipo: "Negocios" },
-        { id: 17, texto: "¿Disfrutas analizar gráficos financieros, entender el mercado bursátil, las ventas o la inversión económica?", tipo: "Negocios" },
-        { id: 18, texto: "¿Te consideras una persona persuasiva, con visión de futuro y orientada a conseguir metas cuantificables?", tipo: "Negocios" },
-
-        // --- 7. ARTE, DISEÑO & COMUNICACIÓN (Arte) ---
-        { id: 19, texto: "¿Tu forma favorita de expresarte es a través de la ilustración, el diseño gráfico, la música, el video o la escritura?", tipo: "Arte" },
-        { id: 20, texto: "¿Te fijas constantemente en la estética visual de productos, marcas, tipografías o escenografías?", tipo: "Arte" },
-        { id: 21, texto: "¿Te aburre la rutina estricta y prefieres espacios con libertad creativa donde ninguna idea sea considerada loca?", tipo: "Arte" },
-
-        // --- 8. DERECHO, POLÍTICA & HUMANIDADES (Humanidades) ---
-        { id: 22, texto: "¿Disfrutas debatir con argumentos sólidos, redactar ensayos y analizar leyes o sucesos históricos/políticos?", tipo: "Humanidades" },
-        { id: 23, texto: "¿Sientes indignación ante la injusticia y te gustaría litigar, negociar tratados o regular políticas públicas?", tipo: "Humanidades" },
-        { id: 24, texto: "¿Tienes facilidad para la oratoria, la diplomacia, los idiomas y la resolución formal de controversias?", tipo: "Humanidades" }
-    ];
-
-    const perfiles = {
-        "Tech": {
-            nombre: "Arquitecto(a) Tecnológico & Software 💻⚡",
-            subtitulo: "Innovación digital, algorítmica y transformación virtual",
-            desc: "Tienes un pensamiento analítico sobresaliente enfocado en el mundo digital. Ves la tecnología no solo como una herramienta, sino como el lienzo para resolver los retos del siglo XXI mediante automatización, datos y sistemas inteligentes.",
-            superpoder: "Capacidad de descomponer problemas complejos en soluciones lógicas y automatizables.",
-            ambiente: "Empresas tecnológicas globales (Big Tech), Startups, consultoras de ciberseguridad o laboratorios de IA.",
-            carreras: [
-                "Ingeniería en Software / Computación",
-                "Ciencia de Datos e Inteligencia Artificial",
-                "Ciberseguridad y Redes",
-                "Desarrollo de Videojuegos y Realidad Virtual"
-            ]
-        },
-        "Ingenieria": {
-            nombre: "Ingeniero(a) Constructor & Mecatrónico 🛠️⚙️",
-            subtitulo: "Diseño físico, optimización industrial y robótica",
-            desc: "Tu mente conecta la teoría con el mundo tangible. Te apasiona entender cómo interactúan los materiales, las fuerzas y los circuitos para crear infraestructuras seguras, máquinas eficientes y tecnologías que muevan al mundo.",
-            superpoder: "Visión espacial, cálculo estructural y optimización de recursos tangibles.",
-            ambiente: "Plantas de manufactura avanzada, proyectos de construcción, empresas aeroespaciales o energías limpias.",
-            carreras: [
-                "Ingeniería Mecatrónica / Electromecánica",
-                "Ingeniería Civil y Arquitectura",
-                "Ingeniería Industrial y Cadena de Suministros",
-                "Ingeniería Electrónica y Telecomunicaciones"
-            ]
-        },
-        "Salud": {
-            nombre: "Especialista en Salud & Ciencias Biomédicas 🩺🧬",
-            subtitulo: "Cuidado de la vida, diagnóstico clínico e investigación médica",
-            desc: "Posees una profunda vocación de servicio combinada con un alto rigor biológico. Tu motor es preservar el bienestar, comprender la fisiología humana y aplicar la ciencia para curar, aliviar y prevenir patologías.",
-            superpoder: "Empatía clínica, temple bajo presión y pensamiento diagnóstico.",
-            ambiente: "Hospitales de alta complejidad, centros de investigación biomédica, laboratorios farmacéuticos o clínicas especializadas.",
-            carreras: [
-                "Medicina y Cirugía",
-                "Microbiología y Biotecnología Médica",
-                "Farmacia y Bioquímica Clínica",
-                "Fisioterapia / Odontología / Nutrición Clínica"
-            ]
-        },
-        "Ciencias": {
-            nombre: "Científico(a) Investigador & Analista Puro 🔬🌌",
-            subtitulo: "Descubrimiento de leyes naturales, experimentación y modelado",
-            desc: "Te mueve una curiosidad insaciable por desentrañar la verdad detrás de los fenómenos naturales y matemáticos. Prefieres la rigurosidad del método científico, la recolección de evidencia y el pensamiento crítico.",
-            superpoder: "Deducción lógica profunda, análisis de patrones y diseño experimental.",
-            ambiente: "Institutos de investigación científica, observatorios, centros de biotecnología o academias universitarias.",
-            carreras: [
-                "Física Pura y Astrofísica",
-                "Matemáticas Aplicadas y Estadística",
-                "Química / Biología Molecular",
-                "Geología y Ciencias Atmosféricas"
-            ]
-        },
-        "Social": {
-            nombre: "Mentor(a) Social & Psicólogo(a) Humanista 🤝🧠",
-            subtitulo: "Comportamiento humano, salud mental y desarrollo comunitario",
-            desc: "Tu mayor talento radica en tu inteligencia emocional y capacidad de conectar con el mundo interno de las personas. Comprendes cómo piensan los grupos y sabes guiar a otros hacia su desarrollo personal y colectivo.",
-            superpoder: "Escucha activa profunda, mediación de crisis y liderazgo empático.",
-            ambiente: "Consultorios psicológicos, departamentos de recursos humanos, ONGs internacionales, colegios o centros de reinserción.",
-            carreras: [
-                "Psicología Clínica / Organizacional",
-                "Orientación Vocacional y Educativa",
-                "Trabajo Social y Gestión Comunitaria",
-                "Pedagogía y Educación Especial"
-            ]
-        },
-        "Negocios": {
-            nombre: "Estratega de Negocios & Liderazgo Ejecutivo 💼📈",
-            subtitulo: "Emprendimiento, finanzas globales y gestión de proyectos",
-            desc: "Posees visión comercial y mentalidad estratégica. Eres capaz de identificar nichos de mercado, movilizar personas, calcular riesgos de inversión y transformar ideas en organizaciones rentables y sostenibles.",
-            superpoder: "Visión de oportunidades, negociación persuasiva y liderazgo de equipos multidisciplinarios.",
-            ambiente: "Banca de inversión, corporaciones multinacionales, firmas de consultoría estratégica o tus propias empresas.",
-            carreras: [
-                "Administración y Dirección de Empresas",
-                "Finanzas, Banca e Inversiones",
-                "Marketing Digital y Neuromarketing",
-                "Comercio Exterior y Negocios Internacionales"
-            ]
-        },
-        "Arte": {
-            nombre: "Creador(a) Visual & Diseñador(a) Disruptivo 🎨✨",
-            subtitulo: "Narrativa estética, diseño interactivo y producción artística",
-            desc: "Tu mente no tolera la monotonía. Tienes un sentido estético agudo y una capacidad innata para plasmar emociones y conceptos abstractos en piezas visuales, audiovisuales o interactivas memorables.",
-            superpoder: "Pensamiento divergente, sensibilidad visual y conceptualización original.",
-            ambiente: "Agencias creativas de publicidad, estudios de animación y cine, talleres de diseño UI/UX o galerías de arte.",
-            carreras: [
-                "Diseño Gráfico y Comunicación Visual",
-                "Diseño de Experiencia de Usuario (UI/UX)",
-                "Animación Digital y Producción Audiovisual",
-                "Diseño de Modas / Interiores"
-            ]
-        },
-        "Humanidades": {
-            nombre: "Jurista, Diplomático(a) & Analista Político ⚖️🏛️",
-            subtitulo: "Justicia legal, relaciones internacionales y gobernanza",
-            desc: "Te apasiona la justicia, el debate estructurado y el marco normativo que rige a la sociedad. Tienes una enorme elocuencia para defender causas, mediar acuerdos diplomáticos y analizar el impacto de las leyes en los ciudadanos.",
-            superpoder: "Oratoria persuasiva, argumentación jurídica y pensamiento crítico social.",
-            ambiente: "Poder Judicial, bufetes de abogados corporativos, embajadas, cancillerías o think-tanks de política pública.",
-            carreras: [
-                "Derecho y Ciencias Jurídicas",
-                "Relaciones Internacionales y Diplomacia",
-                "Ciencias Políticas y Administración Pública",
-                "Filosofía, Sociología y Periodismo de Investigación"
-            ]
-        }
-    };
-
-    let preguntaActual = 0;
-    let respuestasTest = { Tech: 0, Ingenieria: 0, Salud: 0, Ciencias: 0, Social: 0, Negocios: 0, Arte: 0, Humanidades: 0 };
-
-    window.renderizarPregunta = function() {
-        const contenedor = document.getElementById('quiz-content');
-        const progressBar = document.getElementById('progress');
-        const resultBox = document.getElementById('result-box');
-
-        if (!contenedor) return;
-        if (preguntaActual >= preguntasVocacionales.length) {
-            contenedor.style.display = 'none'; 
-            progressBar.style.width = '100%'; 
-            mostrarResultado(); 
-            return;
-        }
-
-        const p = preguntasVocacionales[preguntaActual];
-        const porcentaje = Math.round((preguntaActual / preguntasVocacionales.length) * 100);
-        progressBar.style.width = porcentaje + '%';
-        resultBox.style.display = 'none'; 
-        contenedor.style.display = 'block';
-
-        contenedor.innerHTML = `
-            <div style="padding: 30px 20px; background: var(--blanco, #ffffff); border-radius: 14px; border: 1px solid var(--gris-borde, #ddd3c4); text-align: center; margin-top: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
-                    <span style="background: rgba(0,17,58,0.08); color: var(--azul, #00113A); padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 700;">PREGUNTA ${preguntaActual + 1} DE ${preguntasVocacionales.length}</span>
-                    <span style="color: var(--gris-claro, #8b8791); font-size: 12px; font-weight: 600;">${porcentaje}% Completado</span>
-                </div>
-                
-                <h3 style="color: var(--azul, #00113A); font-size: 19px; line-height: 1.45; margin: 20px 0 30px; font-weight: 600;">${p.texto}</h3>
-                
-                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                    <button type="button" class="btn btn-primary" onclick="responderTest('${p.tipo}', 2)" style="flex: 1; min-width: 140px; padding: 12px; font-weight: 600;">
-                        <i class="fa-solid fa-heart" style="margin-right: 6px;"></i> ¡Me describe totalmente!
-                    </button>
-                    <button type="button" class="btn btn-ghost" onclick="responderTest('${p.tipo}', 1)" style="flex: 1; min-width: 140px; padding: 12px; border: 1px solid var(--gris-borde, #ddd3c4); font-weight: 600;">
-                        <i class="fa-regular fa-thumbs-up" style="margin-right: 6px;"></i> Me llama la atención
-                    </button>
-                    <button type="button" class="btn btn-ghost" onclick="responderTest('${p.tipo}', 0)" style="flex: 1; min-width: 140px; padding: 12px; background: #fff1f0; color: #810200; border: 1px solid #ffccc7; font-weight: 600;">
-                        <i class="fa-solid fa-xmark" style="margin-right: 6px;"></i> Poco / Nada afín
-                    </button>
-                </div>
-            </div>`;
-    };
-
-    window.responderTest = function(tipo, puntos) {
-        respuestasTest[tipo] += puntos; 
-        preguntaActual++; 
-        renderizarPregunta();
-    };
-
-    function mostrarResultado() {
-        const resultBox = document.getElementById('result-box');
-        
-        // Ordenar perfiles de mayor a menor puntuación
-        const ranking = Object.entries(respuestasTest).sort((a, b) => b[1] - a[1]);
-        const [tipoGanador, puntosGanador] = ranking[0];
-        const [tipoSecundario, puntosSecundario] = ranking[1];
-
-        const perfil = perfiles[tipoGanador];
-        const perfilSec = perfiles[tipoSecundario];
-        
-        // Puntuación máxima posible por área = 3 preguntas * 2 puntos = 6 puntos
-        const matchPct = Math.min(100, Math.round((puntosGanador / 6) * 100));
-        const matchSecPct = Math.min(100, Math.round((puntosSecundario / 6) * 100));
-
-        resultBox.innerHTML = `
-            <div style="background: var(--blanco, #fff); border: 2px solid var(--azul, #00113A); border-radius: 16px; padding: 30px; margin-top: 20px; box-shadow: 0 8px 24px rgba(0,17,58,0.08);">
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <span style="background: #2f9e6a; color: white; padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
-                        🎯 ${matchPct}% de Compatibilidad
-                    </span>
-                    <h2 style="color: var(--azul, #00113A); font-size: 25px; margin: 15px 0 5px; font-family: var(--f-display, serif);">${perfil.nombre}</h2>
-                    <p style="color: var(--rojo, #810200); font-weight: 600; font-size: 14px; margin-top: 0;">${perfil.subtitulo}</p>
-                </div>
-
-                <p style="color: var(--gris, #55505C); font-size: 15px; line-height: 1.6; margin-bottom: 20px;">${perfil.desc}</p>
-
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-bottom: 25px;">
-                    <div style="background: var(--crema, #EFE3D5); padding: 15px; border-radius: 10px;">
-                        <strong style="color: var(--azul, #00113A); font-size: 13px; display: block; margin-bottom: 5px;">⚡ Tu Superpoder Clave:</strong>
-                        <span style="color: var(--gris, #55505C); font-size: 13.5px;">${perfil.superpoder}</span>
-                    </div>
-                    <div style="background: rgba(0,17,58,0.05); padding: 15px; border-radius: 10px;">
-                        <strong style="color: var(--azul, #00113A); font-size: 13px; display: block; margin-bottom: 5px;">🏢 Entornos de Trabajo Ideales:</strong>
-                        <span style="color: var(--gris, #55505C); font-size: 13.5px;">${perfil.ambiente}</span>
-                    </div>
-                </div>
-
-                <div style="background: #faf8f5; border: 1px solid var(--gris-borde, #ddd3c4); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                    <h3 style="color: var(--azul, #00113A); font-size: 17px; margin-top: 0; margin-bottom: 12px;">🎓 Carreras Universitarias Recomendadas:</h3>
-                    <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px;">
-                        ${perfil.carreras.map(c => `
-                            <li style="font-size: 14px; font-weight: 600; color: var(--azul, #00113A); display: flex; align-items: center;">
-                                <i class="fa-solid fa-circle-check" style="color: #2f9e6a; margin-right: 8px;"></i> ${c}
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-
-                <div style="padding: 12px 16px; background: #fff8f0; border-left: 4px solid #f39c12; border-radius: 6px; margin-bottom: 25px; font-size: 13.5px; color: #7f5200;">
-                    💡 <strong>Perfil Secundario Complementario (${matchSecPct}%):</strong> Tienes también afinidad con <em>${perfilSec.nombre.split(' ')[0]}</em>. Combinar tu área principal con habilidades de esta rama te convertirá en un profesional híbrido de alto valor.
-                </div>
-
-                <button type="button" id="btn-restart-test" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 15px; font-weight: 700; border-radius: 10px; cursor: pointer;">
-                    <i class="fa-solid fa-rotate-right" style="margin-right: 8px;"></i> Realizar el test nuevamente
-                </button>
-            </div>
-        `;
-
-        resultBox.style.display = 'block';
-
-        document.getElementById('btn-restart-test').addEventListener('click', () => {
-            preguntaActual = 0; 
-            respuestasTest = { Tech: 0, Ingenieria: 0, Salud: 0, Ciencias: 0, Social: 0, Negocios: 0, Arte: 0, Humanidades: 0 }; 
-            renderizarPregunta();
-        });
-    }
-
-    setTimeout(renderizarPregunta, 300);
   // =================================================================
-  // 3. LÓGICA DE FIREBASE (Termómetro y Chat de Orientación)
+  // LÓGICA DE FIREBASE Y ENCUESTAS DE BIENESTAR (CARITAS)
   // =================================================================
   window.addEventListener('firebase-ready', () => {
-      
-      // A) TERMÓMETRO DE BIENESTAR
       const formBienestar = document.getElementById('form-bienestar');
       if (formBienestar) {
           formBienestar.addEventListener('submit', function (event) {
@@ -737,107 +569,31 @@
               const valEstres = document.querySelector('input[name="estres"]:checked').value;
               const valBullying = document.querySelector('input[name="bullying"]:checked').value;
               const valEnergia = document.querySelector('input[name="energia"]:checked').value;
+              
+              const db = window.firebaseDatabase;
+              const { ref, set } = window.firebaseDbFunctions;
+              
               const idSeguro = (window.USUARIO_REAL || 'estudiante-anonimo').replace(/\./g, '_');
               
-              window.firebaseDbFunctions.set(window.firebaseDbFunctions.ref(window.firebaseDatabase, 'encuestas_bienestar/' + idSeguro), {
-                  estres: parseInt(valEstres), 
-                  bullying: parseInt(valBullying), 
-                  energia: parseInt(valEnergia), 
+              set(ref(db, 'encuestas_bienestar/' + idSeguro), {
+                  estres: parseInt(valEstres),
+                  bullying: parseInt(valBullying),
+                  energia: parseInt(valEnergia),
                   fecha: Date.now()
               }).then(() => {
                   const msjExito = document.getElementById('msg-bienestar-exito');
-                  msjExito.style.display = 'block'; 
+                  msjExito.style.display = 'block';
                   setTimeout(() => { msjExito.style.display = 'none'; }, 4000);
-              }).catch(err => alert("Hubo un error al intentar guardar tus respuestas."));
-          });
-      }
-
-      // B) CHAT PRIVADO CON ORIENTACIÓN
-      const chatFormOri = document.getElementById('chat-form-orientacion');
-      const chatInputOri = document.getElementById('chat-input-orientacion');
-      const chatBodyOri = document.getElementById('chat-body-orientacion');
-      const idSeguroEstudiante = (window.USUARIO_REAL || 'estudiante-anonimo').replace(/\./g, '_');
-
-      // Función para pintar mensajes de Orientación
-      function mostrarMensajeOrientacion(texto, remitente, timestamp) {
-          const msgDiv = document.createElement('div');
-          
-          if (remitente === 'student') {
-              msgDiv.className = 'chat-msg chat-msg-out';
-              msgDiv.style.alignSelf = 'flex-end';
-              msgDiv.style.marginLeft = 'auto';
-              msgDiv.style.backgroundColor = '#00113A';
-              msgDiv.style.color = '#FFFFFF';
-              msgDiv.style.borderBottomRightRadius = '0';
-              msgDiv.style.borderBottomLeftRadius = '12px';
-          } else {
-              msgDiv.className = 'chat-msg chat-msg-in';
-          }
-          
-          const p = document.createElement('p');
-          p.textContent = texto;
-          
-          const span = document.createElement('span');
-          span.className = 'chat-time';
-          const fecha = timestamp ? new Date(timestamp) : new Date();
-          span.textContent = fecha.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-          
-          msgDiv.appendChild(p);
-          msgDiv.appendChild(span);
-          chatBodyOri.appendChild(msgDiv);
-          chatBodyOri.scrollTop = chatBodyOri.scrollHeight;
-      }
-
-      // 1. Escuchar mensajes desde Firebase en tiempo real
-      let historialCargado = false;
-      const refChat = window.firebaseDbFunctions.ref(window.firebaseDatabase, 'chats_orientacion/' + idSeguroEstudiante);
-      
-      window.firebaseDbFunctions.onChildAdded(refChat, (snapshot) => {
-          // Si es el primer mensaje que cargamos, borramos el saludo estático inicial
-          if (!historialCargado) {
-              chatBodyOri.innerHTML = ''; 
-              historialCargado = true;
-          }
-          const data = snapshot.val();
-          mostrarMensajeOrientacion(data.text, data.sender, data.timestamp);
-      });
-
-      // 2. Interceptar el envío del formulario del estudiante
-      if (chatFormOri) {
-          chatFormOri.addEventListener('submit', (e) => {
-              e.preventDefault(); // ¡Esto evita que la página se recargue!
-              
-              const texto = chatInputOri.value.trim();
-              if (!texto) return;
-              
-              chatInputOri.value = ''; // Limpiar el input
-              
-              if (!window.firebaseDatabase) {
-                  alert("Conectando con Orientación, intenta de nuevo en un segundo...");
-                  return;
-              }
-
-              // Si es el primer mensaje de toda la vida y no había historial
-              if (!historialCargado) {
-                  chatBodyOri.innerHTML = '';
-                  historialCargado = true;
-              }
-
-              // Guardar el mensaje en la base de datos de Firebase
-              const nuevoMensajeRef = window.firebaseDbFunctions.push(refChat);
-              window.firebaseDbFunctions.set(nuevoMensajeRef, {
-                  sender: 'student', // El orientador verá que lo mandó el estudiante
-                  text: texto,
-                  timestamp: Date.now()
-              });
+              }).catch(err => alert("Error al guardar la encuesta."));
           });
       }
   });
 </script>
 
-<!-- Carga del SDK de Firebase -->
+<!-- CÓDIGO ORIGINAL DE FIREBASE (INTACTO) -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-analytics.js";
   import { getDatabase, ref, push, set, onChildAdded } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-database.js";
 
   const firebaseConfig = {
@@ -847,19 +603,20 @@
     projectId: "george-gilberth",
     storageBucket: "george-gilberth.firebasestorage.app",
     messagingSenderId: "444338536878",
-    appId: "1:444338536878:web:1844ac822f9a085b10083f"
+    appId: "1:444338536878:web:1844ac822f9a085b10083f",
+    measurementId: "G-4XFBVVC0R7"
   };
 
   try {
     const app = initializeApp(firebaseConfig);
+    console.log("[Firebase] App inicializada correctamente.");
+    const database = getDatabase(app);
     window.firebaseApp = app;
-    window.firebaseDatabase = getDatabase(app);
+    window.firebaseDatabase = database;
     window.firebaseDbFunctions = { ref, push, set, onChildAdded };
-    
-    // Dispara un evento global avisando que Firebase ya está conectado
     window.dispatchEvent(new CustomEvent("firebase-ready"));
-  } catch (initError) { 
-      console.log("Error inicializando Firebase:", initError);
+  } catch (initError) {
+    console.error("[Firebase] Error al inicializar Firebase:", initError);
   }
 </script>
 </body>
