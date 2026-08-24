@@ -451,28 +451,159 @@
     }
 
     // =================================================================
-    // 2. LÓGICA DEL TEST VOCACIONAL 
+    // 2. LÓGICA MEJORADA DEL TEST VOCACIONAL (SISTEMA RIASEC + STEM)
     // =================================================================
     const preguntasVocacionales = [
-        { id: 1, texto: "¿Disfrutas desarmar aparatos para ver cómo funcionan y volver a armarlos?", tipo: "Ingenieria" },
-        { id: 2, texto: "¿Sueles ser la persona a la que tus amigos acuden cuando tienen problemas personales?", tipo: "Social" },
-        { id: 3, texto: "¿Te atrae la idea de liderar un equipo, emprender y tomar decisiones importantes?", tipo: "Negocios" },
-        { id: 4, texto: "¿Te gusta expresarte a través del arte, la escritura, la música o el diseño?", tipo: "Arte" },
-        { id: 5, texto: "¿Te gusta trabajar con números, datos y mantener todo fríamente organizado?", tipo: "Administracion" },
-        { id: 6, texto: "¿Sientes curiosidad por investigar el porqué de las cosas en la naturaleza o la tecnología?", tipo: "Ciencias" }
+        // --- 1. TECNOLOGÍA & CIENCIAS DE LA COMPUTACIÓN (Tech) ---
+        { id: 1, texto: "¿Te emociona la idea de crear aplicaciones, videojuegos, páginas web o automatizar tareas mediante código?", tipo: "Tech" },
+        { id: 2, texto: "¿Sientes curiosidad por entender cómo funciona la Inteligencia Artificial, la ciberseguridad o la robótica?", tipo: "Tech" },
+        { id: 3, texto: "Cuando hay un problema con un dispositivo o programa, ¿prefieres buscar la solución técnica tú mismo(a) antes de pedir ayuda?", tipo: "Tech" },
+
+        // --- 2. INGENIERÍA & CONSTRUCCIÓN (Ingenieria) ---
+        { id: 4, texto: "¿Disfrutas entender los mecanismos físicos de las cosas, desarmar aparatos o diseñar estructuras y circuitos?", tipo: "Ingenieria" },
+        { id: 5, texto: "¿Te motiva la idea de optimizar procesos industriales, energías renovables o fabricar piezas y maquinaria?", tipo: "Ingenieria" },
+        { id: 6, texto: "¿Prefieres proyectos donde puedas ver y construir resultados físicos y tangibles en el mundo real?", tipo: "Ingenieria" },
+
+        // --- 3. SALUD & BIOMEDICINA (Salud) ---
+        { id: 7, texto: "¿Sientes fascinación por la anatomía, cómo funciona el cuerpo humano o el tratamiento de enfermedades?", tipo: "Salud" },
+        { id: 8, texto: "¿Mantendrías la calma y tendrías vocación para atender emergencias médicas o cuidar directamente a pacientes?", tipo: "Salud" },
+        { id: 9, texto: "¿Te interesan los descubrimientos de laboratorio sobre genética, medicamentos, nutrición o biotecnología?", tipo: "Salud" },
+
+        // --- 4. CIENCIAS EXACTAS & NATURALES (Ciencias) ---
+        { id: 10, texto: "¿Te apasiona formular hipótesis, analizar datos abstractos y resolver enigmas matemáticos complejos?", tipo: "Ciencias" },
+        { id: 11, texto: "¿Te llama la atención el estudio del universo (astrofísica), el medio ambiente, la flora/fauna o la geología?", tipo: "Ciencias" },
+        { id: 12, texto: "¿Disfrutas leer artículos científicos y cuestionar las explicaciones tradicionales mediante el método científico?", tipo: "Ciencias" },
+
+        // --- 5. SOCIAL, PSICOLOGÍA & EDUCACIÓN (Social) ---
+        { id: 13, texto: "¿Sueles ser la persona empática a la que tus amigos acuden para desahogarse, pedir consejo o resolver conflictos?", tipo: "Social" },
+        { id: 14, texto: "¿Te interesa comprender la mente humana, las conductas sociales o defender los derechos de personas vulnerables?", tipo: "Social" },
+        { id: 15, texto: "¿Tienes paciencia y vocación para enseñar temas difíciles a otros o guiar a comunidades hacia un cambio positivo?", tipo: "Social" },
+
+        // --- 6. NEGOCIOS, FINANZAS & LIDERAZGO (Negocios) ---
+        { id: 16, texto: "¿Te atrae la idea de crear tu propio negocio, liderar equipos, negociar y tomar decisiones estratégicas?", tipo: "Negocios" },
+        { id: 17, texto: "¿Disfrutas analizar gráficos financieros, entender el mercado bursátil, las ventas o la inversión económica?", tipo: "Negocios" },
+        { id: 18, texto: "¿Te consideras una persona persuasiva, con visión de futuro y orientada a conseguir metas cuantificables?", tipo: "Negocios" },
+
+        // --- 7. ARTE, DISEÑO & COMUNICACIÓN (Arte) ---
+        { id: 19, texto: "¿Tu forma favorita de expresarte es a través de la ilustración, el diseño gráfico, la música, el video o la escritura?", tipo: "Arte" },
+        { id: 20, texto: "¿Te fijas constantemente en la estética visual de productos, marcas, tipografías o escenografías?", tipo: "Arte" },
+        { id: 21, texto: "¿Te aburre la rutina estricta y prefieres espacios con libertad creativa donde ninguna idea sea considerada loca?", tipo: "Arte" },
+
+        // --- 8. DERECHO, POLÍTICA & HUMANIDADES (Humanidades) ---
+        { id: 22, texto: "¿Disfrutas debatir con argumentos sólidos, redactar ensayos y analizar leyes o sucesos históricos/políticos?", tipo: "Humanidades" },
+        { id: 23, texto: "¿Sientes indignación ante la injusticia y te gustaría litigar, negociar tratados o regular políticas públicas?", tipo: "Humanidades" },
+        { id: 24, texto: "¿Tienes facilidad para la oratoria, la diplomacia, los idiomas y la resolución formal de controversias?", tipo: "Humanidades" }
     ];
 
     const perfiles = {
-        "Ingenieria": { nombre: "Perfil Práctico / Ingenieril 🛠️", desc: "Te encanta resolver problemas tangibles y crear cosas nuevas.", carreras: ["Ingeniería en Sistemas", "Arquitectura", "Electrónica"] },
-        "Social": { nombre: "Perfil Social / Humanista 🤝", desc: "Tienes gran empatía y vocación de servicio.", carreras: ["Psicología", "Docencia", "Trabajo Social"] },
-        "Negocios": { nombre: "Perfil Emprendedor / Liderazgo 💼", desc: "Naciste para liderar, persuadir y gestionar.", carreras: ["Administración de Empresas", "Derecho", "Marketing"] },
-        "Arte": { nombre: "Perfil Creativo / Artístico 🎨", desc: "Necesitas expresar tus ideas de forma original.", carreras: ["Diseño Gráfico", "Animación Digital", "Producción Audiovisual"] },
-        "Administracion": { nombre: "Perfil Convencional / Organizador 📊", desc: "El orden es lo tuyo. Manejas datos con precisión.", carreras: ["Contaduría", "Finanzas", "Logística"] },
-        "Ciencias": { nombre: "Perfil Investigador / Científico 🔬", desc: "Eres una persona analítica y curiosa.", carreras: ["Biología", "Química", "Ciencias de Datos"] }
+        "Tech": {
+            nombre: "Arquitecto(a) Tecnológico & Software 💻⚡",
+            subtitulo: "Innovación digital, algorítmica y transformación virtual",
+            desc: "Tienes un pensamiento analítico sobresaliente enfocado en el mundo digital. Ves la tecnología no solo como una herramienta, sino como el lienzo para resolver los retos del siglo XXI mediante automatización, datos y sistemas inteligentes.",
+            superpoder: "Capacidad de descomponer problemas complejos en soluciones lógicas y automatizables.",
+            ambiente: "Empresas tecnológicas globales (Big Tech), Startups, consultoras de ciberseguridad o laboratorios de IA.",
+            carreras: [
+                "Ingeniería en Software / Computación",
+                "Ciencia de Datos e Inteligencia Artificial",
+                "Ciberseguridad y Redes",
+                "Desarrollo de Videojuegos y Realidad Virtual"
+            ]
+        },
+        "Ingenieria": {
+            nombre: "Ingeniero(a) Constructor & Mecatrónico 🛠️⚙️",
+            subtitulo: "Diseño físico, optimización industrial y robótica",
+            desc: "Tu mente conecta la teoría con el mundo tangible. Te apasiona entender cómo interactúan los materiales, las fuerzas y los circuitos para crear infraestructuras seguras, máquinas eficientes y tecnologías que muevan al mundo.",
+            superpoder: "Visión espacial, cálculo estructural y optimización de recursos tangibles.",
+            ambiente: "Plantas de manufactura avanzada, proyectos de construcción, empresas aeroespaciales o energías limpias.",
+            carreras: [
+                "Ingeniería Mecatrónica / Electromecánica",
+                "Ingeniería Civil y Arquitectura",
+                "Ingeniería Industrial y Cadena de Suministros",
+                "Ingeniería Electrónica y Telecomunicaciones"
+            ]
+        },
+        "Salud": {
+            nombre: "Especialista en Salud & Ciencias Biomédicas 🩺🧬",
+            subtitulo: "Cuidado de la vida, diagnóstico clínico e investigación médica",
+            desc: "Posees una profunda vocación de servicio combinada con un alto rigor biológico. Tu motor es preservar el bienestar, comprender la fisiología humana y aplicar la ciencia para curar, aliviar y prevenir patologías.",
+            superpoder: "Empatía clínica, temple bajo presión y pensamiento diagnóstico.",
+            ambiente: "Hospitales de alta complejidad, centros de investigación biomédica, laboratorios farmacéuticos o clínicas especializadas.",
+            carreras: [
+                "Medicina y Cirugía",
+                "Microbiología y Biotecnología Médica",
+                "Farmacia y Bioquímica Clínica",
+                "Fisioterapia / Odontología / Nutrición Clínica"
+            ]
+        },
+        "Ciencias": {
+            nombre: "Científico(a) Investigador & Analista Puro 🔬🌌",
+            subtitulo: "Descubrimiento de leyes naturales, experimentación y modelado",
+            desc: "Te mueve una curiosidad insaciable por desentrañar la verdad detrás de los fenómenos naturales y matemáticos. Prefieres la rigurosidad del método científico, la recolección de evidencia y el pensamiento crítico.",
+            superpoder: "Deducción lógica profunda, análisis de patrones y diseño experimental.",
+            ambiente: "Institutos de investigación científica, observatorios, centros de biotecnología o academias universitarias.",
+            carreras: [
+                "Física Pura y Astrofísica",
+                "Matemáticas Aplicadas y Estadística",
+                "Química / Biología Molecular",
+                "Geología y Ciencias Atmosféricas"
+            ]
+        },
+        "Social": {
+            nombre: "Mentor(a) Social & Psicólogo(a) Humanista 🤝🧠",
+            subtitulo: "Comportamiento humano, salud mental y desarrollo comunitario",
+            desc: "Tu mayor talento radica en tu inteligencia emocional y capacidad de conectar con el mundo interno de las personas. Comprendes cómo piensan los grupos y sabes guiar a otros hacia su desarrollo personal y colectivo.",
+            superpoder: "Escucha activa profunda, mediación de crisis y liderazgo empático.",
+            ambiente: "Consultorios psicológicos, departamentos de recursos humanos, ONGs internacionales, colegios o centros de reinserción.",
+            carreras: [
+                "Psicología Clínica / Organizacional",
+                "Orientación Vocacional y Educativa",
+                "Trabajo Social y Gestión Comunitaria",
+                "Pedagogía y Educación Especial"
+            ]
+        },
+        "Negocios": {
+            nombre: "Estratega de Negocios & Liderazgo Ejecutivo 💼📈",
+            subtitulo: "Emprendimiento, finanzas globales y gestión de proyectos",
+            desc: "Posees visión comercial y mentalidad estratégica. Eres capaz de identificar nichos de mercado, movilizar personas, calcular riesgos de inversión y transformar ideas en organizaciones rentables y sostenibles.",
+            superpoder: "Visión de oportunidades, negociación persuasiva y liderazgo de equipos multidisciplinarios.",
+            ambiente: "Banca de inversión, corporaciones multinacionales, firmas de consultoría estratégica o tus propias empresas.",
+            carreras: [
+                "Administración y Dirección de Empresas",
+                "Finanzas, Banca e Inversiones",
+                "Marketing Digital y Neuromarketing",
+                "Comercio Exterior y Negocios Internacionales"
+            ]
+        },
+        "Arte": {
+            nombre: "Creador(a) Visual & Diseñador(a) Disruptivo 🎨✨",
+            subtitulo: "Narrativa estética, diseño interactivo y producción artística",
+            desc: "Tu mente no tolera la monotonía. Tienes un sentido estético agudo y una capacidad innata para plasmar emociones y conceptos abstractos en piezas visuales, audiovisuales o interactivas memorables.",
+            superpoder: "Pensamiento divergente, sensibilidad visual y conceptualización original.",
+            ambiente: "Agencias creativas de publicidad, estudios de animación y cine, talleres de diseño UI/UX o galerías de arte.",
+            carreras: [
+                "Diseño Gráfico y Comunicación Visual",
+                "Diseño de Experiencia de Usuario (UI/UX)",
+                "Animación Digital y Producción Audiovisual",
+                "Diseño de Modas / Interiores"
+            ]
+        },
+        "Humanidades": {
+            nombre: "Jurista, Diplomático(a) & Analista Político ⚖️🏛️",
+            subtitulo: "Justicia legal, relaciones internacionales y gobernanza",
+            desc: "Te apasiona la justicia, el debate estructurado y el marco normativo que rige a la sociedad. Tienes una enorme elocuencia para defender causas, mediar acuerdos diplomáticos y analizar el impacto de las leyes en los ciudadanos.",
+            superpoder: "Oratoria persuasiva, argumentación jurídica y pensamiento crítico social.",
+            ambiente: "Poder Judicial, bufetes de abogados corporativos, embajadas, cancillerías o think-tanks de política pública.",
+            carreras: [
+                "Derecho y Ciencias Jurídicas",
+                "Relaciones Internacionales y Diplomacia",
+                "Ciencias Políticas y Administración Pública",
+                "Filosofía, Sociología y Periodismo de Investigación"
+            ]
+        }
     };
 
     let preguntaActual = 0;
-    let respuestasTest = { Ingenieria: 0, Social: 0, Negocios: 0, Arte: 0, Administracion: 0, Ciencias: 0 };
+    let respuestasTest = { Tech: 0, Ingenieria: 0, Salud: 0, Ciencias: 0, Social: 0, Negocios: 0, Arte: 0, Humanidades: 0 };
 
     window.renderizarPregunta = function() {
         const contenedor = document.getElementById('quiz-content');
@@ -480,7 +611,6 @@
         const resultBox = document.getElementById('result-box');
 
         if (!contenedor) return;
-        
         if (preguntaActual >= preguntasVocacionales.length) {
             contenedor.style.display = 'none'; 
             progressBar.style.width = '100%'; 
@@ -489,18 +619,30 @@
         }
 
         const p = preguntasVocacionales[preguntaActual];
-        progressBar.style.width = ((preguntaActual / preguntasVocacionales.length) * 100) + '%';
+        const porcentaje = Math.round((preguntaActual / preguntasVocacionales.length) * 100);
+        progressBar.style.width = porcentaje + '%';
         resultBox.style.display = 'none'; 
         contenedor.style.display = 'block';
 
         contenedor.innerHTML = `
-            <div style="padding: 25px; background: white; border-radius: 12px; border: 1px solid var(--gris-borde); text-align: center; margin-top: 20px;">
-                <p style="color: var(--gris-claro); font-size: 13px; font-weight: bold; margin-bottom: 10px;">PREGUNTA ${preguntaActual + 1} DE ${preguntasVocacionales.length}</p>
-                <h3 style="color: var(--azul); font-size: 20px; margin-top: 0; margin-bottom: 25px;">${p.texto}</h3>
-                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                    <button class="btn btn-primary" onclick="responderTest('${p.tipo}', 2)" style="flex:1;">Me describe total</button>
-                    <button class="btn btn-ghost" onclick="responderTest('${p.tipo}', 1)" style="flex:1;">Solo un poco</button>
-                    <button class="btn btn-ghost" onclick="responderTest('${p.tipo}', 0)" style="flex:1; background: #ffe5e5; color: #8b0000; border:none;">Nada que ver</button>
+            <div style="padding: 30px 20px; background: var(--blanco, #ffffff); border-radius: 14px; border: 1px solid var(--gris-borde, #ddd3c4); text-align: center; margin-top: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
+                    <span style="background: rgba(0,17,58,0.08); color: var(--azul, #00113A); padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 700;">PREGUNTA ${preguntaActual + 1} DE ${preguntasVocacionales.length}</span>
+                    <span style="color: var(--gris-claro, #8b8791); font-size: 12px; font-weight: 600;">${porcentaje}% Completado</span>
+                </div>
+                
+                <h3 style="color: var(--azul, #00113A); font-size: 19px; line-height: 1.45; margin: 20px 0 30px; font-weight: 600;">${p.texto}</h3>
+                
+                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                    <button type="button" class="btn btn-primary" onclick="responderTest('${p.tipo}', 2)" style="flex: 1; min-width: 140px; padding: 12px; font-weight: 600;">
+                        <i class="fa-solid fa-heart" style="margin-right: 6px;"></i> ¡Me describe totalmente!
+                    </button>
+                    <button type="button" class="btn btn-ghost" onclick="responderTest('${p.tipo}', 1)" style="flex: 1; min-width: 140px; padding: 12px; border: 1px solid var(--gris-borde, #ddd3c4); font-weight: 600;">
+                        <i class="fa-regular fa-thumbs-up" style="margin-right: 6px;"></i> Me llama la atención
+                    </button>
+                    <button type="button" class="btn btn-ghost" onclick="responderTest('${p.tipo}', 0)" style="flex: 1; min-width: 140px; padding: 12px; background: #fff1f0; color: #810200; border: 1px solid #ffccc7; font-weight: 600;">
+                        <i class="fa-solid fa-xmark" style="margin-right: 6px;"></i> Poco / Nada afín
+                    </button>
                 </div>
             </div>`;
     };
@@ -513,45 +655,73 @@
 
     function mostrarResultado() {
         const resultBox = document.getElementById('result-box');
-        let maxPuntos = -1; 
-        let perfilGanador = "Ingenieria";
         
-        for (const [tipo, puntos] of Object.entries(respuestasTest)) {
-            if (puntos > maxPuntos) { maxPuntos = puntos; perfilGanador = tipo; }
-        }
-        
-        const perfil = perfiles[perfilGanador];
-        document.getElementById('profile-name').textContent = perfil.nombre;
-        document.getElementById('profile-desc').textContent = perfil.desc;
-        
-        const lista = document.getElementById('careers-list'); 
-        lista.innerHTML = '';
-        perfil.carreras.forEach(c => {
-            const li = document.createElement('li'); 
-            li.innerHTML = `<i class="fa-solid fa-check" style="color: #2f9e6a;"></i> ${c}`; 
-            lista.appendChild(li);
-        });
-        
-        resultBox.style.display = 'block'; 
-        resultBox.style.background = "var(--crema)"; 
-        resultBox.style.padding = "25px"; 
-        resultBox.style.borderRadius = "12px"; 
-        resultBox.style.marginTop = "25px"; 
-        resultBox.style.border = "1px solid var(--gris-borde)";
-    }
+        // Ordenar perfiles de mayor a menor puntuación
+        const ranking = Object.entries(respuestasTest).sort((a, b) => b[1] - a[1]);
+        const [tipoGanador, puntosGanador] = ranking[0];
+        const [tipoSecundario, puntosSecundario] = ranking[1];
 
-    const btnRestart = document.getElementById('btn-restart-test');
-    if (btnRestart) {
-        btnRestart.addEventListener('click', () => {
+        const perfil = perfiles[tipoGanador];
+        const perfilSec = perfiles[tipoSecundario];
+        
+        // Puntuación máxima posible por área = 3 preguntas * 2 puntos = 6 puntos
+        const matchPct = Math.min(100, Math.round((puntosGanador / 6) * 100));
+        const matchSecPct = Math.min(100, Math.round((puntosSecundario / 6) * 100));
+
+        resultBox.innerHTML = `
+            <div style="background: var(--blanco, #fff); border: 2px solid var(--azul, #00113A); border-radius: 16px; padding: 30px; margin-top: 20px; box-shadow: 0 8px 24px rgba(0,17,58,0.08);">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <span style="background: #2f9e6a; color: white; padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                        🎯 ${matchPct}% de Compatibilidad
+                    </span>
+                    <h2 style="color: var(--azul, #00113A); font-size: 25px; margin: 15px 0 5px; font-family: var(--f-display, serif);">${perfil.nombre}</h2>
+                    <p style="color: var(--rojo, #810200); font-weight: 600; font-size: 14px; margin-top: 0;">${perfil.subtitulo}</p>
+                </div>
+
+                <p style="color: var(--gris, #55505C); font-size: 15px; line-height: 1.6; margin-bottom: 20px;">${perfil.desc}</p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-bottom: 25px;">
+                    <div style="background: var(--crema, #EFE3D5); padding: 15px; border-radius: 10px;">
+                        <strong style="color: var(--azul, #00113A); font-size: 13px; display: block; margin-bottom: 5px;">⚡ Tu Superpoder Clave:</strong>
+                        <span style="color: var(--gris, #55505C); font-size: 13.5px;">${perfil.superpoder}</span>
+                    </div>
+                    <div style="background: rgba(0,17,58,0.05); padding: 15px; border-radius: 10px;">
+                        <strong style="color: var(--azul, #00113A); font-size: 13px; display: block; margin-bottom: 5px;">🏢 Entornos de Trabajo Ideales:</strong>
+                        <span style="color: var(--gris, #55505C); font-size: 13.5px;">${perfil.ambiente}</span>
+                    </div>
+                </div>
+
+                <div style="background: #faf8f5; border: 1px solid var(--gris-borde, #ddd3c4); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                    <h3 style="color: var(--azul, #00113A); font-size: 17px; margin-top: 0; margin-bottom: 12px;">🎓 Carreras Universitarias Recomendadas:</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px;">
+                        ${perfil.carreras.map(c => `
+                            <li style="font-size: 14px; font-weight: 600; color: var(--azul, #00113A); display: flex; align-items: center;">
+                                <i class="fa-solid fa-circle-check" style="color: #2f9e6a; margin-right: 8px;"></i> ${c}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+
+                <div style="padding: 12px 16px; background: #fff8f0; border-left: 4px solid #f39c12; border-radius: 6px; margin-bottom: 25px; font-size: 13.5px; color: #7f5200;">
+                    💡 <strong>Perfil Secundario Complementario (${matchSecPct}%):</strong> Tienes también afinidad con <em>${perfilSec.nombre.split(' ')[0]}</em>. Combinar tu área principal con habilidades de esta rama te convertirá en un profesional híbrido de alto valor.
+                </div>
+
+                <button type="button" id="btn-restart-test" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 15px; font-weight: 700; border-radius: 10px; cursor: pointer;">
+                    <i class="fa-solid fa-rotate-right" style="margin-right: 8px;"></i> Realizar el test nuevamente
+                </button>
+            </div>
+        `;
+
+        resultBox.style.display = 'block';
+
+        document.getElementById('btn-restart-test').addEventListener('click', () => {
             preguntaActual = 0; 
-            respuestasTest = { Ingenieria: 0, Social: 0, Negocios: 0, Arte: 0, Administracion: 0, Ciencias: 0 }; 
+            respuestasTest = { Tech: 0, Ingenieria: 0, Salud: 0, Ciencias: 0, Social: 0, Negocios: 0, Arte: 0, Humanidades: 0 }; 
             renderizarPregunta();
         });
     }
-    
-    setTimeout(renderizarPregunta, 300);
-  });
 
+    setTimeout(renderizarPregunta, 300);
   // =================================================================
   // 3. LÓGICA DE FIREBASE (Termómetro y Chat de Orientación)
   // =================================================================
