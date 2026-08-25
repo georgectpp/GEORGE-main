@@ -11,6 +11,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
+<!-- Librería para interpretar Markdown -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 <style>
   /* Estilos para las Encuestas de Caritas (Termómetro) */
   .encuesta-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; padding: 25px; margin-bottom: 20px; text-align: center; }
@@ -22,6 +25,30 @@
   .carita-label:hover { filter: grayscale(50%) opacity(0.8); transform: scale(1.1); }
   .carita-item input[type="radio"]:checked + .carita-label { filter: grayscale(0%) opacity(1); transform: scale(1.2); }
   .carita-desc { display: block; font-size: 12px; color: var(--gris-claro); margin-top: 5px; font-weight: 600; }
+
+  /* Estilos para limpiar el Markdown dentro de los chats */
+  .texto-markdown p {
+      margin-top: 0;
+      margin-bottom: 10px;
+      line-height: 1.4;
+  }
+  .texto-markdown p:last-child {
+      margin-bottom: 0;
+  }
+  .texto-markdown ul, .texto-markdown ol {
+      margin-top: 5px;
+      margin-bottom: 10px;
+      padding-left: 20px;
+  }
+  .texto-markdown h1, .texto-markdown h2, .texto-markdown h3 {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 16px;
+  }
+  .texto-markdown strong {
+      font-weight: 700;
+      color: #810200; /* Un rojo oscuro para resaltar las negritas de la IA */
+  }
 </style>
 </head>
 <body>
@@ -393,7 +420,7 @@
   })();
 </script>
 
-<!-- CÓDIGO ORIGINAL DE CHATS N8N (INTACTO) -->
+<!-- CÓDIGO DE CHATS N8N CON SOPORTE MARKDOWN -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const chatFormIA = document.getElementById('chat-form-ia');
@@ -415,8 +442,18 @@
           msgDiv.style.borderBottomLeftRadius = '12px';
       }
 
-      const p = document.createElement('p');
-      p.textContent = texto;
+      // --- AQUÍ ESTÁ LA MAGIA DEL MARKDOWN ---
+      const p = document.createElement('div');
+      p.className = 'texto-markdown';
+      
+      if (remitente === 'ia' || remitente === 'sistema') {
+          // Traduce los asteriscos a negritas, listas, etc.
+          p.innerHTML = marked.parse(texto);
+      } else {
+          // El texto del usuario se queda normal
+          p.textContent = texto; 
+      }
+      // ----------------------------------------
 
       const span = document.createElement('span');
       span.className = 'chat-time';
@@ -484,8 +521,16 @@
           msgDiv.style.borderBottomLeftRadius = '12px';
       }
 
-      const p = document.createElement('p');
-      p.innerHTML = texto.replace(/\n/g, '<br>');
+      // --- AQUÍ ESTÁ LA MAGIA DEL MARKDOWN PARA EL GENERADOR ---
+      const p = document.createElement('div');
+      p.className = 'texto-markdown';
+      
+      if (remitente === 'ia' || remitente === 'sistema') {
+          p.innerHTML = marked.parse(texto);
+      } else {
+          p.textContent = texto; 
+      }
+      // ---------------------------------------------------------
 
       const span = document.createElement('span');
       span.className = 'chat-time';
@@ -554,39 +599,6 @@
           }
         });
     }
-  });
-
-  // =================================================================
-  // LÓGICA DE FIREBASE Y ENCUESTAS DE BIENESTAR (CARITAS)
-  // =================================================================
-  window.addEventListener('firebase-ready', () => {
-      const formBienestar = document.getElementById('form-bienestar');
-      if (formBienestar) {
-          formBienestar.addEventListener('submit', function (event) {
-              event.preventDefault();
-              if (!window.firebaseDatabase) return alert("Conectando con la base de datos...");
-              
-              const valEstres = document.querySelector('input[name="estres"]:checked').value;
-              const valBullying = document.querySelector('input[name="bullying"]:checked').value;
-              const valEnergia = document.querySelector('input[name="energia"]:checked').value;
-              
-              const db = window.firebaseDatabase;
-              const { ref, set } = window.firebaseDbFunctions;
-              
-              const idSeguro = (window.USUARIO_REAL || 'estudiante-anonimo').replace(/\./g, '_');
-              
-              set(ref(db, 'encuestas_bienestar/' + idSeguro), {
-                  estres: parseInt(valEstres),
-                  bullying: parseInt(valBullying),
-                  energia: parseInt(valEnergia),
-                  fecha: Date.now()
-              }).then(() => {
-                  const msjExito = document.getElementById('msg-bienestar-exito');
-                  msjExito.style.display = 'block';
-                  setTimeout(() => { msjExito.style.display = 'none'; }, 4000);
-              }).catch(err => alert("Error al guardar la encuesta."));
-          });
-      }
   });
 </script>
 
