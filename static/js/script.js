@@ -181,32 +181,36 @@
       const chatInputOr = document.getElementById('chat-input-orientacion');
       const chatBodyOr = document.getElementById('chat-body-orientacion');
       
-      chatBodyOr.innerHTML = ''; 
+      if(chatBodyOr) chatBodyOr.innerHTML = ''; 
       const miChatRef = ref(db, 'chats_orientacion/' + myStudentId);
 
       // Enviar mensaje
-      chatFormOr.addEventListener('submit', function (e) {
-          e.preventDefault();
-          const texto = chatInputOr.value.trim();
-          if (!texto) return;
+      if(chatFormOr) {
+          chatFormOr.addEventListener('submit', function (e) {
+              e.preventDefault();
+              const texto = chatInputOr.value.trim();
+              if (!texto) return;
 
-          // --- MONITOR DE SEGURIDAD (Analiza mensaje de chat) ---
-          monitorearSeguridad(texto, myStudentId, 'chat_orientacion');
-          // -------------------------------------------------------------
-          
-          set(push(miChatRef), { 
-              sender: 'student', 
-              text: texto, 
-              timestamp: Date.now() 
+              // --- MONITOR DE SEGURIDAD (Analiza mensaje de chat) ---
+              monitorearSeguridad(texto, myStudentId, 'chat_orientacion');
+              // -------------------------------------------------------------
+              
+              set(push(miChatRef), { 
+                  sender: 'student', 
+                  text: texto, 
+                  timestamp: Date.now() 
+              });
+              
+              chatInputOr.value = '';
+              chatInputOr.focus();
           });
-          
-          chatInputOr.value = '';
-          chatInputOr.focus();
-      });
+      }
 
       // Escuchar mensajes
       onChildAdded(miChatRef, (snapshot) => {
           const msj = snapshot.val();
+          if(!chatBodyOr) return;
+
           const direction = msj.sender === 'student' ? 'out' : 'in';
           const bubble = document.createElement('div');
           
@@ -292,6 +296,35 @@
       `;
       
       feedList.prepend(article);
+
+      // =================================================================
+      // CARGAR RESPUESTAS EN TIEMPO REAL DESDE FIREBASE
+      // =================================================================
+      const replyList = article.querySelector('.reply-list');
+      const replyCounter = article.querySelector('.reply-count');
+      let contadorRespuestas = 0;
+
+      if (window.firebaseDatabase) {
+          const { ref, onChildAdded } = window.firebaseDbFunctions;
+          const db = window.firebaseDatabase;
+          
+          onChildAdded(ref(db, `publicaciones/${idPost}/respuestas`), (snap) => {
+              const respuesta = snap.val();
+              const item = document.createElement('div'); 
+              item.className = 'reply-item';
+              
+              // Diferenciar visualmente si el autor es el usuario actual u otro
+              const nombreAutor = (respuesta.autor === myStudentId) ? 'Tú' : 'Estudiante';
+              
+              item.innerHTML = `<strong style="color:var(--azul); font-size:13px;">${escapeHTML(nombreAutor)}:</strong> <span style="font-size:14px; color:var(--texto); margin-left: 5px;">${escapeHTML(respuesta.texto)}</span>`;
+              replyList.appendChild(item);
+              
+              // Actualizar el contador de la publicación
+              contadorRespuestas++;
+              replyCounter.textContent = contadorRespuestas === 1 ? '1 respuesta' : `${contadorRespuestas} respuestas`;
+          });
+      }
+      // =================================================================
       
       if (esReciente) {
           article.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -313,6 +346,7 @@
       
       const card = btn.closest('.post-card');
       const action = btn.dataset.action;
+      const postId = card.dataset.id;
 
       if (action === 'like') {
           const isLiked = btn.classList.toggle('is-liked');
@@ -343,16 +377,21 @@
 
           // --- MONITOR DE SEGURIDAD (Analiza las respuestas en el foro) ---
           monitorearSeguridad(text, myStudentId, 'respuesta_foro');
-          // -----------------------------------------------------------------------
           
-          const item = document.createElement('div'); 
-          item.className = 'reply-item';
-          item.innerHTML = `<strong>Tú:</strong><span>${escapeHTML(text)}</span>`;
-          card.querySelector('.reply-list').appendChild(item);
+          // --- GUARDAR RESPUESTA EN FIREBASE ---
+          if (window.firebaseDatabase) {
+              const { ref, push, set } = window.firebaseDbFunctions;
+              const db = window.firebaseDatabase;
+              
+              set(push(ref(db, `publicaciones/${postId}/respuestas`)), {
+                  autor: myStudentId,
+                  texto: text,
+                  fecha: Date.now()
+              });
+          }
+
+          // Solo limpiamos el input. Firebase se encargará de dibujarlo gracias al onChildAdded de arriba.
           card.querySelector('textarea').value = '';
-          
-          const counter = card.querySelector('.reply-count');
-          counter.textContent = ((parseInt(counter.textContent, 10) || 0) + 1) + ' respuestas';
       
       } else if (action === 'delete') {
           const titleEl = card.querySelector('.post-title');
@@ -361,7 +400,7 @@
           if (!window.confirm('¿Seguro que deseas eliminar "' + titleText + '"?')) return;
           
           import("https://www.gstatic.com/firebasejs/12.17.0/firebase-database.js").then(({ remove }) => {
-              const postRef = window.firebaseDbFunctions.ref(window.firebaseDatabase, 'publicaciones/' + card.dataset.id);
+              const postRef = window.firebaseDbFunctions.ref(window.firebaseDatabase, 'publicaciones/' + postId);
               remove(postRef).then(() => { 
                   card.remove(); 
                   applyFilters(); 
