@@ -182,7 +182,7 @@
       const chatBodyOr = document.getElementById('chat-body-orientacion');
       
       if(chatBodyOr) chatBodyOr.innerHTML = ''; 
-      const miChatRef = ref(db, 'chats_orientacion/' + myStudentId);
+      const miChatRef = ref(db, 'chats_orientacion/' + window.USUARIO_REAL.replace(/\./g, '_'))
 
       // Enviar mensaje
       if(chatFormOr) {
