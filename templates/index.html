@@ -494,12 +494,54 @@
               const data = await response.json();
               const respuestaIA = data.respuesta_ia || data.output || 'Lo siento, no pude procesar una respuesta.'; 
               mostrarMensajeEnPantalla(respuestaIA, 'ia'); 
+              
+              // 🔥 ESTA LÍNEA HACE QUE GEORGE HABLE 🔥
+              reproducirVozGeorge(respuestaIA);
 
           } catch (error) {
               console.error('Error de conexión:', error);
               mostrarMensajeEnPantalla('No se pudo establecer conexión con George IA en este momento.', 'sistema');
           }
         });
+    }
+
+    // 🔥 FUNCIÓN PARA ELEVENLABS 🔥
+    async function reproducirVozGeorge(textoParaLeer) {
+        // Pon tus códigos aquí adentro de las comillas
+        const apiKey = "sk_ef2b42bdd7c2d4f3db471289545a59f2c2ef19f8a4149c7d"; 
+        const voiceId = "Hpwh61tU4uwqF8q5Ln4s"; 
+        
+        const urlEleven = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`;
+
+        try {
+            const response = await fetch(urlEleven, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'audio/mpeg',
+                    'Content-Type': 'application/json',
+                    'xi-api-key': apiKey
+                },
+                body: JSON.stringify({
+                    text: textoParaLeer,
+                    model_id: "eleven_multilingual_v2", // Modelo en español
+                    voice_settings: {
+                        stability: 0.5,
+                        similarity_boost: 0.75
+                    }
+                })
+            });
+            
+            if (response.ok) {
+                const blob = await response.blob();
+                const audioUrl = URL.createObjectURL(blob);
+                const audio = new Audio(audioUrl);
+                audio.play(); // ¡George habla!
+            } else {
+                console.error("Error de ElevenLabs.");
+            }
+        } catch (error) {
+            console.error("Error de conexión con la voz:", error);
+        }
     }
 
     const chatFormGen = document.getElementById('chat-form-generador');
