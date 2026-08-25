@@ -465,7 +465,7 @@
         const chatInputIA = document.getElementById('chat-input-ia');
         const chatBodyIA = document.getElementById('chat-body-ia');
 
-        function mostrarMensajeEnPantalla(texto, remitente) {
+       function mostrarMensajeEnPantalla(texto, remitente) {
             const msgDiv = document.createElement('div');
             
             if (remitente === 'ia' || remitente === 'sistema') {
@@ -489,12 +489,28 @@
                 p.textContent = texto; 
             }
 
+            msgDiv.appendChild(p);
+
+            // 🔥 SI ES RESPUESTA DE LA IA, LE AGREGAMOS SU BOTÓN DE AUDIO ESTILO JARVIS 🔥
+            if (remitente === 'ia') {
+                const btnAudio = document.createElement('button');
+                btnAudio.innerHTML = '<i class="fa-solid fa-volume-high"></i> Escuchar a George';
+                btnAudio.style.cssText = 'margin-top: 8px; background: #00113A; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 6px;';
+                
+                btnAudio.onclick = () => {
+                    reproducirVozGeorge(texto);
+                };
+                msgDiv.appendChild(btnAudio);
+                
+                // Intenta reproducirlo automáticamente por si el navegador lo permite
+                reproducirVozGeorge(texto);
+            }
+
             const span = document.createElement('span');
             span.className = 'chat-time';
             const ahora = new Date();
             span.textContent = ahora.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
-            msgDiv.appendChild(p);
             msgDiv.appendChild(span);
             chatBodyIA.appendChild(msgDiv);
             chatBodyIA.scrollTop = chatBodyIA.scrollHeight;
