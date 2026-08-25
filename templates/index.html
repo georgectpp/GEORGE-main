@@ -523,6 +523,11 @@
                 const mensaje = chatInputIA.value.trim();
                 if (!mensaje) return;
                 
+                // 🔥 EL TRUCO MAESTRO: Hablar en silencio al instante para destrabar el navegador 🔥
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.speak(new SpeechSynthesisUtterance(''));
+                }
+
                 mostrarMensajeEnPantalla(mensaje, 'usuario');
                 chatInputIA.value = ''; 
                 
@@ -542,15 +547,14 @@
                     const data = await response.json();
                     const respuestaIA = data.respuesta_ia || data.output || 'Lo siento, no pude procesar una respuesta.'; 
                     
-                    // Mostramos el texto en pantalla
                     mostrarMensajeEnPantalla(respuestaIA, 'ia'); 
 
-                    // 🎙️ VOZ NATIVA DEL NAVEGADOR (CERO FALLOS, CERO LIO)
+                    // 🎙️ AHORA SÍ HABLARÁ, PORQUE LA PUERTA YA ESTÁ ABIERTA
                     if ('speechSynthesis' in window) {
-                        window.speechSynthesis.cancel(); // Detiene cualquier audio anterior
+                        window.speechSynthesis.cancel(); 
                         const utterance = new SpeechSynthesisUtterance(respuestaIA);
-                        utterance.lang = 'es-ES'; // Idioma español
-                        utterance.rate = 1.0; // Velocidad normal
+                        utterance.lang = 'es-ES'; 
+                        utterance.rate = 1.0;
                         window.speechSynthesis.speak(utterance);
                     }
 
