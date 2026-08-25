@@ -483,6 +483,28 @@
         const chatFormIA = document.getElementById('chat-form-ia');
         const chatInputIA = document.getElementById('chat-input-ia');
         const chatBodyIA = document.getElementById('chat-body-ia');
+      // --- BOTÓN DE PERMISOS DE AUDIO (Para el profe) ---
+    const headerChat = document.querySelector('#view-chat-ia .chat-header');
+    if (headerChat && !document.getElementById('btn-permiso-audio')) {
+        const btnPermiso = document.createElement('button');
+        btnPermiso.id = 'btn-permiso-audio';
+        btnPermiso.innerHTML = '🔊 Activar Parlante';
+        btnPermiso.style.cssText = 'margin-left: auto; background: #810200; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px;';
+        
+        btnPermiso.onclick = () => {
+            // Desbloquea la voz nativa
+            if ('speechSynthesis' in window) {
+                const u = new SpeechSynthesisUtterance('Sistemas de audio activados.');
+                u.lang = 'es-ES';
+                window.speechSynthesis.speak(u);
+            }
+            // Cambia el diseño para mostrar que ya tiene permiso
+            btnPermiso.innerHTML = '✅ Audio Activado';
+            btnPermiso.style.backgroundColor = '#2f9e6a';
+        };
+        headerChat.appendChild(btnPermiso);
+    }
+    // --------------------------------------------------
 
         function mostrarMensajeEnPantalla(texto, remitente) {
             const msgDiv = document.createElement('div');
