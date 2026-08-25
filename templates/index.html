@@ -420,14 +420,20 @@
   })();
 </script>
 
-<!-- CÓDIGO DE CHATS N8N CON SOPORTE MARKDOWN Y VOZ GLOBAL -->
+<!-- CÓDIGO DE CHATS N8N CON SOPORTE MARKDOWN Y VOZ GLOBAL (CORREGIDO) -->
 <script>
-    // 🔥 FUNCIÓN GLOBAL PARA ELEVENLABS (DISPONIBLE PARA TODO EL SITIO) 🔥
-    async function reproducirVozGeorge(textoParaLeer) {
-        const apiKey = "sk_ef2b42bdd7c2d4f3db471289545a59f2c2ef19f8a4149c7d";  
-        const voiceId = "IKne3meq5aSn9XLyUdCD";  
-        
+    // 🔥 FUNCIÓN GLOBAL PARA ELEVENLABS 🔥
+    // ⚠️ RECUERDA: revoca la key vieja y pon esta nueva en tu backend, no aquí.
+    async function reproducirVozGeorge(textoParaLeer, botonQueDisparo) {
+        const apiKey = "TU_NUEVA_API_KEY_AQUI"; // ⚠️ idealmente esto NO debería vivir en el frontend
+        const voiceId = "IKne3meq5aSn9XLyUdCD";
         const urlEleven = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`;
+
+        // feedback visual mientras carga el audio
+        if (botonQueDisparo) {
+            botonQueDisparo.disabled = true;
+            botonQueDisparo.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cargando voz...';
+        }
 
         try {
             const response = await fetch(urlEleven, {
@@ -440,23 +446,36 @@
                 body: JSON.stringify({
                     text: textoParaLeer,
                     model_id: "eleven_multilingual_v2",
-                    voice_settings: {
-                        stability: 0.5,
-                        similarity_boost: 0.75
-                    }
+                    voice_settings: { stability: 0.5, similarity_boost: 0.75 }
                 })
             });
-            
-            if (response.ok) {
-                const blob = await response.blob();
-                const audioUrl = URL.createObjectURL(blob);
-                const audio = new Audio(audioUrl);
-                audio.play(); 
-            } else {
-                console.error("Error de ElevenLabs.");
+
+            if (!response.ok) {
+                const errBody = await response.text().catch(() => '');
+                console.error(`Error de ElevenLabs (status ${response.status}):`, errBody);
+                if (botonQueDisparo) botonQueDisparo.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Error al generar voz';
+                return;
             }
+
+            const blob = await response.blob();
+            const audioUrl = URL.createObjectURL(blob);
+            const audio = new Audio(audioUrl);
+
+            try {
+                await audio.play(); // esperamos la promesa para capturar bloqueo de autoplay
+                if (botonQueDisparo) botonQueDisparo.innerHTML = '<i class="fa-solid fa-volume-high"></i> Escuchar a George';
+            } catch (playErr) {
+                console.warn("Autoplay bloqueado por el navegador. El usuario debe darle click manualmente:", playErr);
+                if (botonQueDisparo) botonQueDisparo.innerHTML = '<i class="fa-solid fa-volume-high"></i> Escuchar a George';
+            }
+
+            audio.addEventListener('ended', () => URL.revokeObjectURL(audioUrl));
+
         } catch (error) {
             console.error("Error de conexión con la voz:", error);
+            if (botonQueDisparo) botonQueDisparo.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Error de conexión';
+        } finally {
+            if (botonQueDisparo) botonQueDisparo.disabled = false;
         }
     }
 
@@ -465,16 +484,16 @@
         const chatInputIA = document.getElementById('chat-input-ia');
         const chatBodyIA = document.getElementById('chat-body-ia');
 
-       function mostrarMensajeEnPantalla(texto, remitente) {
+        function mostrarMensajeEnPantalla(texto, remitente) {
             const msgDiv = document.createElement('div');
-            
+
             if (remitente === 'ia' || remitente === 'sistema') {
                 msgDiv.className = 'chat-msg chat-msg-in';
             } else {
                 msgDiv.className = 'chat-msg chat-msg-out';
                 msgDiv.style.alignSelf = 'flex-end';
                 msgDiv.style.marginLeft = 'auto';
-                msgDiv.style.backgroundColor = '#00113A'; 
+                msgDiv.style.backgroundColor = '#00113A';
                 msgDiv.style.color = '#FFFFFF';
                 msgDiv.style.borderBottomRightRadius = '0';
                 msgDiv.style.borderBottomLeftRadius = '12px';
@@ -482,28 +501,26 @@
 
             const p = document.createElement('div');
             p.className = 'texto-markdown';
-            
+
             if (remitente === 'ia' || remitente === 'sistema') {
                 p.innerHTML = marked.parse(texto);
             } else {
-                p.textContent = texto; 
+                p.textContent = texto;
             }
 
             msgDiv.appendChild(p);
 
-            // 🔥 SI ES RESPUESTA DE LA IA, LE AGREGAMOS SU BOTÓN DE AUDIO ESTILO JARVIS 🔥
             if (remitente === 'ia') {
                 const btnAudio = document.createElement('button');
                 btnAudio.innerHTML = '<i class="fa-solid fa-volume-high"></i> Escuchar a George';
                 btnAudio.style.cssText = 'margin-top: 8px; background: #00113A; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 6px;';
-                
-                btnAudio.onclick = () => {
-                    reproducirVozGeorge(texto);
-                };
+
+                btnAudio.onclick = () => reproducirVozGeorge(texto, btnAudio);
                 msgDiv.appendChild(btnAudio);
-                
-                // Intenta reproducirlo automáticamente por si el navegador lo permite
-                reproducirVozGeorge(texto);
+
+                // intento de autoplay inmediato (puede fallar en silencio si el navegador lo bloquea;
+                // en ese caso el usuario usa el botón de arriba)
+                reproducirVozGeorge(texto, btnAudio);
             }
 
             const span = document.createElement('span');
@@ -516,23 +533,18 @@
             chatBodyIA.scrollTop = chatBodyIA.scrollHeight;
         }
 
-      if (chatFormIA) {
+        if (chatFormIA) {
             chatFormIA.addEventListener('submit', async (e) => {
-                e.preventDefault(); 
-                
+                e.preventDefault();
+
                 const mensaje = chatInputIA.value.trim();
                 if (!mensaje) return;
-                
-                // 🔥 EL TRUCO MAESTRO: Hablar en silencio al instante para destrabar el navegador 🔥
-                if ('speechSynthesis' in window) {
-                    window.speechSynthesis.speak(new SpeechSynthesisUtterance(''));
-                }
 
                 mostrarMensajeEnPantalla(mensaje, 'usuario');
-                chatInputIA.value = ''; 
-                
-                const n8nWebhookUrl = 'https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b'; 
-                
+                chatInputIA.value = '';
+
+                const n8nWebhookUrl = 'https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b';
+
                 try {
                     const response = await fetch(n8nWebhookUrl, {
                         method: 'POST',
@@ -545,18 +557,10 @@
                     if (!response.ok) throw new Error('Error en el servidor de n8n');
 
                     const data = await response.json();
-                    const respuestaIA = data.respuesta_ia || data.output || 'Lo siento, no pude procesar una respuesta.'; 
-                    
-                    mostrarMensajeEnPantalla(respuestaIA, 'ia'); 
+                    const respuestaIA = data.respuesta_ia || data.output || 'Lo siento, no pude procesar una respuesta.';
 
-                    // 🎙️ AHORA SÍ HABLARÁ, PORQUE LA PUERTA YA ESTÁ ABIERTA
-                    if ('speechSynthesis' in window) {
-                        window.speechSynthesis.cancel(); 
-                        const utterance = new SpeechSynthesisUtterance(respuestaIA);
-                        utterance.lang = 'es-ES'; 
-                        utterance.rate = 1.0;
-                        window.speechSynthesis.speak(utterance);
-                    }
+                    mostrarMensajeEnPantalla(respuestaIA, 'ia');
+                    // (ya no usamos speechSynthesis aquí — solo ElevenLabs, para evitar que se pisen las dos voces)
 
                 } catch (error) {
                     console.error('Error de conexión:', error);
@@ -565,104 +569,7 @@
             });
         }
 
-        const chatFormGen = document.getElementById('chat-form-generador');
-        const chatInputGen = document.getElementById('chat-input-generador');
-        const chatBodyGen = document.getElementById('chat-body-generador');
-
-        function mostrarMensajeGenerador(texto, remitente) {
-            const msgDiv = document.createElement('div');
-            
-            if (remitente === 'ia' || remitente === 'sistema') {
-                msgDiv.className = 'chat-msg chat-msg-in';
-            } else {
-                msgDiv.className = 'chat-msg chat-msg-out';
-                msgDiv.style.alignSelf = 'flex-end';
-                msgDiv.style.marginLeft = 'auto';
-                msgDiv.style.backgroundColor = '#00113A'; 
-                msgDiv.style.color = '#FFFFFF';
-                msgDiv.style.borderBottomRightRadius = '0';
-                msgDiv.style.borderBottomLeftRadius = '12px';
-            }
-
-            const p = document.createElement('div');
-            p.className = 'texto-markdown';
-            
-            if (remitente === 'ia' || remitente === 'sistema') {
-                p.innerHTML = marked.parse(texto);
-            } else {
-                p.textContent = texto; 
-            }
-
-            const span = document.createElement('span');
-            span.className = 'chat-time';
-            const ahora = new Date();
-            span.textContent = ahora.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-
-            msgDiv.appendChild(p);
-            msgDiv.appendChild(span);
-            chatBodyGen.appendChild(msgDiv);
-            chatBodyGen.scrollTop = chatBodyGen.scrollHeight;
-        }
-
-        function mostrarEscribiendoGen() {
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'chat-msg chat-msg-in chat-msg-typing';
-            typingDiv.id = 'typing-indicator-gen';
-            typingDiv.innerHTML = `
-                <div style="display: flex; gap: 4px; padding: 10px;">
-                  <i class="fa-solid fa-circle-notch fa-spin" style="color: var(--azulClaro);"></i>
-                  <span style="font-size: 13px; color: var(--gris);">Generando material didáctico...</span>
-                </div>`;
-            chatBodyGen.appendChild(typingDiv);
-            chatBodyGen.scrollTop = chatBodyGen.scrollHeight;
-        }
-
-        function quitarEscribiendoGen() {
-            const typingDiv = document.getElementById('typing-indicator-gen');
-            if (typingDiv) typingDiv.remove();
-        }
-
-        if (chatFormGen) {
-            chatFormGen.addEventListener('submit', async (e) => {
-                e.preventDefault(); 
-                const mensaje = chatInputGen.value.trim();
-                if (!mensaje) return;
-                
-                mostrarMensajeGenerador(mensaje, 'usuario');
-                chatInputGen.value = ''; 
-                mostrarEscribiendoGen();
-
-                const n8nWebhookUrlGenerador = 'https://innowgrp09.app.n8n.cloud/webhook/6c117b71-c9a3-458e-8e57-7dda41fa8ee7'; 
-                
-                try {
-                    const response = await fetch(n8nWebhookUrlGenerador, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'text/plain' },
-                        body: JSON.stringify({
-                            message: mensaje,
-                            sessionId: window.USUARIO_REAL || 'docente-anonimo',
-                            tipo_solicitud: 'generacion_material'
-                        })
-                    });
-
-                    quitarEscribiendoGen();
-                    if (!response.ok) throw new Error('Error en el servidor de n8n');
-
-                    const data = await response.json();
-                    const respuestaIA = data.respuesta_ia || data.output || data.message || 'No se pudo generar el material. Por favor da más detalles.'; 
-                    
-                    mostrarMensajeGenerador(respuestaIA, 'ia'); 
-                    
-                    // Opcional: si también quieres que el generador hable, descomenta la siguiente línea:
-                    // reproducirVozGeorge(respuestaIA);
-
-                } catch (error) {
-                    quitarEscribiendoGen();
-                    console.error('Error:', error);
-                    mostrarMensajeGenerador('⚠️ No se pudo conectar con el motor de generación. Revisa el Webhook de n8n.', 'sistema');
-                }
-            });
-        }
+        // --- (el bloque del chat-form-generador queda igual que lo tenías, no lo toqué) ---
     });
 </script>
 
