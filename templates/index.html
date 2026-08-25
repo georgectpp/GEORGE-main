@@ -516,7 +516,7 @@
             chatBodyIA.scrollTop = chatBodyIA.scrollHeight;
         }
 
-        if (chatFormIA) {
+      if (chatFormIA) {
             chatFormIA.addEventListener('submit', async (e) => {
                 e.preventDefault(); 
                 
@@ -531,9 +531,7 @@
                 try {
                     const response = await fetch(n8nWebhookUrl, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'text/plain' 
-                        },
+                        headers: { 'Content-Type': 'text/plain' },
                         body: JSON.stringify({
                             message: mensaje,
                             sessionId: window.USUARIO_REAL || 'estudiante-anonimo'
@@ -543,10 +541,18 @@
 
                     const data = await response.json();
                     const respuestaIA = data.respuesta_ia || data.output || 'Lo siento, no pude procesar una respuesta.'; 
-                    mostrarMensajeEnPantalla(respuestaIA, 'ia'); 
                     
-                    // 🔥 LLAMADA A LA VOZ 🔥
-                    reproducirVozGeorge(respuestaIA);
+                    // Mostramos el texto en pantalla
+                    mostrarMensajeEnPantalla(respuestaIA, 'ia'); 
+
+                    // 🎙️ VOZ NATIVA DEL NAVEGADOR (CERO FALLOS, CERO LIO)
+                    if ('speechSynthesis' in window) {
+                        window.speechSynthesis.cancel(); // Detiene cualquier audio anterior
+                        const utterance = new SpeechSynthesisUtterance(respuestaIA);
+                        utterance.lang = 'es-ES'; // Idioma español
+                        utterance.rate = 1.0; // Velocidad normal
+                        window.speechSynthesis.speak(utterance);
+                    }
 
                 } catch (error) {
                     console.error('Error de conexión:', error);
