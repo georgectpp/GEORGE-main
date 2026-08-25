@@ -223,12 +223,17 @@
 
     <!-- VISTA CHAT IA -->
     <section id="view-chat-ia" class="view view-chat" data-view="chat-ia">
-      <header class="chat-header">
-        <div class="chat-avatar chat-avatar-ia"><i class="fa-solid fa-robot" aria-hidden="true"></i></div>
-        <div>
-          <h1>George IA</h1>
-          <p class="chat-status"><span class="status-dot"></span>Disponible ahora · Tu asistente académico</p>
+     <header class="chat-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <div class="chat-avatar chat-avatar-ia"><i class="fa-solid fa-robot" aria-hidden="true"></i></div>
+            <div>
+              <h1 style="margin: 0; font-size: 18px;">George IA</h1>
+              <p class="chat-status" style="margin: 0;"><span class="status-dot"></span>Tu asistente académico</p>
+            </div>
         </div>
+        
+        <!-- ESTE ES EL BOTÓN OBLIGADO A APARECER -->
+        <button id="btn-permiso-audio" onclick="activarParlante(this)" style="background: #810200; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px;">🔊 Activar Parlante</button>
       </header>
       <div class="chat-body" id="chat-body-ia">
         <div class="chat-msg chat-msg-in">
@@ -622,6 +627,17 @@
     window.dispatchEvent(new CustomEvent("firebase-ready"));
   } catch (initError) {
     console.error("[Firebase] Error al inicializar Firebase:", initError);
+  }
+</script>
+  <script>
+  function activarParlante(btn) {
+      if ('speechSynthesis' in window) {
+          const u = new SpeechSynthesisUtterance('Sistemas de audio activados.');
+          u.lang = 'es-ES';
+          window.speechSynthesis.speak(u);
+      }
+      btn.innerHTML = '✅ Audio Activado';
+      btn.style.backgroundColor = '#2f9e6a';
   }
 </script>
 </body>
