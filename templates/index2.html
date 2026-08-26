@@ -214,7 +214,10 @@
 
         <label for="password" class="etiqueta-campo">Contraseña</label>
         <input type="password" id="password" name="password" placeholder="••••••••">
-
+        
+        <a href="{{ url_for('recuperar_contrasena') }}" class="forgot-password">
+          ¿Olvidaste tu contraseña?
+        </a>
         <button type="submit" class="entrar-btn">Entrar</button>
       </form>
     </div>
