@@ -365,34 +365,47 @@
 
 <!-- CÁPSULA DEL TEST VOCACIONAL (TOTALMENTE AISLADA DE TODO LO DEMÁS) -->
 <script>
-  (function() {
-      var misPreguntas = [
-          { tipo: "Tech", texto: "¿Te emociona la idea de crear aplicaciones, videojuegos o páginas web?" },
-          { tipo: "Tech", texto: "¿Sientes curiosidad por entender la Inteligencia Artificial o ciberseguridad?" },
-          { tipo: "Tech", texto: "Ante un problema con un dispositivo, ¿prefieres buscar la solución técnica tú mismo(a)?" },
-          { tipo: "Ingenieria", texto: "¿Disfrutas entender mecanismos físicos, desarmar aparatos o diseñar estructuras?" },
-          { tipo: "Ingenieria", texto: "¿Te motiva optimizar procesos industriales o fabricar maquinaria?" },
-          { tipo: "Ingenieria", texto: "¿Prefieres proyectos donde construyas resultados físicos en el mundo real?" },
-          { tipo: "Salud", texto: "¿Sientes fascinación por la anatomía humana o el tratamiento de enfermedades?" },
-          { tipo: "Salud", texto: "¿Mantendrías la calma para atender emergencias médicas o cuidar a pacientes?" },
-          { tipo: "Salud", texto: "¿Te interesan los descubrimientos sobre genética, medicamentos o biotecnología?" },
-          { tipo: "Ciencias", texto: "¿Te apasiona formular hipótesis, analizar datos y resolver enigmas?" },
-          { tipo: "Ciencias", texto: "¿Te llama la atención el estudio del universo, el medio ambiente o la geología?" },
-          { tipo: "Ciencias", texto: "¿Disfrutas leer ciencia y cuestionar explicaciones mediante el método científico?" },
-          { tipo: "Social", texto: "¿Sueles ser la persona empática a la que tus amigos acuden para pedir consejo?" },
-          { tipo: "Social", texto: "¿Te interesa comprender la mente humana o defender a personas vulnerables?" },
-          { tipo: "Social", texto: "¿Tienes paciencia para enseñar temas difíciles a otros o guiar a comunidades?" },
-          { tipo: "Negocios", texto: "¿Te atrae crear tu propio negocio, liderar equipos y tomar decisiones?" },
-          { tipo: "Negocios", texto: "¿Disfrutas analizar mercados, entender las ventas o la economía?" },
-          { tipo: "Negocios", texto: "¿Te consideras persuasivo(a) y orientado(a) a conseguir metas?" },
-          { tipo: "Arte", texto: "¿Te expresas a través de ilustración, música, video o escritura?" },
-          { tipo: "Arte", texto: "¿Te fijas constantemente en la estética visual de productos o escenografías?" },
-          { tipo: "Arte", texto: "¿Te aburre la rutina estricta y prefieres espacios con libertad creativa?" },
-          { tipo: "Humanidades", texto: "¿Disfrutas debatir con argumentos sólidos y analizar leyes o historia?" },
-          { tipo: "Humanidades", texto: "¿Sientes indignación ante la injusticia y te gustaría regular políticas públicas?" },
-          { tipo: "Humanidades", texto: "¿Tienes facilidad para oratoria, idiomas y resolución de conflictos?" }
+  var misPreguntas = [
+          // --- TECH ---
+          { tipo: "Tech", texto: "¿Te motiva diseñar la arquitectura lógica detrás de una plataforma digital, app o sistema de software?" },
+          { tipo: "Tech", texto: "¿Te interesa comprender a fondo los vectores de vulnerabilidad cibernética o los modelos lógicos de la Inteligencia Artificial?" },
+          { tipo: "Tech", texto: "Ante una falla de código o de hardware, ¿prefieres investigar el origen técnico de la incidencia hasta resolverla de raíz?" },
+          
+          // --- INGENIERIA ---
+          { tipo: "Ingenieria", texto: "¿Te atrae conceptualizar la interacción física de mecanismos, piezas estructurales y sistemas mecánicos?" },
+          { tipo: "Ingenieria", texto: "¿Te interesa la optimización de procesos productivos a gran escala y la manufactura de bienes tangibles?" },
+          { tipo: "Ingenieria", texto: "¿Prefieres enfocar tus proyectos en la materialización de prototipos físicos que funcionen en el entorno real?" },
+          
+          // --- SALUD ---
+          { tipo: "Salud", texto: "¿Te genera genuino interés la complejidad biológica del cuerpo humano y la patología clínica?" },
+          { tipo: "Salud", texto: "¿Te visualizas tomando decisiones bajo presión en entornos clínicos para la recuperación o cuidado de pacientes?" },
+          { tipo: "Salud", texto: "¿Sigues de cerca los avances en farmacología, biotecnología médica o investigación genómica?" },
+          
+          // --- CIENCIAS ---
+          { tipo: "Ciencias", texto: "¿Disfrutas diseñar metodologías formales para recopilar datos, contrastar hipótesis y comprobar fenómenos?" },
+          { tipo: "Ciencias", texto: "¿Te apasiona la investigación teórica sobre ciencias naturales, astrofísica o sistemas ecológicos complejos?" },
+          { tipo: "Ciencias", texto: "¿Te inclinas por el análisis matemático profundo y la resolución de enigmas abstractos mediante modelos científicos?" },
+          
+          // --- SOCIAL ---
+          { tipo: "Social", texto: "¿Sueles identificar con facilidad las dinámicas emocionales y sociales de los grupos para mediar en conflictos?" },
+          { tipo: "Social", texto: "¿Te motiva comprender la conducta humana y trabajar activamente en la defensa de sectores vulnerables?" },
+          { tipo: "Social", texto: "¿Posees vocación para la mentoría, la facilitación de procesos formativos y el desarrollo comunitario?" },
+          
+          // --- NEGOCIOS ---
+          { tipo: "Negocios", texto: "¿Te visualizas estructurando modelos de negocio propios, gestionando recursos y liderando proyectos comerciales?" },
+          { tipo: "Negocios", texto: "¿Te interesa analizar las tendencias de los mercados financieros, el comportamiento del consumidor y la economía global?" },
+          { tipo: "Negocios", texto: "¿Te consideras una persona con perfil directivo, capaz de alinear equipos hacia metas estratégicas?" },
+          
+          // --- ARTE ---
+          { tipo: "Arte", texto: "¿Buscas canalizar conceptos abstractos a través de lenguajes creativos como el diseño, la narrativa o los medios audiovisuales?" },
+          { tipo: "Arte", texto: "¿Le das una prioridad fundamental a la estética, el diseño visual y la experiencia sensorial en los proyectos?" },
+          { tipo: "Arte", texto: "¿Te incomodan los espacios hiperestructurados y prefieres entornos dinámicos que prioricen la autoría creativa?" },
+          
+          // --- HUMANIDADES ---
+          { tipo: "Humanidades", texto: "¿Disfrutas el análisis crítico de textos históricos, marcos jurídicos o corrientes de pensamiento sociopolítico?" },
+          { tipo: "Humanidades", texto: "¿Te interesa incidir en la estructuración de políticas públicas, la diplomacia o la defensa del marco legal?" },
+          { tipo: "Humanidades", texto: "¿Tienes habilidad natural para la argumentación formal, la oratoria y el análisis del discurso?" }
       ];
-
       var misPerfiles = {
           "Tech": { nombre: "Arquitecto(a) Tecnológico 💻", desc: "Ves la tecnología como el lienzo para resolver los retos del siglo XXI.", superpoder: "Lógica computacional", carreras: ["Ingeniería de Software", "Ciencia de Datos", "Ciberseguridad"] },
           "Ingenieria": { nombre: "Ingeniero(a) Constructor ⚙️", desc: "Tu mente conecta la teoría con el mundo tangible.", superpoder: "Visión espacial y cálculo", carreras: ["Ingeniería Mecatrónica", "Ingeniería Civil", "Ingeniería Industrial"] },
@@ -444,9 +457,30 @@
       };
 
       function mostrarRes() {
-          var ranking = Object.entries(misPts).sort((a, b) => b[1] - a[1]);
-          var perfil = misPerfiles[ranking[0][0]];
-          var matchPct = Math.min(100, Math.round((ranking[0][1] / 6) * 100));
+          // 1. Encontramos el puntaje más alto de todo el objeto
+          let maxPuntaje = -1;
+          for (let tipo in misPts) {
+              if (misPts[tipo] > maxPuntaje) {
+                  maxPuntaje = misPts[tipo];
+              }
+          }
+
+          // 2. Recolectamos TODAS las categorías que empataron con ese puntaje máximo
+          let perfilesGanadores = [];
+          for (let tipo in misPts) {
+              if (misPts[tipo] === maxPuntaje) {
+                  perfilesGanadores.push(tipo);
+              }
+          }
+
+          // 3. Si hay empate, escogemos una al azar de forma justa para evitar sesgos
+          let ganadorKey = perfilesGanadores[Math.floor(Math.random() * perfilesGanadores.length)];
+          let perfil = misPerfiles[ganadorKey];
+
+          // 4. Cálculo de match real (cada categoría tiene 3 preguntas, máximo 6 puntos)
+          var matchPct = Math.min(100, Math.round((maxPuntaje / 6) * 100));
+          // Si el puntaje es 0, aseguramos un match visual mínimo del 10% para que no luzca roto
+          if (maxPuntaje === 0) matchPct = 15; 
 
           var listaCarreras = perfil.carreras.map(c => `<li style="font-weight: bold; color: #00113A; margin-bottom: 5px;">✔️ ${c}</li>`).join('');
 
