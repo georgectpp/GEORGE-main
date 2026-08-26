@@ -730,9 +730,7 @@
     }
     // -------------------------------------------
 
-    if (chatFormIA) {
-        chatFormIA.addEventListener('submit', async (e) => {
-            // ... (aquí sigue tu código normal del chat hacia n8n)
+  
 
     if (chatFormIA) {
         chatFormIA.addEventListener('submit', async (e) => {
@@ -775,7 +773,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-analytics.js";
-  import { getDatabase, ref, push, set, onChildAdded } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-database.js";
+ import { getDatabase, ref, push, set, get, onChildAdded } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBpwRtDft9k2CTnmBsSPWR-vjD4gPbDH3I",
@@ -794,7 +792,7 @@
     const database = getDatabase(app);
     window.firebaseApp = app;
     window.firebaseDatabase = database;
-    window.firebaseDbFunctions = { ref, push, set, onChildAdded };
+    window.firebaseDbFunctions = { ref, push, set, get, onChildAdded };
     window.dispatchEvent(new CustomEvent("firebase-ready"));
   } catch (initError) {
     console.error("[Firebase] Error al inicializar Firebase:", initError);
