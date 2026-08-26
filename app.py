@@ -287,3 +287,6 @@ def configuracion():
 
 
 
+@app.route('/recuperar-contrasena')
+def recuperar_contrasena():
+    return render_template('recuperar_contrasena.html')
