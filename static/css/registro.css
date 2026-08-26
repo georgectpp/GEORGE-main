@@ -505,3 +505,44 @@ RESPONSIVE
     background: transparent !important;
     color: var(--rojo);
 }
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 50px;
+    box-sizing: border-box;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    width: 35px;
+    height: 35px;
+    
+    background: transparent !important;
+    border: none !important;
+    color: #142b5f;
+    
+    padding: 0 !important;
+    margin: 0 !important;
+    
+    cursor: pointer;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    font-size: 16px;
+}
+
+.toggle-password:hover {
+    background: transparent !important;
+    color: #8b0000;
+}
