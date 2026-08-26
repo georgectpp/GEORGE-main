@@ -546,7 +546,15 @@
     let chatActivoId = null;
 
     function guardarMemoria() {
+        // Guardado de respaldo local
         localStorage.setItem(STORAGE_KEY, JSON.stringify(misConversaciones));
+        
+        // Guardado en la nube (Firebase)
+        if (window.firebaseDatabase && window.firebaseDbFunctions) {
+            const usuarioLimpio = (window.USUARIO_REAL || 'estudiante_anonimo').replace(/\./g, '_');
+            const { ref, set } = window.firebaseDbFunctions;
+            set(ref(window.firebaseDatabase, `historial_george_v2/${usuarioLimpio}`), misConversaciones);
+        }
     }
 
     function actualizarSidebar() {
@@ -653,11 +661,44 @@
 
     if (btnNuevoChat) btnNuevoChat.addEventListener('click', crearNuevoChat);
 
-    if (misConversaciones.length === 0) {
+   if (btnNuevoChat) btnNuevoChat.addEventListener('click', crearNuevoChat);
+
+    // --- SINCRONIZACIÓN INICIAL CON FIREBASE ---
+    window.addEventListener("firebase-ready", async () => {
+        const usuarioLimpio = (window.USUARIO_REAL || 'estudiante_anonimo').replace(/\./g, '_');
+        const db = window.firebaseDatabase;
+        
+        if (window.firebaseDbFunctions && window.firebaseDbFunctions.get) {
+            const { ref, get } = window.firebaseDbFunctions;
+            
+            try {
+                const snapshot = await get(ref(db, `historial_george_v2/${usuarioLimpio}`));
+                if (snapshot.exists()) {
+                    misConversaciones = snapshot.val();
+                    actualizarSidebar();
+                    abrirChat(misConversaciones[misConversaciones.length - 1].id);
+                } else if (misConversaciones.length === 0) {
+                    crearNuevoChat(); 
+                }
+            } catch (error) {
+                console.error("Error al cargar historial de la nube:", error);
+                if (misConversaciones.length === 0) crearNuevoChat();
+            }
+        }
+    });
+
+    // Carga local temporal mientras Firebase responde
+    if (misConversaciones.length === 0 && !window.firebaseDatabase) {
         crearNuevoChat(); 
-    } else {
+    } else if (misConversaciones.length > 0) {
+        actualizarSidebar();
         abrirChat(misConversaciones[misConversaciones.length - 1].id); 
     }
+    // -------------------------------------------
+
+    if (chatFormIA) {
+        chatFormIA.addEventListener('submit', async (e) => {
+            // ... (aquí sigue tu código normal del chat hacia n8n)
 
     if (chatFormIA) {
         chatFormIA.addEventListener('submit', async (e) => {
