@@ -251,10 +251,7 @@
               <h1 id="chat-titulo-actual">Dudas sobre la feria</h1>
               <p class="chat-status"><span class="status-dot"></span>George IA · Tu asistente académico</p>
             </div>
-            <!-- AQUÍ REGRESA EL BOTÓN DE AUDIO -->
-            <button id="btn-permiso-audio" onclick="activarParlante(this)" style="margin-left: auto; background: #810200; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px;">
-              🔊 Activar Audio
-            </button>
+          
           </header>
           
           <div class="chat-body" id="chat-body-ia" style="flex: 1; padding: 20px;">
@@ -632,7 +629,7 @@
         abrirChat(nuevoId);
     }
 
-    function dibujarMensaje(texto, remitente, hora) {
+   function dibujarMensaje(texto, remitente, hora) {
         const msgDiv = document.createElement('div');
         
         if (remitente === 'ia' || remitente === 'sistema') {
@@ -647,15 +644,38 @@
             msgDiv.style.borderBottomLeftRadius = '12px';
         }
 
+        // 1. Agregamos el texto normal (Markdown)
         const p = document.createElement('div');
         p.className = 'texto-markdown';
         p.innerHTML = (remitente === 'ia' || remitente === 'sistema') ? marked.parse(texto) : texto; 
         msgDiv.appendChild(p);
 
-        const span = document.createElement('span');
-        span.className = 'chat-time';
-        span.textContent = hora;
-        msgDiv.appendChild(span);
+        // 2. Creamos un contenedor inferior para poner la hora y el botón juntos
+        const footerDiv = document.createElement('div');
+        footerDiv.style.display = 'flex';
+        footerDiv.style.justifyContent = 'space-between';
+        footerDiv.style.alignItems = 'center';
+        footerDiv.style.marginTop = '8px';
+
+        // 3. Ponemos la hora
+        const spanHora = document.createElement('span');
+        spanHora.className = 'chat-time';
+        spanHora.textContent = hora;
+        footerDiv.appendChild(spanHora);
+
+        // 4. 🔥 MAGIA: Botón de play SOLO si el mensaje es de GEORGE 🔥
+        if (remitente === 'ia' || remitente === 'sistema') {
+            const btnAudio = document.createElement('button');
+            btnAudio.innerHTML = '<i class="fa-solid fa-volume-high"></i> Escuchar';
+            btnAudio.style.cssText = 'background: #EFE3D5; border: none; color: #810200; font-size: 11px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 6px;';
+            
+            // Al hacerle clic, manda ESE texto específico a ElevenLabs
+            btnAudio.onclick = () => reproducirVozGeorge(texto, btnAudio);
+            
+            footerDiv.appendChild(btnAudio);
+        }
+
+        msgDiv.appendChild(footerDiv);
 
         chatBodyIA.appendChild(msgDiv);
         chatBodyIA.scrollTop = chatBodyIA.scrollHeight;
@@ -781,17 +801,6 @@
     window.dispatchEvent(new CustomEvent("firebase-ready"));
   } catch (initError) {
     console.error("[Firebase] Error al inicializar Firebase:", initError);
-  }
-</script>
-  <script>
-  function activarParlante(btn) {
-      if ('speechSynthesis' in window) {
-          const u = new SpeechSynthesisUtterance('Sistemas de audio activados.');
-          u.lang = 'es-ES';
-          window.speechSynthesis.speak(u);
-      }
-      btn.innerHTML = '✅ Audio Activado';
-      btn.style.backgroundColor = '#2f9e6a';
   }
 </script>
 </body>
