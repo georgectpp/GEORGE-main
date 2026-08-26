@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restablecer contraseña - GEORGE</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='registro.css') }}">
+</head>
+
+<body>
+
+    <div class="registro-container">
+
+        <h1>Restablecer contraseña</h1>
+
+        <p>Ingresa tu correo electrónico y crea una nueva contraseña.</p>
+
+        <form method="POST">
+
+            <div class="campo">
+                <label>Correo electrónico</label>
+                <input
+                    type="email"
+                    name="correo"
+                    placeholder="tu@correo.com"
+                    required
+                >
+            </div>
+
+            <div class="campo">
+                <label>Nueva contraseña</label>
+                <input
+                    type="password"
+                    name="nueva_contrasena"
+                    placeholder="••••••••"
+                    required
+                >
+            </div>
+
+            <div class="campo">
+                <label>Confirmar contraseña</label>
+                <input
+                    type="password"
+                    name="confirmar_contrasena"
+                    placeholder="••••••••"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="entrar-btn">
+                Restablecer contraseña
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+</html>
