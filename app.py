@@ -293,8 +293,7 @@ def api_hablar():
     
     # 🔥 PEGA TUS CÓDIGOS AQUÍ ADENTRO DE LAS COMILLAS 🔥
     api_key = "sk_ef2b42bdd7c2d4f3db471289545a59f2c2ef19f8a4149c7d"
-    voice_id = "Hpwh61tU4uwqF8q5Ln4s
-" 
+    voice_id = "Hpwh61tU4uwqF8q5Ln4s"
     
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
     
