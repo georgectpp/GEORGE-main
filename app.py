@@ -286,42 +286,42 @@ def configuracion():
 # ==========================================================
 # MÓDULO DE VOZ (JARVIS / ELEVENLABS)
 # ==========================================================
-@app.route("/api/hablar", methods=["POST"])
-def api_hablar():
-    datos = request.get_json()
-    texto = datos.get("texto", "")
+#esto esta en proceso esta planeado para otro momento...
+#@app.route("/api/hablar", methods=["POST"])
+#def api_hablar():
+    #datos = request.get_json()
+    #texto = datos.get("texto", "")
     
-    # 🔥 PEGA TUS CÓDIGOS AQUÍ ADENTRO DE LAS COMILLAS 🔥
-    api_key = "sk_ef2b42bdd7c2d4f3db471289545a59f2c2ef19f8a4149c7d"
-    voice_id = "Hpwh61tU4uwqF8q5Ln4s"
+   # api_key = "sk_ef2b42bdd7c2d4f3db471289545a59f2c2ef19f8a4149c7d"
+    #voice_id = "Hpwh61tU4uwqF8q5Ln4s"
     
-    url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
+    #url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
     
-    headers = {
-        "Accept": "audio/mpeg",
-        "Content-Type": "application/json",
-        "xi-api-key": api_key
-    }
+    #headers = {
+      #  "Accept": "audio/mpeg",
+     #   "Content-Type": "application/json",
+    #    "xi-api-key": api_key
+   # }
     
-    data = {
-        "text": texto,
-        "model_id": "eleven_multilingual_v2", # Modelo perfecto para español
-        "voice_settings": {
-            "stability": 0.5,
-            "similarity_boost": 0.75
-        }
-    }
+   # data = {
+        #"text": texto,
+        #"model_id": "eleven_multilingual_v2", # Modelo perfecto para español
+        #"voice_settings": {
+       #     "stability": 0.5,
+      #      "similarity_boost": 0.75
+     #   }
+    #}
     
-    response = requests.post(url, json=data, headers=headers)
+   # response = requests.post(url, json=data, headers=headers)
     
-    if response.status_code == 200:
-        return send_file(
-            io.BytesIO(response.content),
-            mimetype="audio/mpeg",
-            as_attachment=False,
-            download_name="george.mp3"
-        )
-    else:
-        return {"error": "Fallo en la síntesis de voz"}, 500
-if __name__ == "__main__":
-    app.run(debug=True)
+   # if response.status_code == 200:
+        #return send_file(
+       #     io.BytesIO(response.content),
+      #      mimetype="audio/mpeg",
+     #       as_attachment=False,
+    #        download_name="george.mp3"
+   #     )
+  #  else:
+ #       return {"error": "Fallo en la síntesis de voz"}, 500
+#if __name__ == "__main__":
+   # app.run(debug=True)
