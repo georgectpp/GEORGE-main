@@ -758,6 +758,8 @@
                 dibujarMensaje(respuestaIA, 'ia', horaIA); 
                 registrarMensajeEnMemoria(respuestaIA, 'ia', horaIA);
 
+                reproducirVozGeorge(respuestaIA);
+
             } catch (error) {
                 const horaError = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                 const msgError = '⚠️ Sin conexión con el motor de George IA.';
