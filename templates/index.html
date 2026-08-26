@@ -528,117 +528,195 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        const chatFormIA = document.getElementById('chat-form-ia');
-        const chatInputIA = document.getElementById('chat-input-ia');
-        const chatBodyIA = document.getElementById('chat-body-ia');
-      // --- BOTÓN DE PERMISOS DE AUDIO (Para el profe) ---
-    const headerChat = document.querySelector('#view-chat-ia .chat-header');
-    if (headerChat && !document.getElementById('btn-permiso-audio')) {
-        const btnPermiso = document.createElement('button');
-        btnPermiso.id = 'btn-permiso-audio';
-        btnPermiso.innerHTML = '🔊 Activar Parlante';
-        btnPermiso.style.cssText = 'margin-left: auto; background: #810200; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px;';
-        
-        btnPermiso.onclick = () => {
-            // Desbloquea la voz nativa
-            if ('speechSynthesis' in window) {
-                const u = new SpeechSynthesisUtterance('Sistemas de audio activados.');
-                u.lang = 'es-ES';
-                window.speechSynthesis.speak(u);
-            }
-            // Cambia el diseño para mostrar que ya tiene permiso
-            btnPermiso.innerHTML = '✅ Audio Activado';
-            btnPermiso.style.backgroundColor = '#2f9e6a';
-        };
-        headerChat.appendChild(btnPermiso);
+       // =====================================================================
+    // CEREBRO DE GEORGE IA: HISTORIAL, NAVEGACIÓN Y AUTO-TÍTULOS ESTILO GEMINI
+    // =====================================================================
+    const chatFormIA = document.getElementById('chat-form-ia');
+    const chatInputIA = document.getElementById('chat-input-ia');
+    const chatBodyIA = document.getElementById('chat-body-ia');
+    const listaHistorial = document.getElementById('lista-historial-ia');
+    const btnNuevoChat = document.getElementById('btn-nuevo-chat');
+    const tituloChatActual = document.getElementById('chat-titulo-actual');
+
+    // Llave única para guardar en la memoria del navegador
+    const STORAGE_KEY = 'george_ia_memoria_completa_' + (window.USUARIO_REAL || 'anonimo');
+    
+    // Aquí viven todas las conversaciones
+    let misConversaciones = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    let chatActivoId = null;
+
+    function guardarMemoria() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(misConversaciones));
     }
-    // --------------------------------------------------
 
-        function mostrarMensajeEnPantalla(texto, remitente) {
-            const msgDiv = document.createElement('div');
-
-            if (remitente === 'ia' || remitente === 'sistema') {
-                msgDiv.className = 'chat-msg chat-msg-in';
-            } else {
-                msgDiv.className = 'chat-msg chat-msg-out';
-                msgDiv.style.alignSelf = 'flex-end';
-                msgDiv.style.marginLeft = 'auto';
-                msgDiv.style.backgroundColor = '#00113A';
-                msgDiv.style.color = '#FFFFFF';
-                msgDiv.style.borderBottomRightRadius = '0';
-                msgDiv.style.borderBottomLeftRadius = '12px';
-            }
-
-            const p = document.createElement('div');
-            p.className = 'texto-markdown';
-
-            if (remitente === 'ia' || remitente === 'sistema') {
-                p.innerHTML = marked.parse(texto);
-            } else {
-                p.textContent = texto;
-            }
-
-            msgDiv.appendChild(p);
-
-            if (remitente === 'ia') {
-                const btnAudio = document.createElement('button');
-                btnAudio.innerHTML = '<i class="fa-solid fa-volume-high"></i> Escuchar a George';
-                btnAudio.style.cssText = 'margin-top: 8px; background: #00113A; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 6px;';
-
-                btnAudio.onclick = () => reproducirVozGeorge(texto, btnAudio);
-                msgDiv.appendChild(btnAudio);
-
-                // intento de autoplay inmediato (puede fallar en silencio si el navegador lo bloquea;
-                // en ese caso el usuario usa el botón de arriba)
-                reproducirVozGeorge(texto, btnAudio);
-            }
-
-            const span = document.createElement('span');
-            span.className = 'chat-time';
-            const ahora = new Date();
-            span.textContent = ahora.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-
-            msgDiv.appendChild(span);
-            chatBodyIA.appendChild(msgDiv);
-            chatBodyIA.scrollTop = chatBodyIA.scrollHeight;
+    // 1. RENDERIZAR LA BARRA LATERAL (LISTA DE CHATS)
+    function actualizarSidebar() {
+        listaHistorial.innerHTML = '<p style="font-size: 11px; color: var(--gris); font-weight: bold; margin: 0 0 10px 10px; text-transform: uppercase;">Tus conversaciones</p>';
+        
+        if (misConversaciones.length === 0) {
+            listaHistorial.innerHTML += '<p style="color: var(--gris); font-size: 12px; text-align: center; margin-top: 20px;">No hay chats previos.</p>';
+            return;
         }
 
-        if (chatFormIA) {
-            chatFormIA.addEventListener('submit', async (e) => {
-                e.preventDefault();
+        // Mostramos los más nuevos arriba (invertimos el orden visualmente)
+        const chatsInvertidos = [...misConversaciones].reverse();
 
-                const mensaje = chatInputIA.value.trim();
-                if (!mensaje) return;
+        chatsInvertidos.forEach(chat => {
+            const item = document.createElement('div');
+            
+            // Estilo dinámico: si es el chat que estamos viendo, se pinta diferente
+            if (chat.id === chatActivoId) {
+                item.style.cssText = 'background: #EFE3D5; color: #810200; font-weight: 600; padding: 10px 15px; border-radius: 8px; margin-bottom: 5px; cursor: pointer; font-size: 13px; display: flex; gap: 10px; align-items: center;';
+            } else {
+                item.style.cssText = 'color: var(--gris-oscuro); padding: 10px 15px; border-radius: 8px; margin-bottom: 5px; cursor: pointer; font-size: 13px; display: flex; gap: 10px; align-items: center; transition: background 0.2s;';
+                item.onmouseover = () => item.style.background = '#f0f0f0';
+                item.onmouseout = () => item.style.background = 'transparent';
+            }
 
-                mostrarMensajeEnPantalla(mensaje, 'usuario');
-                chatInputIA.value = '';
+            item.innerHTML = `<i class="fa-regular fa-message"></i><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${chat.titulo}</span>`;
+            item.onclick = () => abrirChat(chat.id);
+            
+            listaHistorial.appendChild(item);
+        });
+    }
 
-                const n8nWebhookUrl = 'https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b';
+    // 2. ABRIR UNA CONVERSACIÓN ESPECÍFICA
+    function abrirChat(id) {
+        chatActivoId = id;
+        const chatSeleccionado = misConversaciones.find(c => c.id === id);
+        
+        // Cambiar el título en la cabecera
+        tituloChatActual.textContent = chatSeleccionado.titulo;
+        
+        // Limpiar la pantalla y cargar los mensajes de este chat
+        chatBodyIA.innerHTML = '';
+        chatSeleccionado.mensajes.forEach(msg => {
+            dibujarMensaje(msg.texto, msg.remitente, msg.hora);
+        });
+        
+        actualizarSidebar();
+    }
 
-                try {
-                    const response = await fetch(n8nWebhookUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'text/plain' },
-                        body: JSON.stringify({
-                            message: mensaje,
-                            sessionId: window.USUARIO_REAL || 'estudiante-anonimo'
-                        })
-                    });
-                    if (!response.ok) throw new Error('Error en el servidor de n8n');
+    // 3. CREAR UNA NUEVA CONVERSACIÓN
+    function crearNuevoChat() {
+        const nuevoId = Date.now().toString(); // ID único basado en la hora exacta
+        const mensajeBienvenida = { 
+            texto: '¡Hola! Soy George IA 🤖 Puedo ayudarte con dudas académicas, trámites o preguntas generales. ¿En qué te ayudo hoy?', 
+            remitente: 'ia', 
+            hora: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
+        };
+        
+        const nuevaConv = {
+            id: nuevoId,
+            titulo: 'Nueva conversación', // Se actualizará al primer mensaje
+            mensajes: [mensajeBienvenida]
+        };
+        
+        misConversaciones.push(nuevaConv);
+        guardarMemoria();
+        abrirChat(nuevoId);
+    }
 
-                    const data = await response.json();
-                    const respuestaIA = data.respuesta_ia || data.output || 'Lo siento, no pude procesar una respuesta.';
-
-                    mostrarMensajeEnPantalla(respuestaIA, 'ia');
-                    // (ya no usamos speechSynthesis aquí — solo ElevenLabs, para evitar que se pisen las dos voces)
-
-                } catch (error) {
-                    console.error('Error de conexión:', error);
-                    mostrarMensajeEnPantalla('No se pudo establecer conexión con George IA en este momento.', 'sistema');
-                }
-            });
+    // 4. DIBUJAR LOS MENSAJES EN PANTALLA
+    function dibujarMensaje(texto, remitente, hora) {
+        const msgDiv = document.createElement('div');
+        
+        if (remitente === 'ia' || remitente === 'sistema') {
+            msgDiv.className = 'chat-msg chat-msg-in';
+        } else {
+            msgDiv.className = 'chat-msg chat-msg-out';
+            msgDiv.style.alignSelf = 'flex-end';
+            msgDiv.style.marginLeft = 'auto';
+            msgDiv.style.backgroundColor = '#00113A'; 
+            msgDiv.style.color = '#FFFFFF';
+            msgDiv.style.borderBottomRightRadius = '0';
+            msgDiv.style.borderBottomLeftRadius = '12px';
         }
 
+        const p = document.createElement('div');
+        p.className = 'texto-markdown';
+        p.innerHTML = (remitente === 'ia' || remitente === 'sistema') ? marked.parse(texto) : texto; 
+        msgDiv.appendChild(p);
+
+        const span = document.createElement('span');
+        span.className = 'chat-time';
+        span.textContent = hora;
+        msgDiv.appendChild(span);
+
+        chatBodyIA.appendChild(msgDiv);
+        chatBodyIA.scrollTop = chatBodyIA.scrollHeight;
+    }
+
+    // 5. GUARDAR UN MENSAJE EN EL CHAT ACTIVO
+    function registrarMensajeEnMemoria(texto, remitente, hora) {
+        const chatActual = misConversaciones.find(c => c.id === chatActivoId);
+        
+        // Magia: Si es el primer mensaje del usuario, autogeneramos el título leyendo sus primeras 4 palabras
+        if (remitente === 'usuario' && chatActual.titulo === 'Nueva conversación') {
+            const palabras = texto.split(' ').slice(0, 4).join(' ');
+            chatActual.titulo = palabras + '...';
+            tituloChatActual.textContent = chatActual.titulo;
+            actualizarSidebar();
+        }
+
+        chatActual.mensajes.push({ texto, remitente, hora });
+        guardarMemoria();
+    }
+
+    // --- INICIALIZAR EL SISTEMA AL CARGAR LA PÁGINA ---
+    if (btnNuevoChat) {
+        btnNuevoChat.addEventListener('click', crearNuevoChat);
+    }
+
+    if (chatBodyIA) {
+        if (misConversaciones.length === 0) {
+            crearNuevoChat(); // Si es nuevo usuario, le damos un chat en blanco
+        } else {
+            abrirChat(misConversaciones[misConversaciones.length - 1].id); // Si ya tiene, le abrimos el último que usó
+        }
+    }
+
+    // --- EL MOTOR DE ENVÍO Y CONEXIÓN CON N8N ---
+    if (chatFormIA) {
+        chatFormIA.addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+            const mensaje = chatInputIA.value.trim();
+            if (!mensaje) return;
+            
+            const horaActual = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            // 1. Mostrar y guardar lo del usuario
+            dibujarMensaje(mensaje, 'usuario', horaActual);
+            registrarMensajeEnMemoria(mensaje, 'usuario', horaActual);
+            chatInputIA.value = ''; 
+            
+            // 2. Conectar con n8n
+            try {
+                const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({
+                        message: mensaje,
+                        sessionId: window.USUARIO_REAL || 'estudiante-anonimo'
+                    })
+                });
+                
+                if (!response.ok) throw new Error('Error en red');
+                const data = await response.json();
+                const respuestaIA = data.respuesta_ia || data.output || 'No pude procesar la respuesta.'; 
+                
+                const horaIA = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                dibujarMensaje(respuestaIA, 'ia', horaIA); 
+                registrarMensajeEnMemoria(respuestaIA, 'ia', horaIA);
+
+            } catch (error) {
+                const horaError = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const msgError = '⚠️ Sin conexión con el motor de George IA.';
+                dibujarMensaje(msgError, 'sistema', horaError);
+                registrarMensajeEnMemoria(msgError, 'sistema', horaError);
+            }
+        });
+    }
         // --- (el bloque del chat-form-generador queda igual que lo tenías, no lo toqué) ---
     });
 </script>
