@@ -34,31 +34,49 @@
                     >
                 </div>
 
-                <div class="campo">
+               <div class="campo">
                     <label>Nueva contraseña</label>
 
-                    <input
-                        type="password"
-                        name="nueva_contrasena"
-                        placeholder="••••••••"
-                        required
+                    <div class="password-container">
+                        <input
+                            type="password"
+                            id="nueva_contrasena"
+                            name="nueva_contrasena"
+                            placeholder="••••••••"
+                            required
                     >
-                </div>
 
-                <div class="campo">
-                    <label>Confirmar contraseña</label>
-
-                    <input
-                        type="password"
-                        name="confirmar_contrasena"
-                        placeholder="••••••••"
-                        required
+                    <button
+                        type="button"
+                        class="toggle-password"
+                        onclick="mostrarContraseña('nueva_contrasena', this)"
                     >
-                    <button type="button" class="toggle-password"
-                        onclick="togglePassword('confirmar_contrasena', this)">
-                         👁
+                        👁️
                     </button>
                 </div>
+            </div>
+
+               <div class="campo">
+                    <label>Confirmar contraseña</label>
+
+                    <div class="password-container">
+                        <input
+                            type="password"
+                            id="confirmar_contrasena"
+                            name="confirmar_contrasena"
+                            placeholder="••••••••"
+                            required
+                    >
+
+                    <button
+                        type="button"
+                        class="toggle-password"
+                        onclick="mostrarContraseña('confirmar_contrasena', this)"
+                    >
+                        👁️
+                    </button>
+                </div>
+            </div>
 
                 <button type="submit" class="btn-restablecer">
                     Restablecer contraseña
