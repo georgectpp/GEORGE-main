@@ -54,6 +54,10 @@
                         placeholder="••••••••"
                         required
                     >
+                    <button type="button" class="toggle-password"
+                        onclick="togglePassword('confirmar_contrasena', this)">
+                         👁
+                    </button>
                 </div>
 
                 <button type="submit" class="btn-restablecer">
@@ -71,6 +75,19 @@
         </div>
 
     </div>
+    <script>
+        function mostrarContraseña(idInput, boton) {
+            const input = document.getElementById(idInput);
+
+            if (input.type === "password") {
+                input.type = "text";
+                boton.innerHTML = "🙈";
+            } else {
+                input.type = "password";
+                boton.innerHTML = "👁️";
+            }
+        }
+    </script>
 
 </body>
 </html>
