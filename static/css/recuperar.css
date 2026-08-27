@@ -152,3 +152,45 @@ body {
 body {
     background: red !important;
 }
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 50px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 40px;
+    height: 40px;
+
+    padding: 0;
+    margin: 0;
+
+    background: transparent;
+    border: none;
+
+    color: #0F172A;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+}
+
+.toggle-password:hover {
+    background: transparent;
+    transform: translateY(-50%);
+    box-shadow: none;
+}
