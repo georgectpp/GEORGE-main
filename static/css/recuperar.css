@@ -12,20 +12,19 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-
-    padding: 30px;
 }
 
 .recuperar-container {
     width: 100%;
     max-width: 600px;
+    padding: 30px;
 }
 
 .recuperar-card {
     background: #FFFFFF;
     border-radius: 25px;
     padding: 45px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, .12);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, .15);
 }
 
 .recuperar-card h1 {
@@ -34,9 +33,9 @@ body {
     margin-bottom: 10px;
 }
 
-.recuperar-card .descripcion {
+.descripcion {
     color: #64748B;
-    margin-bottom: 35px;
+    margin-bottom: 30px;
     font-size: 16px;
 }
 
@@ -53,6 +52,7 @@ body {
 }
 
 .campo input {
+    width: 100%;
     padding: 15px;
     border: 1px solid #CBD5E1;
     border-radius: 12px;
@@ -70,26 +70,23 @@ body {
     padding: 17px;
     border: none;
     border-radius: 15px;
-
     background: #8B0000;
     color: white;
-
     font-size: 17px;
     font-weight: 600;
-
     cursor: pointer;
-    transition: .35s;
+    transition: .3s;
 }
 
 .btn-restablecer:hover {
     background: #6E0000;
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(139, 0, 0, .30);
+    box-shadow: 0 10px 20px rgba(139, 0, 0, .25);
 }
 
 .volver {
-    margin-top: 25px;
     text-align: center;
+    margin-top: 25px;
 }
 
 .volver a {
@@ -103,13 +100,7 @@ body {
 }
 
 @media (max-width: 600px) {
-
     .recuperar-card {
         padding: 30px;
     }
-
-    .recuperar-card h1 {
-        font-size: 28px;
-    }
-
 }
