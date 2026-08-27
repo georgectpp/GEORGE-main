@@ -192,3 +192,46 @@ body {
     transform: translateY(-50%);
     box-shadow: none;
 }
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 50px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 35px !important;
+    height: 35px;
+
+    padding: 0 !important;
+    margin: 0;
+
+    background: transparent !important;
+    border: none !important;
+
+    color: #0F172A;
+    font-size: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    box-shadow: none !important;
+}
+
+.toggle-password:hover {
+    background: transparent !important;
+    color: #8B0000;
+    transform: translateY(-50%);
+}
