@@ -16,82 +16,118 @@ body {
 
 .recuperar-container {
     width: 100%;
-    max-width: 600px;
     padding: 30px;
+    display: flex;
+    justify-content: center;
 }
 
 .recuperar-card {
+    width: 100%;
+    max-width: 600px;
+
     background: #FFFFFF;
+
     border-radius: 25px;
+
     padding: 45px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, .15);
+
+    box-shadow: 0 15px 35px rgba(0,0,0,.15);
 }
 
 .recuperar-card h1 {
     color: #0F172A;
+
     font-size: 34px;
+
     margin-bottom: 10px;
 }
 
 .descripcion {
     color: #64748B;
+
     margin-bottom: 30px;
+
     font-size: 16px;
 }
 
 .campo {
     display: flex;
     flex-direction: column;
-    margin-bottom: 22px;
+
+    margin-bottom: 20px;
 }
 
 .campo label {
     margin-bottom: 8px;
+
     font-weight: 600;
+
     color: #1E293B;
 }
 
 .campo input {
     width: 100%;
+
     padding: 15px;
+
     border: 1px solid #CBD5E1;
+
     border-radius: 12px;
+
     font-size: 15px;
+
     outline: none;
+
+    transition: .3s;
 }
 
 .campo input:focus {
     border-color: #1E3A8A;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, .15);
+
+    box-shadow: 0 0 0 3px rgba(30,58,138,.15);
 }
 
 .btn-restablecer {
     width: 100%;
+
     padding: 17px;
+
     border: none;
+
     border-radius: 15px;
+
     background: #8B0000;
+
     color: white;
+
     font-size: 17px;
+
     font-weight: 600;
+
     cursor: pointer;
+
     transition: .3s;
 }
 
 .btn-restablecer:hover {
     background: #6E0000;
+
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(139, 0, 0, .25);
+
+    box-shadow: 0 10px 20px rgba(139,0,0,.25);
 }
 
 .volver {
     text-align: center;
+
     margin-top: 25px;
 }
 
 .volver a {
     color: #1E3A8A;
+
     text-decoration: none;
+
     font-weight: 600;
 }
 
@@ -99,8 +135,17 @@ body {
     text-decoration: underline;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
+
+    .recuperar-container {
+        padding: 20px;
+    }
+
     .recuperar-card {
         padding: 30px;
+    }
+
+    .recuperar-card h1 {
+        font-size: 28px;
     }
 }
