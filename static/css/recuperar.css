@@ -149,9 +149,7 @@ body {
         font-size: 28px;
     }
 }
-body {
-    background: red !important;
-}
+
 
 .password-container {
     position: relative;
