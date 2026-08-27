@@ -106,6 +106,18 @@
             }
         }
     </script>
+    <script>
+function mostrarContraseña(idInput, boton) {
+    const input = document.getElementById(idInput);
 
+    if (input.type === "password") {
+        input.type = "text";
+        boton.textContent = "🙈";
+    } else {
+        input.type = "password";
+        boton.textContent = "👁️";
+    }
+}
+</script>
 </body>
 </html>
