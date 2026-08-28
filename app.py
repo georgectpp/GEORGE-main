@@ -287,10 +287,82 @@ def configuracion():
 
 
 
-@app.route('/recuperar_contrasena')
+@app.route('/recuperar_contrasena', methods=['GET', 'POST'])
 def recuperar_contrasena():
+
+    if request.method == 'POST':
+
+        correo = request.form.get('correo')
+        contrasena_actual = request.form.get('contrasena_actual')
+        nueva_contrasena = request.form.get('nueva_contrasena')
+        confirmar_contrasena = request.form.get('confirmar_contrasena')
+
+        # Verificar que las contraseñas nuevas coincidan
+        if nueva_contrasena != confirmar_contrasena:
+            return render_template(
+                'recuperar_contrasena.html',
+                error='Las nuevas contraseñas no coinciden ❌'
+            )
+
+        try:
+
+            # 1. Verificamos el correo y la contraseña actual
+            usuario = auth.sign_in_with_email_and_password(
+                correo,
+                contrasena_actual
+            )
+
+            # 2. Obtenemos el token de Firebase
+            id_token = usuario['idToken']
+
+            # 3. Cambiamos la contraseña
+            auth.update_password(
+                id_token,
+                nueva_contrasena
+            )
+
+            flash('Contraseña actualizada correctamente ✅')
+
+            # 4. Volvemos al inicio de sesión
+            return redirect('/login')
+
+        except Exception as e:
+
+            print("ERROR AL CAMBIAR CONTRASEÑA:", e)
+
+            return render_template(
+                'recuperar_contrasena.html',
+                error='El correo o la contraseña actual son incorrectos ❌'
+            )
+
     return render_template('recuperar_contrasena.html')
 
-@app.route('/olvidar_contrasena')
+
+@app.route('/olvidar_contrasena', methods=['GET', 'POST'])
 def olvidar_contrasena():
+
+    if request.method == 'POST':
+
+        correo = request.form.get('correo')
+
+        try:
+
+            # Firebase envía el correo de recuperación
+            auth.send_password_reset_email(correo)
+
+            flash(
+                'Correo de recuperación enviado. Revisa tu bandeja de entrada 📧'
+            )
+
+            return redirect('/login')
+
+        except Exception as e:
+
+            print("ERROR AL ENVIAR CORREO:", e)
+
+            return render_template(
+                'olvidar_contrasena.html',
+                error='No se pudo enviar el correo de recuperación ❌'
+            )
+
     return render_template('olvidar_contrasena.html')
