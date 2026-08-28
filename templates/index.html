@@ -5,17 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GEORGE · Comunidad Estudiantil</title>
 
+<!-- # CONEXION PREVIA A GOOGLE FONTS -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- # LIBRERIA DE ICONOS FONT AWESOME -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- # HOJA DE ESTILOS PROPIA DEL PROYECTO -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
-<!-- Librería para interpretar Markdown -->
+<!-- # LIBRERIA PARA INTERPRETAR MARKDOWN EN LAS RESPUESTAS DE LA IA -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <style>
-  /* Estilos para las Encuestas de Caritas (Termómetro) */
+  /* # ESTILOS DE LAS ENCUESTAS DE CARITAS (TERMOMETRO DE BIENESTAR) */
   .encuesta-card { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; padding: 25px; margin-bottom: 20px; text-align: center; }
   .encuesta-card h3 { color: var(--azul); font-family: var(--f-display); margin-top: 0; }
   .escala-caritas { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
@@ -26,7 +31,7 @@
   .carita-item input[type="radio"]:checked + .carita-label { filter: grayscale(0%) opacity(1); transform: scale(1.2); }
   .carita-desc { display: block; font-size: 12px; color: var(--gris-claro); margin-top: 5px; font-weight: 600; }
 
-  /* Estilos para limpiar el Markdown dentro de los chats */
+  /* # ESTILOS PARA EL TEXTO MARKDOWN DENTRO DE LOS CHATS */
   .texto-markdown p {
       margin-top: 0;
       margin-bottom: 10px;
@@ -53,7 +58,9 @@
 </head>
 <body>
 
+<!-- # BARRA SUPERIOR DEL SITIO -->
 <header class="topbar">
+  <!-- # LOGO Y NOMBRE DE LA MARCA, LLEVA DE VUELTA AL FEED -->
   <button type="button" class="brand nav-trigger" data-view="feed" aria-label="GEORGE, ir al inicio">
     <span class="brand-seal">G</span>
     <span class="brand-text">
@@ -62,24 +69,30 @@
     </span>
   </button>
 
+  <!-- # BUSCADOR DE PUBLICACIONES DEL FORO -->
   <div class="search-form" role="search">
     <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
     <input type="search" id="search-input" class="search-input" placeholder="Buscar publicaciones por título o contenido…" aria-label="Buscar en el foro">
   </div>
 
+  <!-- # BOTON PARA ABRIR EL MODAL DE NUEVA PUBLICACION -->
   <button type="button" id="btn-new-post" class="btn btn-primary btn-new-post">
     <i class="fa-solid fa-plus" aria-hidden="true"></i>
     <span>Nueva publicación</span>
   </button>
 
-  <!-- Botón de Salir Original -->
+  <!-- # BOTON DE CERRAR SESION -->
   <a href="{{ url_for('logout') }}" class="btn btn-ghost" style="margin-left: 15px; border-color: var(--gris-borde);">Salir</a>
 </header>
 
+<!-- # CONTENEDOR GENERAL DEL LAYOUT (SIDEBAR + VISTAS) -->
 <div class="layout">
 
+  <!-- # BARRA LATERAL DE NAVEGACION -->
   <aside class="sidebar">
     <nav class="side-nav" aria-label="Categorías de la plataforma">
+
+      <!-- # CATEGORIAS DEL FORO ESTUDIANTIL -->
       <span class="side-label">Foro Estudiantil</span>
       <button type="button" class="nav-item nav-trigger is-active" data-view="feed" data-category="all">
         <i class="fa-solid fa-house nav-icon" aria-hidden="true"></i>
@@ -102,8 +115,8 @@
         <span>Opiniones</span>
       </button>
 
+      <!-- # HERRAMIENTAS: BIENESTAR Y TEST VOCACIONAL -->
       <span class="side-label side-label-spaced">Herramientas</span>
-      <!-- NUEVA PESTAÑA: Bienestar en lugar de Encuestas en el Foro -->
       <button type="button" class="nav-item nav-trigger" data-view="encuestas-bienestar">
         <i class="fa-solid fa-face-smile-beam nav-icon" aria-hidden="true"></i>
         <span>Mi Bienestar</span>
@@ -113,6 +126,7 @@
         <span>Test Vocacional</span>
       </button>
 
+      <!-- # ASISTENCIA: CHAT CON IA Y CONTACTO CON ORIENTACION -->
       <span class="side-label side-label-spaced">Asistencia</span>
       <button type="button" class="nav-item nav-trigger" data-view="chat-ia">
         <i class="fa-solid fa-robot nav-icon" aria-hidden="true"></i>
@@ -123,6 +137,7 @@
         <span>Contactar Orientación</span>
       </button>
 
+      <!-- # PORTAL DOCENTE: GENERADOR DE MATERIAL DIDACTICO -->
       <span class="side-label side-label-spaced">Portal Docente</span>
       <button type="button" class="nav-item nav-trigger" data-view="chat-generador">
         <i class="fa-solid fa-wand-magic-sparkles nav-icon" aria-hidden="true"></i>
@@ -131,18 +146,23 @@
 
     </nav>
 
+    <!-- # PIE DE LA BARRA LATERAL -->
     <div class="side-footer">
       <i class="fa-solid fa-shield-heart" aria-hidden="true"></i>
       <p>Un espacio seguro y respetuoso para toda la comunidad GEORGE.</p>
     </div>
   </aside>
 
+  <!-- # CONTENEDOR DE TODAS LAS VISTAS DE LA APLICACION -->
   <div class="views">
+
+    <!-- # VISTA: FEED DEL FORO -->
     <section id="view-feed" class="view view-feed is-active" data-view="feed">
       <div class="view-header">
         <h1 id="feed-title">Todas las publicaciones</h1>
         <p>Lo que la comunidad GEORGE está conversando hoy.</p>
       </div>
+      <!-- # AQUI EL script.js EXTERNO INYECTA LAS PUBLICACIONES -->
       <div class="feed-list" id="feed-list"></div>
       <p id="no-results" class="no-results is-hidden">
         <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
@@ -150,7 +170,7 @@
       </p>
     </section>
 
-    <!-- NUEVA VISTA: TERMÓMETRO DE BIENESTAR -->
+    <!-- # VISTA: TERMOMETRO DE BIENESTAR -->
     <section id="view-encuestas-bienestar" class="view" data-view="encuestas-bienestar">
       <div class="view-header">
         <h1>Termómetro de Bienestar</h1>
@@ -158,6 +178,8 @@
       </div>
 
       <form id="form-bienestar">
+
+          <!-- # PREGUNTA 1: NIVEL DE ESTRES ACADEMICO -->
           <div class="encuesta-card">
               <h3>🧠 Nivel de Estrés Académico</h3>
               <p style="color: var(--gris); font-size: 14px;">En las últimas dos semanas, ¿qué tan estresado(a) te has sentido por el colegio?</p>
@@ -170,6 +192,7 @@
               </div>
           </div>
 
+          <!-- # PREGUNTA 2: AMBIENTE Y RESPETO ENTRE COMPAÑEROS -->
           <div class="encuesta-card">
               <h3>🛑 Ambiente y Respeto</h3>
               <p style="color: var(--gris); font-size: 14px;">¿Cómo calificarías el trato entre compañeros (bullying, burlas o exclusión)?</p>
@@ -182,6 +205,7 @@
               </div>
           </div>
 
+          <!-- # PREGUNTA 3: ENERGIA Y MOTIVACION -->
           <div class="encuesta-card">
               <h3>🔋 Energía y Cansancio</h3>
               <p style="color: var(--gris); font-size: 14px;">¿Cómo sientes tu nivel de energía y motivación general para estudiar?</p>
@@ -194,21 +218,24 @@
               </div>
           </div>
 
+          <!-- # BOTON DE ENVIO Y MENSAJE DE CONFIRMACION -->
           <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 16px; padding: 15px;">Enviar mis respuestas</button>
           <p id="msg-bienestar-exito" style="color: #2f9e6a; text-align: center; font-weight: bold; margin-top: 15px; display: none;">¡Gracias por compartir cómo te sientes!</p>
       </form>
     </section>
 
-    <!-- VISTA: TEST VOCACIONAL (UI NUEVA Y BLINDADA) -->
+    <!-- # VISTA: TEST VOCACIONAL -->
     <section id="view-test" class="view" data-view="test">
       <div class="test-container" style="background: white; padding: 30px; border-radius: 12px; border: 1px solid var(--gris-borde); max-width: 800px; margin: 0 auto;">
         <h1 style="color: var(--azul); margin-top: 0;">Descubre tu camino ideal</h1>
         <p class="subtitle" style="color: var(--gris); margin-bottom: 20px;">Responde estas preguntas y GEORGE te sugerirá carreras.</p>
 
+        <!-- # BARRA DE PROGRESO DEL TEST -->
         <div class="progress-bar" style="width: 100%; height: 10px; background: #eee; border-radius: 10px; margin-bottom: 20px;">
             <div id="progress" style="width: 0%; background: #810200; height: 100%; transition: 0.3s; border-radius: 10px;"></div>
         </div>
 
+        <!-- # CONTENEDOR DONDE SE PINTA CADA PREGUNTA DEL TEST -->
         <div id="quiz-content">
             <div style="text-align: center; margin-top: 40px;">
                 <button type="button" class="btn btn-primary" onclick="window.iniciarTestMagico()" style="padding: 15px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; background: #00113A; color: white; border: none;">
@@ -217,32 +244,35 @@
             </div>
         </div>
 
+        <!-- # CONTENEDOR DONDE SE PINTA EL RESULTADO FINAL -->
         <div class="result-box" id="result-box" style="display:none;"></div>
       </div>
     </section>
 
-    <!-- VISTA CHAT IA CON HISTORIAL LATERAL ESTILO GEMINI -->
+    <!-- # VISTA: CHAT CON GEORGE IA (CON HISTORIAL LATERAL) -->
     <section id="view-chat-ia" class="view view-chat" data-view="chat-ia" style="padding: 0;">
       <div class="chat-wrapper" style="display: flex; height: 100%; width: 100%;">
 
-        <!-- PANEL LATERAL DE HISTORIAL -->
+        <!-- # PANEL LATERAL CON EL HISTORIAL DE CONVERSACIONES -->
         <aside class="chat-history-sidebar" style="width: 260px; background: #f8f9fa; border-right: 1px solid var(--gris-borde); display: flex; flex-direction: column;">
 
-          <!-- Botón Nuevo Chat -->
+          <!-- # BOTON PARA CREAR UNA CONVERSACION NUEVA -->
           <div style="padding: 20px 15px;">
             <button type="button" id="btn-nuevo-chat" class="btn btn-primary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: #00113A;">
               <i class="fa-solid fa-plus"></i> Nuevo Chat
             </button>
           </div>
 
-          <!-- Lista de Conversaciones -->
+          <!-- # LISTA DE CONVERSACIONES GUARDADAS, SE LLENA POR JS -->
           <div class="history-list" id="lista-historial-ia" style="flex: 1; overflow-y: auto; padding: 0 10px;">
             <p style="font-size: 11px; color: var(--gris); font-weight: bold; margin: 0 0 10px 10px; text-transform: uppercase;">Hoy</p>
           </div>
         </aside>
 
-        <!-- ÁREA PRINCIPAL DEL CHAT -->
+        <!-- # AREA PRINCIPAL DONDE OCURRE LA CONVERSACION ACTIVA -->
         <div class="chat-main-area" style="flex: 1; display: flex; flex-direction: column;">
+
+         <!-- # ENCABEZADO DEL CHAT ACTIVO -->
          <header class="chat-header">
             <div class="chat-avatar chat-avatar-ia"><i class="fa-solid fa-robot" aria-hidden="true"></i></div>
             <div>
@@ -251,6 +281,7 @@
             </div>
           </header>
 
+          <!-- # CUERPO DEL CHAT DONDE SE VAN PINTANDO LOS MENSAJES -->
           <div class="chat-body" id="chat-body-ia" style="flex: 1; padding: 20px;">
             <div class="chat-msg chat-msg-in">
               <p>¡Hola! Soy George IA 🤖 Puedo ayudarte con dudas académicas, trámites o preguntas generales. ¿En qué te ayudo hoy?</p>
@@ -258,6 +289,7 @@
             </div>
           </div>
 
+          <!-- # FORMULARIO DE ENVIO DE MENSAJE AL CHAT IA -->
           <form class="chat-input-bar" id="chat-form-ia">
             <input type="text" id="chat-input-ia" placeholder="Escribe tu mensaje a George IA…" autocomplete="off">
             <button type="submit" class="btn btn-primary btn-send"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
@@ -267,7 +299,7 @@
       </div>
     </section>
 
-    <!-- VISTA CHAT ORIENTACION -->
+    <!-- # VISTA: CONTACTAR ORIENTACION -->
     <section id="view-chat-orientacion" class="view view-chat" data-view="chat-orientacion">
       <header class="chat-header">
         <div class="chat-avatar chat-avatar-orientacion"><i class="fa-solid fa-hands-holding-circle" aria-hidden="true"></i></div>
@@ -276,20 +308,26 @@
           <p class="chat-status"><span class="status-dot"></span>Un orientador te responderá pronto</p>
         </div>
       </header>
+
+      <!-- # AVISO DE PRIVACIDAD DE ESTA CONVERSACION -->
       <p class="privacy-banner"><i class="fa-solid fa-lock" aria-hidden="true"></i>Esta conversación es privada y confidencial.</p>
+
+      <!-- # CUERPO DEL CHAT DE ORIENTACION -->
       <div class="chat-body" id="chat-body-orientacion">
         <div class="chat-msg chat-msg-in">
           <p>Hola, gracias por escribirnos. Estamos aquí para acompañarte. ¿Cómo te sientes hoy?</p>
           <span class="chat-time">Ayer, 4:12 p. m.</span>
         </div>
       </div>
+
+      <!-- # FORMULARIO DE ENVIO DE MENSAJE A ORIENTACION -->
       <form class="chat-input-bar" id="chat-form-orientacion">
         <input type="text" id="chat-input-orientacion" placeholder="Escribe tu mensaje al Departamento…" autocomplete="off">
         <button type="submit" class="btn btn-primary btn-send"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
       </form>
     </section>
 
-    <!-- VISTA CHAT GENERADOR -->
+    <!-- # VISTA: GENERADOR DE MATERIAL PARA DOCENTES -->
     <section id="view-chat-generador" class="view view-chat" data-view="chat-generador">
       <header class="chat-header">
         <div class="chat-avatar chat-avatar-ia" style="background-color: #00113A;"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i></div>
@@ -298,12 +336,16 @@
           <p class="chat-status"><span class="status-dot"></span>Listo para crear material</p>
         </div>
       </header>
+
+      <!-- # CUERPO DEL CHAT DEL GENERADOR DE MATERIAL -->
       <div class="chat-body" id="chat-body-generador">
         <div class="chat-msg chat-msg-in">
           <p>¡Hola! Soy tu asistente pedagógico GEORGE 🤖. <br><br>Puedo ayudarte a diseñar: <br>• Planificaciones de clase<br>• Exámenes y cuestionarios<br>• Resúmenes teóricos<br>• Rúbricas de evaluación<br><br>Dime, <strong>¿qué tema, nivel educativo y tipo de material necesitas hoy?</strong></p>
           <span class="chat-time">Ahora</span>
         </div>
       </div>
+
+      <!-- # FORMULARIO DE ENVIO DE SOLICITUD AL GENERADOR -->
       <form class="chat-input-bar" id="chat-form-generador">
         <input type="text" id="chat-input-generador" placeholder="Ej: Necesito un examen sobre la Revolución Industrial..." autocomplete="off">
         <button type="submit" class="btn btn-primary btn-send"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
@@ -313,12 +355,14 @@
   </div>
 </div>
 
+<!-- # MODAL PARA CREAR UNA NUEVA PUBLICACION EN EL FORO -->
 <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-header">
       <h2 id="modal-title">Nueva publicación</h2>
       <button type="button" class="modal-close" id="modal-close" aria-label="Cerrar formulario"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
     </div>
+    <!-- # FORMULARIO DE NUEVA PUBLICACION, MANEJADO POR script.js EXTERNO -->
     <form class="post-form" id="post-form">
       <div class="field"><label for="post-title">Título</label><input type="text" id="post-title" name="post-title" placeholder="Escribe un título claro y breve" required></div>
       <div class="field"><label for="post-category">Categoría</label>
@@ -333,15 +377,17 @@
   </div>
 </div>
 
-<!-- VARIABLES -->
+<!-- # VARIABLE GLOBAL CON EL NOMBRE DEL USUARIO ACTIVO, VIENE DESDE FLASK -->
 <script>
   window.USUARIO_REAL = "{{ usuario_activo }}";
 </script>
 
+<!-- # SCRIPT EXTERNO CON LA LOGICA DEL FORO (FEED, BUSQUEDA, MODAL, NAVEGACION ENTRE VISTAS) -->
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
-<!-- CÁPSULA DEL TEST VOCACIONAL (TOTALMENTE AISLADA DE TODO LO DEMÁS) -->
+<!-- # CAPSULA DEL TEST VOCACIONAL, AISLADA DEL RESTO DEL CODIGO -->
 <script>
+  // # BANCO DE PREGUNTAS DEL TEST, AGRUPADAS POR AREA VOCACIONAL
   var misPreguntas = [
           // --- TECH ---
           { tipo: "Tech", texto: "¿Te motiva diseñar la arquitectura lógica detrás de una plataforma digital, app o sistema de software?" },
@@ -383,6 +429,8 @@
           { tipo: "Humanidades", texto: "¿Te interesa incidir en la estructuración de políticas públicas, la diplomacia o la defensa del marco legal?" },
           { tipo: "Humanidades", texto: "¿Tienes habilidad natural para la argumentación formal, la oratoria y el análisis del discurso?" }
       ];
+
+      // # PERFILES VOCACIONALES POSIBLES, UNO POR CADA AREA DEL BANCO DE PREGUNTAS
       var misPerfiles = {
           "Tech": { nombre: "Arquitecto(a) Tecnológico 💻", desc: "Ves la tecnología como el lienzo para resolver los retos del siglo XXI.", superpoder: "Lógica computacional", carreras: ["Ingeniería de Software", "Ciencia de Datos", "Ciberseguridad"] },
           "Ingenieria": { nombre: "Ingeniero(a) Constructor ⚙️", desc: "Tu mente conecta la teoría con el mundo tangible.", superpoder: "Visión espacial y cálculo", carreras: ["Ingeniería Mecatrónica", "Ingeniería Civil", "Ingeniería Industrial"] },
@@ -394,21 +442,26 @@
           "Humanidades": { nombre: "Jurista & Analista ⚖️", desc: "Te apasiona la justicia y el marco normativo de la sociedad.", superpoder: "Argumentación y Oratoria", carreras: ["Derecho", "Relaciones Internacionales", "Ciencias Políticas"] }
       };
 
+      // # VARIABLES DE CONTROL: PREGUNTA ACTUAL Y PUNTAJE ACUMULADO POR AREA
       var pregAc = 0;
       var misPts = { Tech: 0, Ingenieria: 0, Salud: 0, Ciencias: 0, Social: 0, Negocios: 0, Arte: 0, Humanidades: 0 };
 
+      // # FUNCION PARA REINICIAR Y EMPEZAR EL TEST DESDE CERO
       window.iniciarTestMagico = function() {
           pregAc = 0;
           misPts = { Tech: 0, Ingenieria: 0, Salud: 0, Ciencias: 0, Social: 0, Negocios: 0, Arte: 0, Humanidades: 0 };
           window.renderPreguntaMagica();
       };
 
+      // # FUNCION PARA DIBUJAR LA PREGUNTA ACTUAL Y ACTUALIZAR LA BARRA DE PROGRESO
       window.renderPreguntaMagica = function() {
           var contenedor = document.getElementById('quiz-content');
           var progressBar = document.getElementById('progress');
           var resultBox = document.getElementById('result-box');
 
           if (!contenedor) return;
+
+          // # SI YA NO HAY MAS PREGUNTAS, SE MUESTRA EL RESULTADO FINAL
           if (pregAc >= misPreguntas.length) {
               contenedor.style.display = 'none'; progressBar.style.width = '100%'; mostrarRes(); return;
           }
@@ -417,6 +470,7 @@
           progressBar.style.width = Math.round((pregAc / misPreguntas.length) * 100) + '%';
           resultBox.style.display = 'none'; contenedor.style.display = 'block';
 
+          // # SE INYECTA LA PREGUNTA Y LOS TRES BOTONES DE RESPUESTA
           contenedor.innerHTML = `
               <div style="padding: 20px; background: white; border-radius: 14px; text-align: center; margin-top: 15px;">
                   <span style="color: #00113A; font-weight: bold; font-size: 13px;">PREGUNTA ${pregAc + 1} DE ${misPreguntas.length}</span>
@@ -429,12 +483,14 @@
               </div>`;
       };
 
+      // # FUNCION QUE REGISTRA LOS PUNTOS DE LA RESPUESTA Y AVANZA A LA SIGUIENTE PREGUNTA
       window.responderMagico = function(tipo, puntos) {
           misPts[tipo] += puntos; pregAc++; window.renderPreguntaMagica();
       };
 
+      // # FUNCION QUE CALCULA EL PERFIL GANADOR Y MUESTRA EL RESULTADO FINAL
       function mostrarRes() {
-          // 1. Encontramos el puntaje más alto de todo el objeto
+          // # 1. ENCONTRAMOS EL PUNTAJE MAS ALTO DE TODO EL OBJETO
           let maxPuntaje = -1;
           for (let tipo in misPts) {
               if (misPts[tipo] > maxPuntaje) {
@@ -442,7 +498,7 @@
               }
           }
 
-          // 2. Recolectamos TODAS las categorías que empataron con ese puntaje máximo
+          // # 2. RECOLECTAMOS TODAS LAS CATEGORIAS QUE EMPATARON CON ESE PUNTAJE MAXIMO
           let perfilesGanadores = [];
           for (let tipo in misPts) {
               if (misPts[tipo] === maxPuntaje) {
@@ -450,17 +506,18 @@
               }
           }
 
-          // 3. Si hay empate, escogemos una al azar de forma justa para evitar sesgos
+          // # 3. SI HAY EMPATE, ESCOGEMOS UNA AL AZAR DE FORMA JUSTA PARA EVITAR SESGOS
           let ganadorKey = perfilesGanadores[Math.floor(Math.random() * perfilesGanadores.length)];
           let perfil = misPerfiles[ganadorKey];
 
-          // 4. Cálculo de match real (cada categoría tiene 3 preguntas, máximo 6 puntos)
+          // # 4. CALCULO DE MATCH REAL (CADA CATEGORIA TIENE 3 PREGUNTAS, MAXIMO 6 PUNTOS)
           var matchPct = Math.min(100, Math.round((maxPuntaje / 6) * 100));
-          // Si el puntaje es 0, aseguramos un match visual mínimo del 10% para que no luzca roto
+          // # SI EL PUNTAJE ES 0, ASEGURAMOS UN MATCH VISUAL MINIMO DEL 10% PARA QUE NO LUZCA ROTO
           if (maxPuntaje === 0) matchPct = 15;
 
           var listaCarreras = perfil.carreras.map(c => `<li style="font-weight: bold; color: #00113A; margin-bottom: 5px;">✔️ ${c}</li>`).join('');
 
+          // # SE INYECTA LA TARJETA FINAL CON EL PERFIL, EL MATCH Y LAS CARRERAS SUGERIDAS
           document.getElementById('result-box').innerHTML = `
               <div style="background: white; border: 2px solid #00113A; border-radius: 12px; padding: 25px; text-align: center;">
                   <span style="background: #2f9e6a; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold;">🎯 ${matchPct}% Match</span>
@@ -478,30 +535,11 @@
       }
 </script>
 
-<!--
-  ============================================================================
-  CÓDIGO DE CHATS N8N — SOLO TEXTO (TTS ELIMINADO) — REFRESCO CORREGIDO
-  ============================================================================
-  Cambios respecto a la versión anterior:
-  1. Se eliminó por completo la función reproducirVozGeorge() (Web Speech API
-     + llamada a ElevenLabs) y el botón "Escuchar" de cada mensaje.
-  2. Se corrigió el bloque "firebase-ready", que tenía llaves mal cerradas y
-     una variable "response" sin definir. Ese error de sintaxis detenía la
-     ejecución del script ANTES de llegar a registrar el listener de
-     chat-form-ia, por lo que el formulario cae a su comportamiento nativo
-     (recarga) en vez de usar preventDefault().
-  3. Se añadió el listener de submit que faltaba para chat-form-generador
-     (antes no tenía NINGÚN manejador de JS, por eso siempre recargaba) y
-     uno básico para chat-form-orientacion.
-  4. dibujarMensaje ahora recibe el contenedor como parámetro para poder
-     reutilizarse en los tres chats (IA, generador, orientación) sin
-     duplicar código.
-  ============================================================================
--->
+<!-- # SCRIPT DE LOS TRES CHATS. SOLO TEXTO, SIN TTS, SIN RECARGA DE PAGINA -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ---------- REFERENCIAS DEL DOM ----------
+    // # REFERENCIAS AL DOM DEL CHAT CON GEORGE IA
     const chatFormIA = document.getElementById('chat-form-ia');
     const chatInputIA = document.getElementById('chat-input-ia');
     const chatBodyIA = document.getElementById('chat-body-ia');
@@ -509,26 +547,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnNuevoChat = document.getElementById('btn-nuevo-chat');
     const tituloChatActual = document.getElementById('chat-titulo-actual');
 
+    // # REFERENCIAS AL DOM DEL GENERADOR DE MATERIAL
     const chatFormGenerador = document.getElementById('chat-form-generador');
     const chatInputGenerador = document.getElementById('chat-input-generador');
     const chatBodyGenerador = document.getElementById('chat-body-generador');
 
+    // # REFERENCIAS AL DOM DEL CHAT DE ORIENTACION
     const chatFormOrientacion = document.getElementById('chat-form-orientacion');
     const chatInputOrientacion = document.getElementById('chat-input-orientacion');
     const chatBodyOrientacion = document.getElementById('chat-body-orientacion');
 
-    // Si falta algún elemento crítico del chat IA, no seguimos (evita errores invisibles)
+    // # SI FALTA ALGUN ELEMENTO CRITICO DEL CHAT IA, DETENEMOS TODO PARA EVITAR ERRORES INVISIBLES
     if (!chatBodyIA || !listaHistorial) return;
 
+    // # LLAVE UNICA DE ALMACENAMIENTO LOCAL, DEPENDE DEL USUARIO ACTIVO
     const STORAGE_KEY = 'george_ia_memoria_completa_' + (window.USUARIO_REAL || 'anonimo');
     let misConversaciones = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
     let chatActivoId = null;
 
+    // # FUNCION PARA GUARDAR EL HISTORIAL, LOCAL Y EN LA NUBE
     function guardarMemoria() {
-        // Guardado de respaldo local
+        // # GUARDADO DE RESPALDO LOCAL
         localStorage.setItem(STORAGE_KEY, JSON.stringify(misConversaciones));
 
-        // Guardado en la nube (Firebase)
+        // # GUARDADO EN LA NUBE (FIREBASE), SOLO SI YA ESTA DISPONIBLE
         if (window.firebaseDatabase && window.firebaseDbFunctions) {
             const usuarioLimpio = (window.USUARIO_REAL || 'estudiante_anonimo').replace(/\./g, '_');
             const { ref, set } = window.firebaseDbFunctions;
@@ -536,6 +578,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // # FUNCION PARA DIBUJAR LA LISTA DE CONVERSACIONES EN EL PANEL LATERAL
     function actualizarSidebar() {
         if (!listaHistorial) return;
         listaHistorial.innerHTML = '<p style="font-size: 11px; color: var(--gris); font-weight: bold; margin: 0 0 10px 10px; text-transform: uppercase;">Tus conversaciones</p>';
@@ -545,11 +588,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // # SE MUESTRAN LAS CONVERSACIONES DE LA MAS RECIENTE A LA MAS ANTIGUA
         const chatsInvertidos = [...misConversaciones].reverse();
 
         chatsInvertidos.forEach(chat => {
             const item = document.createElement('div');
 
+            // # ESTILO DIFERENTE SI ES LA CONVERSACION ACTIVA
             if (chat.id === chatActivoId) {
                 item.style.cssText = 'background: #EFE3D5; color: #810200; font-weight: 600; padding: 10px 15px; border-radius: 8px; margin-bottom: 5px; cursor: pointer; font-size: 13px; display: flex; gap: 10px; align-items: center;';
             } else {
@@ -564,6 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // # FUNCION PARA ABRIR UNA CONVERSACION GUARDADA Y PINTAR SUS MENSAJES
     function abrirChat(id) {
         chatActivoId = id;
         const chatSeleccionado = misConversaciones.find(c => c.id === id);
@@ -579,6 +625,7 @@ document.addEventListener('DOMContentLoaded', () => {
         actualizarSidebar();
     }
 
+    // # FUNCION PARA CREAR UNA CONVERSACION NUEVA CON EL MENSAJE DE BIENVENIDA
     function crearNuevoChat() {
         const nuevoId = Date.now().toString();
         const mensajeBienvenida = {
@@ -594,9 +641,9 @@ document.addEventListener('DOMContentLoaded', () => {
         abrirChat(nuevoId);
     }
 
-    // dibujarMensaje ahora recibe "contenedor" para poder pintarse en
-    // cualquiera de los tres chats (IA, generador, orientación), no solo en el de IA.
-    // También se eliminó toda la parte de audio: solo dibuja texto (Markdown) + hora.
+    // # FUNCION PARA DIBUJAR UN MENSAJE EN CUALQUIERA DE LOS TRES CHATS
+    // # RECIBE EL CONTENEDOR COMO PARAMETRO PARA REUTILIZARSE EN LOS TRES
+    // # YA NO INCLUYE NADA DE AUDIO, SOLO TEXTO (MARKDOWN) Y HORA
     function dibujarMensaje(texto, remitente, hora, contenedor) {
         contenedor = contenedor || chatBodyIA;
         const msgDiv = document.createElement('div');
@@ -613,13 +660,13 @@ document.addEventListener('DOMContentLoaded', () => {
             msgDiv.style.borderBottomLeftRadius = '12px';
         }
 
-        // Texto con soporte de Markdown para respuestas de la IA
+        // # SE INTERPRETA MARKDOWN SOLO EN LOS MENSAJES DE LA IA O DEL SISTEMA
         const p = document.createElement('div');
         p.className = 'texto-markdown';
         p.innerHTML = (remitente === 'ia' || remitente === 'sistema') ? marked.parse(texto) : texto;
         msgDiv.appendChild(p);
 
-        // Hora del mensaje (ya no hay botón de audio junto a ella)
+        // # HORA DEL MENSAJE
         const spanHora = document.createElement('span');
         spanHora.className = 'chat-time';
         spanHora.textContent = hora;
@@ -629,6 +676,8 @@ document.addEventListener('DOMContentLoaded', () => {
         contenedor.scrollTop = contenedor.scrollHeight;
     }
 
+    // # FUNCION PARA GUARDAR EL MENSAJE EN LA CONVERSACION ACTIVA DEL CHAT IA
+    // # TAMBIEN LE PONE TITULO AUTOMATICO A LA CONVERSACION CON LAS PRIMERAS PALABRAS
     function registrarMensajeEnMemoria(texto, remitente, hora) {
         const chatActual = misConversaciones.find(c => c.id === chatActivoId);
         if (!chatActual) return;
@@ -644,23 +693,25 @@ document.addEventListener('DOMContentLoaded', () => {
         guardarMemoria();
     }
 
+    // # EVENTO: CLICK EN EL BOTON DE NUEVO CHAT
     if (btnNuevoChat) btnNuevoChat.addEventListener('click', crearNuevoChat);
 
-    // =========================================================
-    // CHAT CON GEORGE IA
-    // =========================================================
+    // # EVENTO: ENVIO DEL FORMULARIO DEL CHAT CON GEORGE IA
+    // # e.preventDefault() ES LO QUE EVITA QUE EL FORMULARIO RECARGUE LA PAGINA
     if (chatFormIA) {
         chatFormIA.addEventListener('submit', async (e) => {
-            e.preventDefault(); // <-- CLAVE: cancela la recarga nativa del <form>
+            e.preventDefault();
 
             const mensaje = chatInputIA.value.trim();
             if (!mensaje) return;
 
+            // # PINTAMOS EL MENSAJE DEL USUARIO DE INMEDIATO, SIN ESPERAR AL SERVIDOR
             const horaActual = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             dibujarMensaje(mensaje, 'usuario', horaActual, chatBodyIA);
             registrarMensajeEnMemoria(mensaje, 'usuario', horaActual);
             chatInputIA.value = '';
 
+            // # SE ENVIA EL MENSAJE AL WEBHOOK DE N8N Y SE ESPERA LA RESPUESTA DE LA IA
             try {
                 const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b', {
                     method: 'POST',
@@ -677,6 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 registrarMensajeEnMemoria(respuestaIA, 'ia', horaIA);
 
             } catch (error) {
+                // # SI FALLA LA CONEXION, SE MUESTRA UN MENSAJE DE ERROR EN VEZ DE ROMPER LA PAGINA
                 const horaError = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                 const msgError = '⚠️ Sin conexión con el motor de George IA.';
                 dibujarMensaje(msgError, 'sistema', horaError, chatBodyIA);
@@ -685,13 +737,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // =========================================================
-    // GENERADOR DE MATERIAL (Portal Docente)
-    // Antes no existía ningún listener aquí -> siempre recargaba la página.
-    // =========================================================
+    // # EVENTO: ENVIO DEL FORMULARIO DEL GENERADOR DE MATERIAL
+    // # ANTES NO TENIA NINGUN LISTENER, POR ESO SIEMPRE RECARGABA LA PAGINA
     if (chatFormGenerador) {
         chatFormGenerador.addEventListener('submit', async (e) => {
-            e.preventDefault(); // <-- CLAVE: sin esto, el submit nativo recarga y vuelve al foro
+            e.preventDefault();
 
             const mensaje = chatInputGenerador.value.trim();
             if (!mensaje) return;
@@ -701,7 +751,7 @@ document.addEventListener('DOMContentLoaded', () => {
             chatInputGenerador.value = '';
 
             try {
-                // ⚠️ Reemplaza esta URL por el webhook real del Generador de Material
+                // # OJO: REEMPLAZAR ESTA URL POR EL WEBHOOK REAL DEL GENERADOR DE MATERIAL
                 const response = await fetch('https://TU-WEBHOOK-GENERADOR-AQUI', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -722,14 +772,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // =========================================================
-    // CONTACTAR ORIENTACIÓN
-    // Tampoco tenía listener -> también recargaba. Se deja el envío
-    // de UI listo; conecta aquí tu backend real (Firebase/DB) cuando lo tengas.
-    // =========================================================
+    // # EVENTO: ENVIO DEL FORMULARIO DE CONTACTAR ORIENTACION
+    // # TAMPOCO TENIA LISTENER, POR ESO TAMBIEN RECARGABA
+    // # POR AHORA SOLO PINTA EL MENSAJE, FALTA CONECTARLO A UN BACKEND REAL
     if (chatFormOrientacion) {
         chatFormOrientacion.addEventListener('submit', (e) => {
-            e.preventDefault(); // <-- CLAVE
+            e.preventDefault();
 
             const mensaje = chatInputOrientacion.value.trim();
             if (!mensaje) return;
@@ -738,17 +786,12 @@ document.addEventListener('DOMContentLoaded', () => {
             dibujarMensaje(mensaje, 'usuario', horaActual, chatBodyOrientacion);
             chatInputOrientacion.value = '';
 
-            // TODO: aquí va la llamada real a tu backend/Firebase para
-            // notificar al Departamento de Orientación.
+            // # TODO: AQUI VA LA LLAMADA REAL A FIREBASE O AL BACKEND PARA
+            // # NOTIFICAR AL DEPARTAMENTO DE ORIENTACION
         });
     }
 
-    // =========================================================
-    // SINCRONIZACIÓN INICIAL CON FIREBASE (historial del chat IA)
-    // Este bloque estaba mal cerrado antes (llaves desbalanceadas y
-    // "response" indefinido), lo que rompía TODO el script y por eso
-    // el listener de chat-form-ia nunca llegaba a registrarse.
-    // =========================================================
+    // # SINCRONIZACION INICIAL CON FIREBASE, TRAE EL HISTORIAL GUARDADO EN LA NUBE
     window.addEventListener('firebase-ready', async () => {
         const usuarioLimpio = (window.USUARIO_REAL || 'estudiante_anonimo').replace(/\./g, '_');
 
@@ -771,7 +814,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Carga local temporal mientras Firebase responde
+    // # CARGA INICIAL MIENTRAS FIREBASE TODAVIA NO RESPONDE
     if (misConversaciones.length === 0 && !window.firebaseDatabase) {
         crearNuevoChat();
     } else if (misConversaciones.length > 0) {
@@ -782,12 +825,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<!-- CÓDIGO ORIGINAL DE FIREBASE (INTACTO) -->
+<!-- # INICIALIZACION DE FIREBASE, CODIGO ORIGINAL SIN CAMBIOS -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-analytics.js";
   import { getDatabase, ref, push, set, get, onChildAdded } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-database.js";
 
+  // # CONFIGURACION DEL PROYECTO FIREBASE
   const firebaseConfig = {
     apiKey: "AIzaSyBpwRtDft9k2CTnmBsSPWR-vjD4gPbDH3I",
     authDomain: "george-gilberth.firebaseapp.com",
@@ -799,13 +843,16 @@ document.addEventListener('DOMContentLoaded', () => {
     measurementId: "G-4XFBVVC0R7"
   };
 
+  // # CREACION DE LA APP DE FIREBASE Y CONEXION A LA BASE DE DATOS
   try {
     const app = initializeApp(firebaseConfig);
     console.log("[Firebase] App inicializada correctamente.");
     const database = getDatabase(app);
     window.firebaseApp = app;
     window.firebaseDatabase = database;
+    // # SE EXPONEN LAS FUNCIONES DE FIREBASE PARA QUE EL RESTO DEL CODIGO LAS USE
     window.firebaseDbFunctions = { ref, push, set, get, onChildAdded };
+    // # SE AVISA AL RESTO DE LA PAGINA QUE FIREBASE YA ESTA LISTO
     window.dispatchEvent(new CustomEvent("firebase-ready"));
   } catch (initError) {
     console.error("[Firebase] Error al inicializar Firebase:", initError);
