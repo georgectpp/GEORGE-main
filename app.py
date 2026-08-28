@@ -5,6 +5,7 @@ import base64
 import pyrebase  # IMPORTANTE: Reemplaza a sqlite3
 import requests 
 import io
+import requests
 
 
 app = Flask(__name__)
@@ -303,39 +304,48 @@ def recuperar_contrasena():
                 'recuperar_contrasena.html',
                 error='Las nuevas contraseñas no coinciden ❌'
             )
-
         try:
 
-            # 1. Verificamos el correo y la contraseña actual
+    # 1. Verificamos el correo y la contraseña actual
             usuario = auth.sign_in_with_email_and_password(
-                correo,
-                contrasena_actual
-            )
+            correo,
+            contrasena_actual
+        )
 
-            # 2. Obtenemos el token de Firebase
+    # 2. Obtenemos el token de Firebase
             id_token = usuario['idToken']
 
-            # 3. Cambiamos la contraseña
-            auth.update_password(
-                id_token,
-                nueva_contrasena
-            )
+    # 3. Actualizamos la contraseña mediante Firebase REST API
+            url = f"https://identitytoolkit.googleapis.com/v1/accounts:update?key={config['apiKey']}"
 
-            flash('Contraseña actualizada correctamente ✅')
+            respuesta = requests.post(
+            url,
+            json={
+                "idToken": id_token,
+                "password": nueva_contrasena,
+                "returnSecureToken": True
+            }
+        )
 
-            # 4. Volvemos al inicio de sesión
-            return redirect('/login')
+    # 4. Comprobamos si Firebase actualizó correctamente
+        if respuesta.status_code != 200:
+            print("ERROR FIREBASE AL ACTUALIZAR:", respuesta.text)
+            raise Exception("No se pudo actualizar la contraseña")
 
-        except Exception as e:
+    # 5. Todo salió bien
+        flash("Contraseña actualizada correctamente ✅")
 
-            print("ERROR AL CAMBIAR CONTRASEÑA:", e)
+        return redirect('/login')
 
-            return render_template(
-                'recuperar_contrasena.html',
-                error='El correo o la contraseña actual son incorrectos ❌'
-            )
+    except Exception as e:
 
-    return render_template('recuperar_contrasena.html')
+        print("ERROR AL CAMBIAR CONTRASEÑA:", e)
+
+        flash("La contraseña actual no es correcta o ocurrió un error.")
+
+        return redirect('/recuperar_contrasena')
+
+  return render_template('recuperar_contrasena.html')
 
 
 
