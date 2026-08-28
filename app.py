@@ -333,7 +333,7 @@ def recuperar_contrasena():
             id_token = datos_usuario['idToken']
 
             # 3. Actualizar la contraseña
-            url_actualizar = f"https://identitytoolkit.googleapis.com/v1/accounts:update?key={config['apiKey']}"
+            url_actualizar = f"https://identitytoolkit.googleapis.com/v1/accounts:update?key={firebase_config['apiKey']}"
 
             respuesta_actualizar = requests.post(
                 url_actualizar,
