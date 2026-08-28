@@ -1,15 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Recuperar contraseña - GEORGE</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/recuperar.css') }}">
 </head>
 
 <body>
 
-    <h1>Recuperar contraseña</h1>
+    <div class="recuperar-container">
 
-    <p>Aquí enviaremos el correo de recuperación.</p>
+        <div class="recuperar-card">
+
+            <h1>¿Olvidaste tu contraseña?</h1>
+
+            <p class="descripcion">
+                Ingresa tu correo electrónico y te enviaremos
+                un enlace para recuperar tu contraseña.
+            </p>
+
+            <form method="POST">
+
+                <div class="campo">
+
+                    <label for="correo">
+                        Correo electrónico
+                    </label>
+
+                    <input
+                        type="email"
+                        id="correo"
+                        name="correo"
+                        placeholder="tu@correo.com"
+                        required
+                    >
+
+                </div>
+
+                <button type="submit" class="btn-restablecer">
+                    Enviar correo de recuperación
+                </button>
+
+            </form>
+
+            <div class="volver">
+
+                <a href="{{ url_for('login') }}">
+                    Volver a iniciar sesión
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </body>
 </html>
