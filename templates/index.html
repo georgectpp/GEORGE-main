@@ -714,7 +714,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // # SE ENVIA EL MENSAJE AL WEBHOOK DE N8N Y SE ESPERA LA RESPUESTA DE LA IA
             try {
-                const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b', {
+                const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/6c117b71-c9a3-458e-8e57-7dda41fa8ee7', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: mensaje, sessionId: window.USUARIO_REAL || 'estudiante-anonimo' })
