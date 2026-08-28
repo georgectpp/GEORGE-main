@@ -308,7 +308,7 @@ def recuperar_contrasena():
         try:
 
             # 1. Verificar correo y contraseña actual con Firebase
-            url_login = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={config['apiKey']}"
+            url_login = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={firebase_config['apiKey']}"
 
             respuesta_login = requests.post(
                 url_login,
