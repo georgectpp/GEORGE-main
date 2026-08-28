@@ -298,54 +298,80 @@ def recuperar_contrasena():
         nueva_contrasena = request.form.get('nueva_contrasena')
         confirmar_contrasena = request.form.get('confirmar_contrasena')
 
-        # Verificar que las contraseñas nuevas coincidan
+        # Verificar que las nuevas contraseñas coincidan
         if nueva_contrasena != confirmar_contrasena:
             return render_template(
                 'recuperar_contrasena.html',
                 error='Las nuevas contraseñas no coinciden ❌'
             )
+
         try:
 
-    # 1. Verificamos el correo y la contraseña actual
-            usuario = auth.sign_in_with_email_and_password(
-            correo,
-            contrasena_actual
-        )
+            # 1. Verificar correo y contraseña actual con Firebase
+            url_login = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={config['apiKey']}"
 
-    # 2. Obtenemos el token de Firebase
-            id_token = usuario['idToken']
+            respuesta_login = requests.post(
+                url_login,
+                json={
+                    "email": correo,
+                    "password": contrasena_actual,
+                    "returnSecureToken": True
+                }
+            )
 
-    # 3. Actualizamos la contraseña mediante Firebase REST API
-            url = f"https://identitytoolkit.googleapis.com/v1/accounts:update?key={config['apiKey']}"
+            # Si la contraseña actual es incorrecta
+            if respuesta_login.status_code != 200:
+                print("ERROR AL VERIFICAR CONTRASEÑA:", respuesta_login.text)
 
-            respuesta = requests.post(
-            url,
-            json={
-                "idToken": id_token,
-                "password": nueva_contrasena,
-                "returnSecureToken": True
-            }
-        )
+                return render_template(
+                    'recuperar_contrasena.html',
+                    error='El correo o la contraseña actual no son correctos ❌'
+                )
 
-    # 4. Comprobamos si Firebase actualizó correctamente
-        if respuesta.status_code != 200:
-            print("ERROR FIREBASE AL ACTUALIZAR:", respuesta.text)
-            raise Exception("No se pudo actualizar la contraseña")
+            # 2. Obtener el token de Firebase
+            datos_usuario = respuesta_login.json()
+            id_token = datos_usuario['idToken']
 
-    # 5. Todo salió bien
-        flash("Contraseña actualizada correctamente ✅")
+            # 3. Actualizar la contraseña
+            url_actualizar = f"https://identitytoolkit.googleapis.com/v1/accounts:update?key={config['apiKey']}"
 
-        return redirect('/login')
+            respuesta_actualizar = requests.post(
+                url_actualizar,
+                json={
+                    "idToken": id_token,
+                    "password": nueva_contrasena,
+                    "returnSecureToken": True
+                }
+            )
 
-    except Exception as e:
+            # 4. Comprobar que Firebase actualizó correctamente
+            if respuesta_actualizar.status_code != 200:
 
-        print("ERROR AL CAMBIAR CONTRASEÑA:", e)
+                print(
+                    "ERROR FIREBASE AL ACTUALIZAR:",
+                    respuesta_actualizar.text
+                )
 
-        flash("La contraseña actual no es correcta o ocurrió un error.")
+                return render_template(
+                    'recuperar_contrasena.html',
+                    error='No se pudo actualizar la contraseña ❌'
+                )
 
-        return redirect('/recuperar_contrasena')
+            # 5. Contraseña actualizada
+            flash("Contraseña actualizada correctamente ✅")
 
-  return render_template('recuperar_contrasena.html')
+            return redirect('/login')
+
+        except Exception as e:
+
+            print("ERROR AL CAMBIAR CONTRASEÑA:", e)
+
+            return render_template(
+                'recuperar_contrasena.html',
+                error='Ocurrió un error al cambiar la contraseña ❌'
+            )
+
+    return render_template('recuperar_contrasena.html')
 
 
 
