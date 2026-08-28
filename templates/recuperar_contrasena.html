@@ -2,17 +2,13 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Restablecer contraseña - GEORGE</title>
 
-    <!-- CSS -->
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/recuperar.css') }}">
-
 </head>
 
 <body>
@@ -27,13 +23,9 @@
                 Ingresa tu correo electrónico y crea una nueva contraseña.
             </p>
 
-
-            <!-- FORMULARIO -->
-
             <form method="POST">
 
-                <!-- CORREO -->
-
+                <!-- CORREO ELECTRÓNICO -->
                 <div class="campo">
 
                     <label for="correo">
@@ -51,8 +43,38 @@
                 </div>
 
 
-                <!-- NUEVA CONTRASEÑA -->
+                <!-- CONTRASEÑA ACTUAL -->
+                <div class="campo">
 
+                    <label for="contrasena_actual">
+                        Contraseña actual
+                    </label>
+
+                    <div class="password-container">
+
+                        <input
+                            type="password"
+                            id="contrasena_actual"
+                            name="contrasena_actual"
+                            placeholder="••••••••"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            onclick="mostrarPassword('contrasena_actual', this)"
+                            aria-label="Mostrar contraseña"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- NUEVA CONTRASEÑA -->
                 <div class="campo">
 
                     <label for="nueva_contrasena">
@@ -73,6 +95,7 @@
                             type="button"
                             class="toggle-password"
                             onclick="mostrarPassword('nueva_contrasena', this)"
+                            aria-label="Mostrar contraseña"
                         >
                             👁
                         </button>
@@ -82,8 +105,7 @@
                 </div>
 
 
-                <!-- CONFIRMAR CONTRASEÑA -->
-
+                <!-- CONFIRMAR NUEVA CONTRASEÑA -->
                 <div class="campo">
 
                     <label for="confirmar_contrasena">
@@ -104,6 +126,7 @@
                             type="button"
                             class="toggle-password"
                             onclick="mostrarPassword('confirmar_contrasena', this)"
+                            aria-label="Mostrar contraseña"
                         >
                             👁
                         </button>
@@ -114,7 +137,6 @@
 
 
                 <!-- BOTÓN -->
-
                 <button
                     type="submit"
                     class="btn-restablecer"
@@ -125,19 +147,17 @@
             </form>
 
 
-            <!-- OLVIDÉ MI CONTRASEÑA -->
-
+            <!-- OLVIDÓ SU CONTRASEÑA -->
             <div class="olvide">
 
-                <a href="{{ url_for('olvidar_contrasena') }}">
+                <a href="{{ url_for('olvide_contrasena') }}">
                     ¿Olvidé mi contraseña?
                 </a>
 
             </div>
 
 
-            <!-- VOLVER -->
-
+            <!-- VOLVER AL LOGIN -->
             <div class="volver">
 
                 <a href="{{ url_for('login') }}">
@@ -151,24 +171,21 @@
     </div>
 
 
-    <!-- JAVASCRIPT -->
-
+    <!-- JAVASCRIPT PARA MOSTRAR/OCULTAR CONTRASEÑAS -->
     <script>
 
         function mostrarPassword(id, boton) {
 
-            const password = document.getElementById(id);
+            const input = document.getElementById(id);
 
-            if (password.type === "password") {
+            if (input.type === "password") {
 
-                password.type = "text";
-
+                input.type = "text";
                 boton.textContent = "🙈";
 
             } else {
 
-                password.type = "password";
-
+                input.type = "password";
                 boton.textContent = "👁";
 
             }
@@ -178,5 +195,4 @@
     </script>
 
 </body>
-
 </html>
