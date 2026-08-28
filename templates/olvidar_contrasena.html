@@ -16,6 +16,11 @@
     <div class="recuperar-container">
 
         <div class="recuperar-card">
+            {% if error %}
+                <p style="color: red; text-align: center;">
+                    {{ error }}
+                </p>
+            {% endif %}
 
             <h1>¿Olvidaste tu contraseña?</h1>
 
