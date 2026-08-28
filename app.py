@@ -287,10 +287,10 @@ def configuracion():
 
 
 
-@app.route('/recuperar-contrasena')
+@app.route('/recuperar_contrasena')
 def recuperar_contrasena():
     return render_template('recuperar_contrasena.html')
 
-@app.route('/olvidar-contrasena')
+@app.route('/olvidar_contrasena')
 def olvidar_contrasena():
     return render_template('olvidar_contrasena.html')
