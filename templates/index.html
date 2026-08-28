@@ -71,7 +71,7 @@
     <i class="fa-solid fa-plus" aria-hidden="true"></i>
     <span>Nueva publicación</span>
   </button>
-  
+
   <!-- Botón de Salir Original -->
   <a href="{{ url_for('logout') }}" class="btn btn-ghost" style="margin-left: 15px; border-color: var(--gris-borde);">Salir</a>
 </header>
@@ -156,7 +156,7 @@
         <h1>Termómetro de Bienestar</h1>
         <p>Tu opinión es 100% confidencial. Ayúdanos a entender cómo te sientes para mejorar el ambiente en GEORGE.</p>
       </div>
-      
+
       <form id="form-bienestar">
           <div class="encuesta-card">
               <h3>🧠 Nivel de Estrés Académico</h3>
@@ -204,11 +204,11 @@
       <div class="test-container" style="background: white; padding: 30px; border-radius: 12px; border: 1px solid var(--gris-borde); max-width: 800px; margin: 0 auto;">
         <h1 style="color: var(--azul); margin-top: 0;">Descubre tu camino ideal</h1>
         <p class="subtitle" style="color: var(--gris); margin-bottom: 20px;">Responde estas preguntas y GEORGE te sugerirá carreras.</p>
-        
+
         <div class="progress-bar" style="width: 100%; height: 10px; background: #eee; border-radius: 10px; margin-bottom: 20px;">
             <div id="progress" style="width: 0%; background: #810200; height: 100%; transition: 0.3s; border-radius: 10px;"></div>
         </div>
-        
+
         <div id="quiz-content">
             <div style="text-align: center; margin-top: 40px;">
                 <button type="button" class="btn btn-primary" onclick="window.iniciarTestMagico()" style="padding: 15px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; background: #00113A; color: white; border: none;">
@@ -221,24 +221,22 @@
       </div>
     </section>
 
-    <!-- VISTA CHAT IA -->
     <!-- VISTA CHAT IA CON HISTORIAL LATERAL ESTILO GEMINI -->
     <section id="view-chat-ia" class="view view-chat" data-view="chat-ia" style="padding: 0;">
       <div class="chat-wrapper" style="display: flex; height: 100%; width: 100%;">
 
         <!-- PANEL LATERAL DE HISTORIAL -->
         <aside class="chat-history-sidebar" style="width: 260px; background: #f8f9fa; border-right: 1px solid var(--gris-borde); display: flex; flex-direction: column;">
-          
+
           <!-- Botón Nuevo Chat -->
           <div style="padding: 20px 15px;">
             <button type="button" id="btn-nuevo-chat" class="btn btn-primary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: #00113A;">
               <i class="fa-solid fa-plus"></i> Nuevo Chat
             </button>
           </div>
-          
+
           <!-- Lista de Conversaciones -->
           <div class="history-list" id="lista-historial-ia" style="flex: 1; overflow-y: auto; padding: 0 10px;">
-            
             <p style="font-size: 11px; color: var(--gris); font-weight: bold; margin: 0 0 10px 10px; text-transform: uppercase;">Hoy</p>
           </div>
         </aside>
@@ -251,22 +249,21 @@
               <h1 id="chat-titulo-actual">Dudas sobre la feria</h1>
               <p class="chat-status"><span class="status-dot"></span>George IA · Tu asistente académico</p>
             </div>
-          
           </header>
-          
+
           <div class="chat-body" id="chat-body-ia" style="flex: 1; padding: 20px;">
             <div class="chat-msg chat-msg-in">
               <p>¡Hola! Soy George IA 🤖 Puedo ayudarte con dudas académicas, trámites o preguntas generales. ¿En qué te ayudo hoy?</p>
               <span class="chat-time">Ahora</span>
             </div>
           </div>
-          
+
           <form class="chat-input-bar" id="chat-form-ia">
             <input type="text" id="chat-input-ia" placeholder="Escribe tu mensaje a George IA…" autocomplete="off">
             <button type="submit" class="btn btn-primary btn-send"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
           </form>
         </div>
-        
+
       </div>
     </section>
 
@@ -350,37 +347,37 @@
           { tipo: "Tech", texto: "¿Te motiva diseñar la arquitectura lógica detrás de una plataforma digital, app o sistema de software?" },
           { tipo: "Tech", texto: "¿Te interesa comprender a fondo los vectores de vulnerabilidad cibernética o los modelos lógicos de la Inteligencia Artificial?" },
           { tipo: "Tech", texto: "Ante una falla de código o de hardware, ¿prefieres investigar el origen técnico de la incidencia hasta resolverla de raíz?" },
-          
+
           // --- INGENIERIA ---
           { tipo: "Ingenieria", texto: "¿Te atrae conceptualizar la interacción física de mecanismos, piezas estructurales y sistemas mecánicos?" },
           { tipo: "Ingenieria", texto: "¿Te interesa la optimización de procesos productivos a gran escala y la manufactura de bienes tangibles?" },
           { tipo: "Ingenieria", texto: "¿Prefieres enfocar tus proyectos en la materialización de prototipos físicos que funcionen en el entorno real?" },
-          
+
           // --- SALUD ---
           { tipo: "Salud", texto: "¿Te genera genuino interés la complejidad biológica del cuerpo humano y la patología clínica?" },
           { tipo: "Salud", texto: "¿Te visualizas tomando decisiones bajo presión en entornos clínicos para la recuperación o cuidado de pacientes?" },
           { tipo: "Salud", texto: "¿Sigues de cerca los avances en farmacología, biotecnología médica o investigación genómica?" },
-          
+
           // --- CIENCIAS ---
           { tipo: "Ciencias", texto: "¿Disfrutas diseñar metodologías formales para recopilar datos, contrastar hipótesis y comprobar fenómenos?" },
           { tipo: "Ciencias", texto: "¿Te apasiona la investigación teórica sobre ciencias naturales, astrofísica o sistemas ecológicos complejos?" },
           { tipo: "Ciencias", texto: "¿Te inclinas por el análisis matemático profundo y la resolución de enigmas abstractos mediante modelos científicos?" },
-          
+
           // --- SOCIAL ---
           { tipo: "Social", texto: "¿Sueles identificar con facilidad las dinámicas emocionales y sociales de los grupos para mediar en conflictos?" },
           { tipo: "Social", texto: "¿Te motiva comprender la conducta humana y trabajar activamente en la defensa de sectores vulnerables?" },
           { tipo: "Social", texto: "¿Posees vocación para la mentoría, la facilitación de procesos formativos y el desarrollo comunitario?" },
-          
+
           // --- NEGOCIOS ---
           { tipo: "Negocios", texto: "¿Te visualizas estructurando modelos de negocio propios, gestionando recursos y liderando proyectos comerciales?" },
           { tipo: "Negocios", texto: "¿Te interesa analizar las tendencias de los mercados financieros, el comportamiento del consumidor y la economía global?" },
           { tipo: "Negocios", texto: "¿Te consideras una persona con perfil directivo, capaz de alinear equipos hacia metas estratégicas?" },
-          
+
           // --- ARTE ---
           { tipo: "Arte", texto: "¿Buscas canalizar conceptos abstractos a través de lenguajes creativos como el diseño, la narrativa o los medios audiovisuales?" },
           { tipo: "Arte", texto: "¿Le das una prioridad fundamental a la estética, el diseño visual y la experiencia sensorial en los proyectos?" },
           { tipo: "Arte", texto: "¿Te incomodan los espacios hiperestructurados y prefieres entornos dinámicos que prioricen la autoría creativa?" },
-          
+
           // --- HUMANIDADES ---
           { tipo: "Humanidades", texto: "¿Disfrutas el análisis crítico de textos históricos, marcos jurídicos o corrientes de pensamiento sociopolítico?" },
           { tipo: "Humanidades", texto: "¿Te interesa incidir en la estructuración de políticas públicas, la diplomacia o la defensa del marco legal?" },
@@ -460,7 +457,7 @@
           // 4. Cálculo de match real (cada categoría tiene 3 preguntas, máximo 6 puntos)
           var matchPct = Math.min(100, Math.round((maxPuntaje / 6) * 100));
           // Si el puntaje es 0, aseguramos un match visual mínimo del 10% para que no luzca roto
-          if (maxPuntaje === 0) matchPct = 15; 
+          if (maxPuntaje === 0) matchPct = 15;
 
           var listaCarreras = perfil.carreras.map(c => `<li style="font-weight: bold; color: #00113A; margin-bottom: 5px;">✔️ ${c}</li>`).join('');
 
@@ -479,95 +476,32 @@
           `;
           document.getElementById('result-box').style.display = 'block';
       }
-
 </script>
 
-<!-- CÓDIGO DE CHATS N8N CON SOPORTE MARKDOWN Y VOZ GLOBAL (CORREGIDO) -->
+<!--
+  ============================================================================
+  CÓDIGO DE CHATS N8N — SOLO TEXTO (TTS ELIMINADO) — REFRESCO CORREGIDO
+  ============================================================================
+  Cambios respecto a la versión anterior:
+  1. Se eliminó por completo la función reproducirVozGeorge() (Web Speech API
+     + llamada a ElevenLabs) y el botón "Escuchar" de cada mensaje.
+  2. Se corrigió el bloque "firebase-ready", que tenía llaves mal cerradas y
+     una variable "response" sin definir. Ese error de sintaxis detenía la
+     ejecución del script ANTES de llegar a registrar el listener de
+     chat-form-ia, por lo que el formulario cae a su comportamiento nativo
+     (recarga) en vez de usar preventDefault().
+  3. Se añadió el listener de submit que faltaba para chat-form-generador
+     (antes no tenía NINGÚN manejador de JS, por eso siempre recargaba) y
+     uno básico para chat-form-orientacion.
+  4. dibujarMensaje ahora recibe el contenedor como parámetro para poder
+     reutilizarse en los tres chats (IA, generador, orientación) sin
+     duplicar código.
+  ============================================================================
+-->
 <script>
-    // 🔥 FUNCIÓN DE VOZ NATIVA (Cero estrés, 100% gratis) 🔥
-    function reproducirVozGeorge(textoParaLeer, botonQueDisparo) {
-        if (!('speechSynthesis' in window)) {
-            if (botonQueDisparo) botonQueDisparo.innerHTML = 'Tu navegador no soporta voz';
-            return;
-        }
+document.addEventListener('DOMContentLoaded', () => {
 
-        // 1. Si GEORGE ya está hablando, lo callamos para que no se traslapen las voces
-        window.speechSynthesis.cancel();
-
-        // 2. Limpiamos los asteriscos de Markdown para que no los lea en voz alta ("asterisco asterisco...")
-        const textoLimpio = textoParaLeer.replace(/[*#_]/g, '');
-
-        // 3. Preparamos el audio
-        const utterance = new SpeechSynthesisUtterance(textoLimpio);
-        utterance.lang = 'es-ES'; // Español general
-        utterance.rate = 1.0;     // Velocidad normal
-        utterance.pitch = 1.0;    // Tono normal
-
-        // 4. Cambiamos el botón mientras habla
-        if (botonQueDisparo) {
-            botonQueDisparo.innerHTML = '<i class="fa-solid fa-comment-dots fa-beat"></i> Hablando...';
-            botonQueDisparo.style.color = '#2f9e6a'; // Se pone verde para indicar que está activo
-        }
-
-        // 5. Cuando termine de hablar, regresamos el botón a la normalidad
-        utterance.onend = () => {
-            if (botonQueDisparo) {
-                botonQueDisparo.innerHTML = '<i class="fa-solid fa-volume-high"></i> Escuchar';
-                botonQueDisparo.style.color = '#810200';
-            }
-        };
-
-        // 6. ¡A hablar!
-        window.speechSynthesis.speak(utterance);
-    }
-        try {
-            const response = await fetch(urlEleven, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'audio/mpeg',
-                    'Content-Type': 'application/json',
-                    'xi-api-key': apiKey
-                },
-                body: JSON.stringify({
-                    text: textoParaLeer,
-                    model_id: "eleven_multilingual_v2",
-                    voice_settings: { stability: 0.5, similarity_boost: 0.75 }
-                })
-            });
-
-            if (!response.ok) {
-                const errBody = await response.text().catch(() => '');
-                console.error(`Error de ElevenLabs (status ${response.status}):`, errBody);
-                if (botonQueDisparo) botonQueDisparo.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Error al generar voz';
-                return;
-            }
-
-            const blob = await response.blob();
-            const audioUrl = URL.createObjectURL(blob);
-            const audio = new Audio(audioUrl);
-
-            try {
-                await audio.play(); // esperamos la promesa para capturar bloqueo de autoplay
-                if (botonQueDisparo) botonQueDisparo.innerHTML = '<i class="fa-solid fa-volume-high"></i> Escuchar a George';
-            } catch (playErr) {
-                console.warn("Autoplay bloqueado por el navegador. El usuario debe darle click manualmente:", playErr);
-                if (botonQueDisparo) botonQueDisparo.innerHTML = '<i class="fa-solid fa-volume-high"></i> Escuchar a George';
-            }
-
-            audio.addEventListener('ended', () => URL.revokeObjectURL(audioUrl));
-
-        } catch (error) {
-            console.error("Error de conexión con la voz:", error);
-            if (botonQueDisparo) botonQueDisparo.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Error de conexión';
-        } finally {
-            if (botonQueDisparo) botonQueDisparo.disabled = false;
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-    // =====================================================================
-    // CEREBRO DE GEORGE IA: HISTORIAL, NAVEGACIÓN Y AUTO-TÍTULOS ESTILO GEMINI
-    // =====================================================================
+    // ---------- REFERENCIAS DEL DOM ----------
     const chatFormIA = document.getElementById('chat-form-ia');
     const chatInputIA = document.getElementById('chat-input-ia');
     const chatBodyIA = document.getElementById('chat-body-ia');
@@ -575,7 +509,15 @@
     const btnNuevoChat = document.getElementById('btn-nuevo-chat');
     const tituloChatActual = document.getElementById('chat-titulo-actual');
 
-    // Si falta algún elemento en el HTML, detenemos todo para no causar errores invisibles
+    const chatFormGenerador = document.getElementById('chat-form-generador');
+    const chatInputGenerador = document.getElementById('chat-input-generador');
+    const chatBodyGenerador = document.getElementById('chat-body-generador');
+
+    const chatFormOrientacion = document.getElementById('chat-form-orientacion');
+    const chatInputOrientacion = document.getElementById('chat-input-orientacion');
+    const chatBodyOrientacion = document.getElementById('chat-body-orientacion');
+
+    // Si falta algún elemento crítico del chat IA, no seguimos (evita errores invisibles)
     if (!chatBodyIA || !listaHistorial) return;
 
     const STORAGE_KEY = 'george_ia_memoria_completa_' + (window.USUARIO_REAL || 'anonimo');
@@ -585,7 +527,7 @@
     function guardarMemoria() {
         // Guardado de respaldo local
         localStorage.setItem(STORAGE_KEY, JSON.stringify(misConversaciones));
-        
+
         // Guardado en la nube (Firebase)
         if (window.firebaseDatabase && window.firebaseDbFunctions) {
             const usuarioLimpio = (window.USUARIO_REAL || 'estudiante_anonimo').replace(/\./g, '_');
@@ -597,7 +539,7 @@
     function actualizarSidebar() {
         if (!listaHistorial) return;
         listaHistorial.innerHTML = '<p style="font-size: 11px; color: var(--gris); font-weight: bold; margin: 0 0 10px 10px; text-transform: uppercase;">Tus conversaciones</p>';
-        
+
         if (misConversaciones.length === 0) {
             listaHistorial.innerHTML += '<p style="color: var(--gris); font-size: 12px; text-align: center; margin-top: 20px;">No hay chats previos.</p>';
             return;
@@ -607,7 +549,7 @@
 
         chatsInvertidos.forEach(chat => {
             const item = document.createElement('div');
-            
+
             if (chat.id === chatActivoId) {
                 item.style.cssText = 'background: #EFE3D5; color: #810200; font-weight: 600; padding: 10px 15px; border-radius: 8px; margin-bottom: 5px; cursor: pointer; font-size: 13px; display: flex; gap: 10px; align-items: center;';
             } else {
@@ -625,88 +567,71 @@
     function abrirChat(id) {
         chatActivoId = id;
         const chatSeleccionado = misConversaciones.find(c => c.id === id);
-        if(!chatSeleccionado) return;
-        
+        if (!chatSeleccionado) return;
+
         if (tituloChatActual) tituloChatActual.textContent = chatSeleccionado.titulo;
-        
+
         chatBodyIA.innerHTML = '';
         chatSeleccionado.mensajes.forEach(msg => {
-            dibujarMensaje(msg.texto, msg.remitente, msg.hora);
+            dibujarMensaje(msg.texto, msg.remitente, msg.hora, chatBodyIA);
         });
-        
+
         actualizarSidebar();
     }
 
     function crearNuevoChat() {
-        const nuevoId = Date.now().toString(); 
-        const mensajeBienvenida = { 
-            texto: '¡Hola! Soy George IA 🤖 Puedo ayudarte con dudas académicas, trámites o preguntas generales. ¿En qué te ayudo hoy?', 
-            remitente: 'ia', 
-            hora: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
+        const nuevoId = Date.now().toString();
+        const mensajeBienvenida = {
+            texto: '¡Hola! Soy George IA 🤖 Puedo ayudarte con dudas académicas, trámites o preguntas generales. ¿En qué te ayudo hoy?',
+            remitente: 'ia',
+            hora: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
         };
-        
+
         const nuevaConv = { id: nuevoId, titulo: 'Nueva conversación', mensajes: [mensajeBienvenida] };
-        
+
         misConversaciones.push(nuevaConv);
         guardarMemoria();
         abrirChat(nuevoId);
     }
 
-   function dibujarMensaje(texto, remitente, hora) {
+    // dibujarMensaje ahora recibe "contenedor" para poder pintarse en
+    // cualquiera de los tres chats (IA, generador, orientación), no solo en el de IA.
+    // También se eliminó toda la parte de audio: solo dibuja texto (Markdown) + hora.
+    function dibujarMensaje(texto, remitente, hora, contenedor) {
+        contenedor = contenedor || chatBodyIA;
         const msgDiv = document.createElement('div');
-        
+
         if (remitente === 'ia' || remitente === 'sistema') {
             msgDiv.className = 'chat-msg chat-msg-in';
         } else {
             msgDiv.className = 'chat-msg chat-msg-out';
             msgDiv.style.alignSelf = 'flex-end';
             msgDiv.style.marginLeft = 'auto';
-            msgDiv.style.backgroundColor = '#00113A'; 
+            msgDiv.style.backgroundColor = '#00113A';
             msgDiv.style.color = '#FFFFFF';
             msgDiv.style.borderBottomRightRadius = '0';
             msgDiv.style.borderBottomLeftRadius = '12px';
         }
 
-        // 1. Agregamos el texto normal (Markdown)
+        // Texto con soporte de Markdown para respuestas de la IA
         const p = document.createElement('div');
         p.className = 'texto-markdown';
-        p.innerHTML = (remitente === 'ia' || remitente === 'sistema') ? marked.parse(texto) : texto; 
+        p.innerHTML = (remitente === 'ia' || remitente === 'sistema') ? marked.parse(texto) : texto;
         msgDiv.appendChild(p);
 
-        // 2. Creamos un contenedor inferior para poner la hora y el botón juntos
-        const footerDiv = document.createElement('div');
-        footerDiv.style.display = 'flex';
-        footerDiv.style.justifyContent = 'space-between';
-        footerDiv.style.alignItems = 'center';
-        footerDiv.style.marginTop = '8px';
-
-        // 3. Ponemos la hora
+        // Hora del mensaje (ya no hay botón de audio junto a ella)
         const spanHora = document.createElement('span');
         spanHora.className = 'chat-time';
         spanHora.textContent = hora;
-        footerDiv.appendChild(spanHora);
+        msgDiv.appendChild(spanHora);
 
-        // 4. 🔥 MAGIA: Botón de play SOLO si el mensaje es de GEORGE 🔥
-        if (remitente === 'ia' || remitente === 'sistema') {
-            const btnAudio = document.createElement('button');
-            btnAudio.innerHTML = '<i class="fa-solid fa-volume-high"></i> Escuchar';
-            btnAudio.style.cssText = 'background: #EFE3D5; border: none; color: #810200; font-size: 11px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 6px;';
-            
-            // Al hacerle clic, manda ESE texto específico a ElevenLabs
-            btnAudio.onclick = () => reproducirVozGeorge(texto, btnAudio);
-            
-            footerDiv.appendChild(btnAudio);
-        }
-
-        msgDiv.appendChild(footerDiv);
-
-        chatBodyIA.appendChild(msgDiv);
-        chatBodyIA.scrollTop = chatBodyIA.scrollHeight;
+        contenedor.appendChild(msgDiv);
+        contenedor.scrollTop = contenedor.scrollHeight;
     }
 
     function registrarMensajeEnMemoria(texto, remitente, hora) {
         const chatActual = misConversaciones.find(c => c.id === chatActivoId);
-        if(!chatActual) return;
+        if (!chatActual) return;
 
         if (remitente === 'usuario' && chatActual.titulo === 'Nueva conversación') {
             const palabras = texto.split(' ').slice(0, 4).join(' ');
@@ -721,27 +646,126 @@
 
     if (btnNuevoChat) btnNuevoChat.addEventListener('click', crearNuevoChat);
 
-   if (btnNuevoChat) btnNuevoChat.addEventListener('click', crearNuevoChat);
+    // =========================================================
+    // CHAT CON GEORGE IA
+    // =========================================================
+    if (chatFormIA) {
+        chatFormIA.addEventListener('submit', async (e) => {
+            e.preventDefault(); // <-- CLAVE: cancela la recarga nativa del <form>
 
-    // --- SINCRONIZACIÓN INICIAL CON FIREBASE ---
-    window.addEventListener("firebase-ready", async () => {
+            const mensaje = chatInputIA.value.trim();
+            if (!mensaje) return;
+
+            const horaActual = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            dibujarMensaje(mensaje, 'usuario', horaActual, chatBodyIA);
+            registrarMensajeEnMemoria(mensaje, 'usuario', horaActual);
+            chatInputIA.value = '';
+
+            try {
+                const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: mensaje, sessionId: window.USUARIO_REAL || 'estudiante-anonimo' })
+                });
+
+                if (!response.ok) throw new Error('Error en red');
+                const data = await response.json();
+                const respuestaIA = data.respuesta_ia || data.output || 'No pude procesar la respuesta.';
+
+                const horaIA = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                dibujarMensaje(respuestaIA, 'ia', horaIA, chatBodyIA);
+                registrarMensajeEnMemoria(respuestaIA, 'ia', horaIA);
+
+            } catch (error) {
+                const horaError = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const msgError = '⚠️ Sin conexión con el motor de George IA.';
+                dibujarMensaje(msgError, 'sistema', horaError, chatBodyIA);
+                registrarMensajeEnMemoria(msgError, 'sistema', horaError);
+            }
+        });
+    }
+
+    // =========================================================
+    // GENERADOR DE MATERIAL (Portal Docente)
+    // Antes no existía ningún listener aquí -> siempre recargaba la página.
+    // =========================================================
+    if (chatFormGenerador) {
+        chatFormGenerador.addEventListener('submit', async (e) => {
+            e.preventDefault(); // <-- CLAVE: sin esto, el submit nativo recarga y vuelve al foro
+
+            const mensaje = chatInputGenerador.value.trim();
+            if (!mensaje) return;
+
+            const horaActual = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            dibujarMensaje(mensaje, 'usuario', horaActual, chatBodyGenerador);
+            chatInputGenerador.value = '';
+
+            try {
+                // ⚠️ Reemplaza esta URL por el webhook real del Generador de Material
+                const response = await fetch('https://TU-WEBHOOK-GENERADOR-AQUI', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: mensaje, sessionId: window.USUARIO_REAL || 'docente-anonimo' })
+                });
+
+                if (!response.ok) throw new Error('Error en red');
+                const data = await response.json();
+                const respuesta = data.respuesta_ia || data.output || 'No pude generar el material solicitado.';
+
+                const horaResp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                dibujarMensaje(respuesta, 'ia', horaResp, chatBodyGenerador);
+
+            } catch (error) {
+                const horaError = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                dibujarMensaje('⚠️ Sin conexión con el generador de material.', 'sistema', horaError, chatBodyGenerador);
+            }
+        });
+    }
+
+    // =========================================================
+    // CONTACTAR ORIENTACIÓN
+    // Tampoco tenía listener -> también recargaba. Se deja el envío
+    // de UI listo; conecta aquí tu backend real (Firebase/DB) cuando lo tengas.
+    // =========================================================
+    if (chatFormOrientacion) {
+        chatFormOrientacion.addEventListener('submit', (e) => {
+            e.preventDefault(); // <-- CLAVE
+
+            const mensaje = chatInputOrientacion.value.trim();
+            if (!mensaje) return;
+
+            const horaActual = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            dibujarMensaje(mensaje, 'usuario', horaActual, chatBodyOrientacion);
+            chatInputOrientacion.value = '';
+
+            // TODO: aquí va la llamada real a tu backend/Firebase para
+            // notificar al Departamento de Orientación.
+        });
+    }
+
+    // =========================================================
+    // SINCRONIZACIÓN INICIAL CON FIREBASE (historial del chat IA)
+    // Este bloque estaba mal cerrado antes (llaves desbalanceadas y
+    // "response" indefinido), lo que rompía TODO el script y por eso
+    // el listener de chat-form-ia nunca llegaba a registrarse.
+    // =========================================================
+    window.addEventListener('firebase-ready', async () => {
         const usuarioLimpio = (window.USUARIO_REAL || 'estudiante_anonimo').replace(/\./g, '_');
-        const db = window.firebaseDatabase;
-        
+
         if (window.firebaseDbFunctions && window.firebaseDbFunctions.get) {
             const { ref, get } = window.firebaseDbFunctions;
-            
+
             try {
-                const snapshot = await get(ref(db, `historial_george_v2/${usuarioLimpio}`));
+                const snapshot = await get(ref(window.firebaseDatabase, `historial_george_v2/${usuarioLimpio}`));
                 if (snapshot.exists()) {
                     misConversaciones = snapshot.val();
                     actualizarSidebar();
                     abrirChat(misConversaciones[misConversaciones.length - 1].id);
                 } else if (misConversaciones.length === 0) {
-                    crearNuevoChat(); 
+                    crearNuevoChat();
                 }
             } catch (error) {
-                console.error("Error al cargar historial de la nube:", error);
+                console.error('Error al cargar historial de la nube:', error);
                 if (misConversaciones.length === 0) crearNuevoChat();
             }
         }
@@ -749,51 +773,12 @@
 
     // Carga local temporal mientras Firebase responde
     if (misConversaciones.length === 0 && !window.firebaseDatabase) {
-        crearNuevoChat(); 
+        crearNuevoChat();
     } else if (misConversaciones.length > 0) {
         actualizarSidebar();
-        abrirChat(misConversaciones[misConversaciones.length - 1].id); 
+        abrirChat(misConversaciones[misConversaciones.length - 1].id);
     }
-    // -------------------------------------------
 
-  
-
-    if (chatFormIA) {
-        chatFormIA.addEventListener('submit', async (e) => {
-            e.preventDefault(); 
-            const mensaje = chatInputIA.value.trim();
-            if (!mensaje) return;
-            
-            const horaActual = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            dibujarMensaje(mensaje, 'usuario', horaActual);
-            registrarMensajeEnMemoria(mensaje, 'usuario', horaActual);
-            chatInputIA.value = ''; 
-            
-            try {
-                const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ message: mensaje, sessionId: window.USUARIO_REAL || 'estudiante-anonimo' })
-                });
-                
-                if (!response.ok) throw new Error('Error en red');
-                const data = await response.json();
-                const respuestaIA = data.respuesta_ia || data.output || 'No pude procesar la respuesta.'; 
-                
-                const horaIA = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                dibujarMensaje(respuestaIA, 'ia', horaIA); 
-                registrarMensajeEnMemoria(respuestaIA, 'ia', horaIA);
-
-                reproducirVozGeorge(respuestaIA);
-
-            } catch (error) {
-                const horaError = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                const msgError = '⚠️ Sin conexión con el motor de George IA.';
-                dibujarMensaje(msgError, 'sistema', horaError);
-                registrarMensajeEnMemoria(msgError, 'sistema', horaError);
-            }
-        });
-    }
 });
 </script>
 
@@ -801,7 +786,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-analytics.js";
- import { getDatabase, ref, push, set, get, onChildAdded } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-database.js";
+  import { getDatabase, ref, push, set, get, onChildAdded } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBpwRtDft9k2CTnmBsSPWR-vjD4gPbDH3I",
