@@ -1,25 +1,54 @@
+/* ==========================================================
+   GEORGE
+   RECUPERAR CONTRASEÑA
+========================================================== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+
+/* ==========================================================
+   CUERPO
+========================================================== */
+
 body {
     font-family: "Inter", sans-serif;
-    background: linear-gradient(135deg, #0F172A, #1E3A8A);
+
+    background: linear-gradient(
+        135deg,
+        #0F172A,
+        #1E3A8A
+    );
+
     min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+}
+
+
+/* ==========================================================
+   CONTENEDOR
+========================================================== */
+
+.recuperar-container {
+    width: 100%;
 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.recuperar-container {
-    width: 100%;
-    padding: 30px;
-    display: flex;
-    justify-content: center;
-}
+
+/* ==========================================================
+   TARJETA
+========================================================== */
 
 .recuperar-card {
     width: 100%;
@@ -31,8 +60,13 @@ body {
 
     padding: 45px;
 
-    box-shadow: 0 15px 35px rgba(0,0,0,.15);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
 }
+
+
+/* ==========================================================
+   TÍTULO
+========================================================== */
 
 .recuperar-card h1 {
     color: #0F172A;
@@ -42,28 +76,49 @@ body {
     margin-bottom: 10px;
 }
 
+
+/* ==========================================================
+   DESCRIPCIÓN
+========================================================== */
+
 .descripcion {
     color: #64748B;
 
+    font-size: 16px;
+
     margin-bottom: 30px;
 
-    font-size: 16px;
+    line-height: 1.5;
 }
+
+
+/* ==========================================================
+   CAMPOS
+========================================================== */
 
 .campo {
     display: flex;
+
     flex-direction: column;
 
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
+
 .campo label {
-    margin-bottom: 8px;
+    color: #1E293B;
+
+    font-size: 16px;
 
     font-weight: 600;
 
-    color: #1E293B;
+    margin-bottom: 8px;
 }
+
+
+/* ==========================================================
+   INPUTS
+========================================================== */
 
 .campo input {
     width: 100%;
@@ -74,23 +129,95 @@ body {
 
     border-radius: 12px;
 
+    background: #FFFFFF;
+
     font-size: 15px;
 
     outline: none;
 
-    transition: .3s;
+    transition: 0.3s;
 }
+
 
 .campo input:focus {
     border-color: #1E3A8A;
 
-    box-shadow: 0 0 0 3px rgba(30,58,138,.15);
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
 }
+
+
+/* ==========================================================
+   CONTENEDOR DE CONTRASEÑA
+========================================================== */
+
+.password-container {
+    position: relative;
+
+    width: 100%;
+}
+
+
+.password-container input {
+    padding-right: 50px;
+}
+
+
+/* ==========================================================
+   BOTÓN DEL OJO
+========================================================== */
+
+.toggle-password {
+    position: absolute;
+
+    right: 12px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 35px;
+    height: 35px;
+
+    padding: 0;
+    margin: 0;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    color: #142B5F;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 17px;
+
+    box-shadow: none !important;
+}
+
+
+.toggle-password:hover {
+    background: transparent !important;
+
+    color: #8B0000;
+
+    transform: translateY(-50%);
+}
+
+
+/* ==========================================================
+   BOTÓN RESTABLECER
+========================================================== */
 
 .btn-restablecer {
     width: 100%;
 
     padding: 17px;
+
+    margin-top: 5px;
 
     border: none;
 
@@ -98,30 +225,64 @@ body {
 
     background: #8B0000;
 
-    color: white;
+    color: #FFFFFF;
 
-    font-size: 17px;
+    font-size: 16px;
 
     font-weight: 600;
 
     cursor: pointer;
 
-    transition: .3s;
+    transition: 0.3s;
 }
+
 
 .btn-restablecer:hover {
     background: #6E0000;
 
     transform: translateY(-2px);
 
-    box-shadow: 0 10px 20px rgba(139,0,0,.25);
+    box-shadow: 0 10px 20px rgba(139, 0, 0, 0.25);
 }
 
-.volver {
+
+/* ==========================================================
+   ¿OLVIDÉ MI CONTRASEÑA?
+========================================================== */
+
+.olvide {
     text-align: center;
 
     margin-top: 25px;
 }
+
+
+.olvide a {
+    color: #1E3A8A;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    font-size: 15px;
+}
+
+
+.olvide a:hover {
+    text-decoration: underline;
+}
+
+
+/* ==========================================================
+   VOLVER
+========================================================== */
+
+.volver {
+    text-align: center;
+
+    margin-top: 18px;
+}
+
 
 .volver a {
     color: #1E3A8A;
@@ -129,15 +290,23 @@ body {
     text-decoration: none;
 
     font-weight: 600;
+
+    font-size: 15px;
 }
+
 
 .volver a:hover {
     text-decoration: underline;
 }
 
-@media (max-width: 700px) {
 
-    .recuperar-container {
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 600px) {
+
+    body {
         padding: 20px;
     }
 
@@ -149,104 +318,4 @@ body {
         font-size: 28px;
     }
 
-}
-
-.password-container {
-    position: relative;
-    width: 100%;
-}
-
-.password-container input {
-    width: 100%;
-    padding-right: 50px;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-
-    width: 40px;
-    height: 40px;
-
-    padding: 0;
-    margin: 0;
-
-    background: transparent;
-    border: none;
-
-    color: #0F172A;
-
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 18px;
-}
-
-.toggle-password:hover {
-    background: transparent;
-    transform: translateY(-50%);
-    box-shadow: none;
-}
-
-.password-container {
-    position: relative;
-    width: 100%;
-}
-
-.password-container input {
-    width: 100%;
-    padding-right: 50px;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-
-    width: 35px !important;
-    height: 35px;
-
-    padding: 0 !important;
-    margin: 0;
-
-    background: transparent !important;
-    border: none !important;
-
-    color: #0F172A;
-    font-size: 16px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
-
-    box-shadow: none !important;
-}
-
-.toggle-password:hover {
-    background: transparent !important;
-    color: #8B0000;
-    transform: translateY(-50%);
-}
-
-.olvide-password {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.olvide-password a {
-    color: #8B0000;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.olvide-password a:hover {
-    text-decoration: underline;
 }
