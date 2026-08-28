@@ -338,6 +338,7 @@ def recuperar_contrasena():
     return render_template('recuperar_contrasena.html')
 
 
+
 @app.route('/olvidar_contrasena', methods=['GET', 'POST'])
 def olvidar_contrasena():
 
@@ -345,24 +346,31 @@ def olvidar_contrasena():
 
         correo = request.form.get('correo')
 
+        print("================================")
+        print("SOLICITUD DE RECUPERACIÓN")
+        print("CORREO:", correo)
+
         try:
 
-            # Firebase envía el correo de recuperación
-            auth.send_password_reset_email(correo)
+            resultado = auth.send_password_reset_email(correo)
 
-            flash(
-                'Correo de recuperación enviado. Revisa tu bandeja de entrada 📧'
-            )
+            print("FIREBASE RESPONDIÓ CORRECTAMENTE")
+            print("RESULTADO:", resultado)
+
+            flash("Correo de recuperación enviado. Revisa tu correo 📧")
 
             return redirect('/login')
 
         except Exception as e:
 
-            print("ERROR AL ENVIAR CORREO:", e)
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("ERROR DE FIREBASE")
+            print("ERROR:", e)
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
             return render_template(
                 'olvidar_contrasena.html',
-                error='No se pudo enviar el correo de recuperación ❌'
+                error="No se pudo enviar el correo de recuperación."
             )
 
     return render_template('olvidar_contrasena.html')
