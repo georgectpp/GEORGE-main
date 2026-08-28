@@ -535,7 +535,7 @@
       }
 </script>
 
-<!-- # SCRIPT DE LOS TRES CHATS. SOLO TEXTO, SIN TTS, SIN RECARGA DE PAGINA -->
+<!-- # SCRIPT DE LOS TRES CHATS. SOLO TEXTO, SIN RECARGA DE PAGINA -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -552,11 +552,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInputGenerador = document.getElementById('chat-input-generador');
     const chatBodyGenerador = document.getElementById('chat-body-generador');
 
-    // # OJO: chat-form-orientacion NO SE MANEJA AQUI A PROPOSITO
-    // # SU LOGICA REAL YA VIVE EN script.js, DENTRO DEL LISTENER "firebase-ready":
-    // # ALLA SE GUARDA EL MENSAJE EN FIREBASE, PASA POR monitorearSeguridad() Y SE
-    // # DIBUJA EN TIEMPO REAL CON onChildAdded. SI AQUI TAMBIEN LE PUSIERAMOS UN
-    // # LISTENER DE SUBMIT, EL MENSAJE SE DIBUJARIA DOS VECES (UNA POR CADA SCRIPT)
+    // # REFERENCIAS AL DOM DEL CHAT ORIENTACION 
+    const chatFormOrientacion = document.getElementById('chat-form-orientacion');
+    const chatInputOrientacion = document.getElementById('chat-input-orientacion');
+    const chatBodyOrientacion = document.getElementById('chat-body-orientacion');
 
     // # SI FALTA ALGUN ELEMENTO CRITICO DEL CHAT IA, DETENEMOS TODO PARA EVITAR ERRORES INVISIBLES
     if (!chatBodyIA || !listaHistorial) return;
@@ -643,8 +642,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // # FUNCION PARA DIBUJAR UN MENSAJE EN CUALQUIERA DE LOS TRES CHATS
-    // # RECIBE EL CONTENEDOR COMO PARAMETRO PARA REUTILIZARSE EN LOS TRES
-    // # YA NO INCLUYE NADA DE AUDIO, SOLO TEXTO (MARKDOWN) Y HORA
     function dibujarMensaje(texto, remitente, hora, contenedor) {
         contenedor = contenedor || chatBodyIA;
         const msgDiv = document.createElement('div');
@@ -698,7 +695,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnNuevoChat) btnNuevoChat.addEventListener('click', crearNuevoChat);
 
     // # EVENTO: ENVIO DEL FORMULARIO DEL CHAT CON GEORGE IA
-    // # e.preventDefault() ES LO QUE EVITA QUE EL FORMULARIO RECARGUE LA PAGINA
     if (chatFormIA) {
         chatFormIA.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -712,11 +708,11 @@ document.addEventListener('DOMContentLoaded', () => {
             registrarMensajeEnMemoria(mensaje, 'usuario', horaActual);
             chatInputIA.value = '';
 
-            // # SE ENVIA EL MENSAJE AL WEBHOOK DE N8N Y SE ESPERA LA RESPUESTA DE LA IA
+            // # SE ENVIA EL MENSAJE AL WEBHOOK DE GEORGE IA
             try {
                 const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/6c117b71-c9a3-458e-8e57-7dda41fa8ee7', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify({ message: mensaje, sessionId: window.USUARIO_REAL || 'estudiante-anonimo' })
                 });
 
@@ -739,7 +735,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // # EVENTO: ENVIO DEL FORMULARIO DEL GENERADOR DE MATERIAL
-    // # ANTES NO TENIA NINGUN LISTENER, POR ESO SIEMPRE RECARGABA LA PAGINA
     if (chatFormGenerador) {
         chatFormGenerador.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -752,10 +747,10 @@ document.addEventListener('DOMContentLoaded', () => {
             chatInputGenerador.value = '';
 
             try {
-                // # OJO: REEMPLAZAR ESTA URL POR EL WEBHOOK REAL DEL GENERADOR DE MATERIAL
+                // # SE ENVIA EL MENSAJE AL WEBHOOK DEL GENERADOR
                 const response = await fetch('https://innowgrp09.app.n8n.cloud/webhook/734c77f1-43cb-4697-bfd9-417cc201698b', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain' }, 
                     body: JSON.stringify({ message: mensaje, sessionId: window.USUARIO_REAL || 'docente-anonimo' })
                 });
 
@@ -774,8 +769,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // # EVENTO: ENVIO DEL FORMULARIO DE CONTACTAR ORIENTACION
-    // # TAMPOCO TENIA LISTENER, POR ESO TAMBIEN RECARGABA
-    // # POR AHORA SOLO PINTA EL MENSAJE, FALTA CONECTARLO A UN BACKEND REAL
     if (chatFormOrientacion) {
         chatFormOrientacion.addEventListener('submit', (e) => {
             e.preventDefault();
